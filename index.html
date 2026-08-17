@@ -1452,7 +1452,9 @@ function apiAvailable(){ return !!API.token(); }
 
 /* ---------- galeri bersama (cloud) ----------
    Bila halaman dibuka dari Vercel, galeri cloud = origin ini; bila dibuka dari
-   PC (LAN), tetap memakai galeri cloud di absensi-mudah.vercel.app (via CORS). */
+   PC (LAN), tetap memakai galeri cloud di absensi-mudah.vercel.app (via CORS).
+   Vercel hanya menyediakan LIST publik; upload & hapus diurus server PC
+   (yang punya token Blob + JWT_SECRET di .env). */
 const GAL = {
   cloud: 'https://absensi-mudah.vercel.app',
   api(){ return (location.origin === this.cloud || location.hostname.indexOf('.vercel.app') !== -1) ? location.origin : this.cloud; }
@@ -6097,34 +6099,21 @@ async function pvSaveUpload(tipe){
 async function uploadServerFile(f, judul, kelas, tanggal){
   const ft = String(f.type || '');
   if(!ft.startsWith('image/') && !ft.startsWith('video/')) throw new Error('Hanya foto/video');
-  try{
-    const ticket = await galReq('/api/gallery/ticket', {
-      method:'POST',
-      body: JSON.stringify({ filename: f.name || '', judul: judul || '', kelas: kelas || '', tanggal: tanggal || '', mime: ft })
-    });
-    const up = await fetch(ticket.putUrl, {
-      method:'PUT',
-      body: f,
-      headers:{ 'Content-Type': ft, 'x-content-type-options':'nosniff' }
-    });
-    if(!up.ok) throw new Error('Upload cloud gagal ('+up.status+')');
-    return true;
-  }catch(e){
-    if(e && e.message === 'Offline') throw e;
-    const res = await fetch(API.base + '/api/files', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/octet-stream',
-        'Authorization':'Bearer '+API.token(),
-        'X-Filename': encodeURIComponent(f.name || ''),
-        'X-Mime': ft,
-        'X-Judul': encodeURIComponent(judul || '')
-      },
-      body: f
-    });
-    if(!res.ok){ const d = await res.json().catch(()=>({})); throw new Error(d.error || ('Kesalahan server ('+res.status+')')); }
-    return true;
-  }
+  const res = await fetch(API.base + '/api/files', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/octet-stream',
+      'Authorization':'Bearer '+API.token(),
+      'X-Filename': encodeURIComponent(f.name || ''),
+      'X-Mime': ft,
+      'X-Judul': encodeURIComponent(judul || ''),
+      'X-Kelas': encodeURIComponent(kelas || ''),
+      'X-Tanggal': encodeURIComponent(tanggal || '')
+    },
+    body: f
+  });
+  if(!res.ok){ const d = await res.json().catch(()=>({})); throw new Error(d.error || ('Kesalahan server ('+res.status+')')); }
+  return true;
 }
 
 /* ---------- halaman utama ---------- */
@@ -6219,7 +6208,7 @@ async function loadServerFiles(tab){
   let files = [];
   try{ files = await galReq('/api/gallery/list?type=' + (isVid?'video':'poto')); }
   catch(e){
-    try{ files = await API.req('/api/files'); }
+    try{ files = (await API.req('/api/files')).filter(r => String(r.source || 'local') !== 'cloud'); }
     catch(e2){ return []; }
   }
   if(!Array.isArray(files)) return [];
@@ -6286,10 +6275,10 @@ function confirmPvDelete(id){
     const pathname = String(id).slice(2);
     showConfirm('Hapus file ini dari galeri bersama (cloud)?', async ()=>{
       try{
-        await galReq('/api/gallery/delete', { method:'DELETE', body: JSON.stringify({ pathname }) });
+        await API.req('/api/files/cloud', { method:'DELETE', body: JSON.stringify({ pathname }) });
         showToast('File dihapus.', 'info');
         loadPvGallery();
-      }catch(e){ showToast(e.message || 'Gagal menghapus file.', 'error'); }
+      }catch(e){ showToast(e.message || 'Gagal menghapus file (butuh koneksi ke server PC).', 'error'); }
     }, { title:'Hapus File', okText:'Ya, Hapus' });
     return;
   }
