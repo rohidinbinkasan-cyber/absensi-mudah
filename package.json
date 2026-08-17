@@ -1,0 +1,10 @@
+{
+  "name": "absensi-madin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Absensi Digital Madrasah — frontend statis + galeri bersama (Vercel Blob) via serverless functions",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0"
+  }
+}
