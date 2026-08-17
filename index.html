@@ -39,12 +39,13 @@
 -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self' data: blob:;
-  script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://pagead2.googlesyndication.com https://*.googlesyndication.com;
+  script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://pagead2.googlesyndication.com https://*.googlesyndication.com;
+  worker-src 'self' blob: https://cdn.jsdelivr.net;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' data: https://fonts.gstatic.com;
   img-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://*.googlesyndication.com https://*.google.com https://*.googleusercontent.com https://*.doubleclick.net https://*.blob.vercel-storage.com;
   media-src 'self' blob: https://*.supabase.co https://*.blob.vercel-storage.com;
-  connect-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://pagead2.googlesyndication.com https://*.google.com https://absensi-mudah.vercel.app https://*.blob.vercel-storage.com;
+  connect-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://pagead2.googlesyndication.com https://*.google.com https://absensi-mudah.vercel.app https://*.blob.vercel-storage.com https://nominatim.openstreetmap.org https://cdn.jsdelivr.net https://tessdata.projectnaptha.com;
   frame-src 'self' https://googleads.g.doubleclick.net https://*.googlesyndication.com;
   manifest-src 'self' blob:;
   object-src 'none';
@@ -299,6 +300,17 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--green-700);}
 .field-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
 
+/* ---------- Input suara: bungkus field + tombol mic ---------- */
+.field-voice-wrap{position:relative;}
+.field-voice-wrap input, .field-voice-wrap textarea{padding-right:38px;}
+.mic-btn{
+  position:absolute; top:50%; right:6px; transform:translateY(-50%);
+  width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  color:var(--green-700); background:rgba(11,107,79,.08);
+}
+.mic-btn[data-active="1"]{color:#fff; background:var(--green-800); animation:mic-pulse 1.2s ease-in-out infinite;}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(11,107,79,.35);}50%{box-shadow:0 0 0 6px rgba(11,107,79,0);}}
+
 .chip-row{display:flex; gap:8px; flex-wrap:wrap;}
 .chip{padding:7px 13px; border-radius:20px; font-size:12.5px; font-weight:700; border:1.5px solid var(--line); background:#fff; color:var(--ink-soft); transition:transform .12s ease, background .15s ease;}
 .chip:active{transform:scale(.94);}
@@ -344,6 +356,14 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .alert svg{width:17px; height:17px; flex-shrink:0; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; margin-top:1px;}
 .avatar svg{width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 .preview-icon{width:20px; height:20px; stroke:var(--ink-soft); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+.kk-member{
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%;
+  text-align:left; background:#fff; border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; font-size:13px;
+}
+.kk-member:active{background:var(--green-50);}
+.kk-member span{font-size:11px; color:var(--ink-soft);}
+@keyframes mda-spin{to{transform:rotate(360deg);}}
+svg.spin{animation:mda-spin 1s linear infinite;}
 
 .login-wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:linear-gradient(170deg,var(--green-950),var(--green-800));}
 .login-card{background:#fff; border-radius:22px; padding:28px 24px; width:100%; max-width:380px; box-shadow:0 20px 50px rgba(0,0,0,.3); position:relative; overflow:hidden;}
@@ -391,7 +411,7 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .absent-badge{font-size:9px; font-weight:800; padding:2px 6px; border-radius:8px; display:inline-block; align-self:flex-start;}
 .role-badge{display:inline-block; margin-left:6px; padding:1px 8px; border-radius:10px; font-size:9.5px; font-weight:700; background:rgba(232,199,102,.16); color:var(--gold-400); border:1px solid rgba(232,199,102,.4); vertical-align:1px;}
 
-/* ---------- Absen via Barcode ---------- */
+/* ---------- Absen via QR Code ---------- */
 .bcode-box{display:flex; flex-direction:column; align-items:center; gap:6px; background:#fff; border:1.5px dashed var(--line); border-radius:12px; padding:12px;}
 .bcode-canvas{max-width:100%; height:auto; background:#fff; border-radius:4px;}
 .bcode-num{font-weight:800; font-size:13px; letter-spacing:2px; color:var(--green-900); font-family:ui-monospace, Consolas, monospace;}
@@ -402,7 +422,7 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 @keyframes barcodeScan{0%,100%{transform:translateY(-26px); opacity:.5;} 50%{transform:translateY(26px); opacity:1;}}
 .bcode-hint{font-size:11.5px; color:var(--ink-soft); text-align:center; margin-top:8px;}
 
-/* ---------- Halaman Kartu Barcode (cetak) ---------- */
+/* ---------- Halaman Kartu QR Santri (cetak) ---------- */
 .bcode-sheet{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px;}
 .bcode-card{border:1px solid var(--line); border-radius:10px; padding:10px 8px; text-align:center; background:#fff; box-shadow:var(--shadow);}
 .bcode-card .nm{font-weight:800; font-size:12px; color:var(--green-900); line-height:1.3;}
@@ -1087,18 +1107,29 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .music-empty{text-align:center; color:var(--ink-soft); font-size:12.5px; padding:18px 10px;}
 .music-note{font-size:11px; color:var(--ink-soft); margin-top:10px; text-align:center; line-height:1.6;}
 
-/* --- Jam digital & waktu sholat (WIB) --- */
-.prayer-loc{display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:var(--ink-soft); white-space:nowrap;}
-.prayer-loc svg{width:13px; height:13px;}
+/* --- Jam digital & waktu sholat --- */
+.prayer-loc{display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:var(--ink-soft); white-space:nowrap; max-width:55%; overflow:hidden; text-overflow:ellipsis;}
+.prayer-loc svg{width:13px; height:13px; flex:0 0 auto;}
 .prayer-clock-line{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:6px 0 10px;}
 .prayer-clock{font-family:'Consolas',monospace; font-size:34px; font-weight:800; color:var(--green-800); line-height:1; letter-spacing:1px;}
 .prayer-tgl{font-size:12px; color:var(--ink-soft);}
+.prayer-next-block{display:flex; align-items:center; gap:10px; background:var(--green-800); color:#fff; border-radius:12px; padding:12px 14px; margin-bottom:10px;}
+.prayer-next-name{font-size:11.5px; font-weight:600; opacity:.95; white-space:nowrap;}
+.prayer-next-name b{font-weight:800; font-size:13px;}
+.prayer-next-time{font-family:'Consolas',monospace; font-size:26px; font-weight:800; margin-left:auto; line-height:1;}
+.prayer-next-count{font-size:11.5px; font-weight:700; background:rgba(255,255,255,.18); border-radius:20px; padding:5px 10px; white-space:nowrap;}
+.prayer-wrap{overflow:hidden; max-height:0; opacity:0; transition:max-height .35s ease, opacity .3s ease;}
+.prayer-wrap.open{max-height:340px; opacity:1;}
 .prayer-grid{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
 .prayer-item{display:flex; align-items:center; gap:8px; background:var(--green-50); border:1px solid var(--line); border-radius:10px; padding:8px 10px;}
 .prayer-item.now{background:var(--gold-100); border-color:var(--gold-600);}
 .prayer-name{font-size:12.5px; font-weight:700; color:var(--green-900);}
 .prayer-time{font-family:'Consolas',monospace; font-size:14px; font-weight:700; margin-left:auto; color:var(--ink);}
 .prayer-next{font-size:10px; color:var(--gold-700); font-weight:700; white-space:nowrap;}
+.prayer-toggle{display:flex; align-items:center; justify-content:center; gap:6px; width:100%; background:none; border:none; color:var(--green-800); font-weight:700; font-size:12.5px; padding:8px; margin-top:4px; cursor:pointer;}
+.prayer-toggle svg{transition:transform .25s ease; width:15px; height:15px;}
+.prayer-toggle:not(.open) svg{transform:rotate(90deg);}
+.prayer-toggle.open svg{transform:rotate(-90deg);}
 
 /* --- Media sosial --- */
 .soc-row{display:flex; flex-wrap:wrap; gap:8px;}
@@ -1890,6 +1921,7 @@ function debounce(fn, ms){ let t; return function(...a){ clearTimeout(t); t=setT
 const LIBS = {
   chart: 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js',
   html2canvas: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+  tesseract: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',
 };
 function loadScript(src){
   return new Promise((res, rej)=>{
@@ -2177,7 +2209,7 @@ function isAdmin(){ const s = sessionInfo(); return !!(s && s.role==='admin'); }
 function isGuest(){ const s = sessionInfo(); return !!(s && s.role==='tamu'); }
 function roleLabel(){ return isTeacher() ? 'Guru' : (isGuest() ? 'Tamu / Wali Santri' : 'Admin'); }
 function allowedView(v){
-  if(isTeacher()) return ['dashboard','input','recap','share','finance','poto'].includes(v) ? v : 'dashboard';
+  if(isTeacher()) return ['dashboard','input','recap','share','finance','poto','barcodes'].includes(v) ? v : 'dashboard';
   if(isGuest()) return ['dashboard','poto','recap','finance','share'].includes(v) ? v : 'dashboard';
   return v; // admin: everything
 }
@@ -2255,6 +2287,9 @@ const ICONS = {
   repeat:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
   list:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
   barcode:'<path d="M3 5v14"/><path d="M8 5v14"/><path d="M12 5v14"/><path d="M17 5v14"/><path d="M21 5v14"/>',
+  qrcode:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7"/><path d="M14 21h4"/>',
+  mic:'<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+  micoff:'<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-.55 2.8"/><path d="M12 19v4"/><line x1="8" y1="23" x2="16" y2="23"/><path d="M5.55 14A7 7 0 0 1 5 12v-2"/><line x1="2" y1="2" x2="22" y2="22"/>',
   wallet:'<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>',
 copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
   cloud:'<path d="M17.5 19a4.5 4.5 0 1 0-.4-8.98A6 6 0 0 0 6 10.5 3.5 3.5 0 0 0 7 18h10.5z"/><path d="M12 12v8"/><path d="m9 17 3 3 3-3"/>',
@@ -2267,18 +2302,119 @@ copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 
 };
 function icon(name, cls){ return `<svg class="${cls||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; }
 
+/* ---------- Input suara (speech-to-text) ---------- */
+/* Memasang tombol mic di pinggir field teks bila browser mendukung Web Speech
+   API. Tidak melakukan apa-apa (tanpa tombol) bila tidak didukung. */
+function attachVoiceInput(inputId, opts){
+  const el = document.getElementById(inputId);
+  if(!el || el.dataset.micAttached === '1') return;
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR) return;
+  el.dataset.micAttached = '1';
+  const lang = (opts && opts.lang) || 'id-ID';
+  const wrap = document.createElement('div');
+  wrap.className = 'field-voice-wrap';
+  el.parentNode.insertBefore(wrap, el);
+  wrap.appendChild(el);
+  const mic = document.createElement('button');
+  mic.type = 'button';
+  mic.className = 'mic-btn icon-btn';
+  mic.setAttribute('aria-label', 'Input suara');
+  mic.setAttribute('title', 'Input suara');
+  mic.innerHTML = icon('mic');
+  wrap.appendChild(mic);
+  let recog = null;
+  const setActive = (on)=>{
+    mic.dataset.active = on ? '1' : '0';
+    mic.innerHTML = icon(on ? 'micoff' : 'mic');
+    if(on) showToast('Mendengarkan…', 'info');
+  };
+  mic.addEventListener('click', ()=>{
+    if(!recog){
+      try{
+        recog = new SR();
+        recog.lang = lang;
+        recog.continuous = false;
+        recog.interimResults = false;
+        recog.onresult = (e)=>{
+          const txt = ((e.results && e.results[0] && e.results[0][0] && e.results[0][0].transcript) || '').trim();
+          if(txt){
+            const cur = el.value || '';
+            el.value = cur ? cur + ' ' + txt : txt;
+            el.dispatchEvent(new Event('input', {bubbles:true}));
+          }
+        };
+        recog.onerror = (e)=>{
+          const map = {
+            'not-allowed':'Izin mikrofon ditolak — aktifkan di pengaturan browser.',
+            'service-not-allowed':'Izin mikrofon ditolak — aktifkan di pengaturan browser.',
+            'no-speech':'Tidak ada suara terdeteksi, coba lagi.',
+            'network':'Koneksi bermasalah — coba lagi.',
+            'audio-capture':'Mikrofon tidak ditemukan.',
+            'aborted':'',
+          };
+          const msg = map[e.error];
+          if(msg) showToast(msg, 'error');
+        };
+        recog.onend = ()=>{ setActive(false); };
+      }catch(err){
+        showToast('Input suara tidak tersedia di browser ini.', 'error');
+        return;
+      }
+    }
+    if(mic.dataset.active === '1'){
+      try{ recog.stop(); }catch(err){}
+      setActive(false);
+      return;
+    }
+    setActive(true);
+    try{ recog.start(); }catch(err){ setActive(false); }
+  });
+}
+
 /* =========================================================================
-   JAM DIGITAL & WAKTU SHOLAT (WIB) — plus link Media Sosial
+   JAM DIGITAL & WAKTU SHOLAT — plus link Media Sosial
    • Waktu sholat dihitung dari posisi matahari (metode Kemenag RI default)
-     dengan koordinat kota yang dipilih. Zona waktu tetap UTC+7 (WIB).
+     dengan koordinat yang dipilih (kota bawaan, GPS, atau koordinat manual).
+     Zona waktu menyesuaikan lokasi: WIB/WITA/WIT (otomatis dari provinsi/bujur,
+     atau dipilih manual).
    • Media sosial: TikTok / Facebook / YouTube / Instagram, diklik → buka halaman.
    ========================================================================= */
-const WIB_TZ = 7;
-function wibNow(){
-  const t = new Date(Date.now() + WIB_TZ*3600*1000);
+/* Zona waktu per provinsi — 3 zona resmi Indonesia berbasis provinsi
+   (bukan potongan bujur), sesuai peraturan pembagian waktu Indonesia. */
+const PROVINCE_TZ = {
+  'Aceh':7,'Sumatera Utara':7,'Sumatera Barat':7,'Riau':7,'Jambi':7,'Sumatera Selatan':7,
+  'Bengkulu':7,'Lampung':7,'Kepulauan Bangka Belitung':7,'Kepulauan Riau':7,'DKI Jakarta':7,
+  'Jawa Barat':7,'Jawa Tengah':7,'DI Yogyakarta':7,'Jawa Timur':7,'Banten':7,
+  'Kalimantan Barat':8,'Kalimantan Tengah':8,'Kalimantan Selatan':8,'Kalimantan Timur':8,
+  'Kalimantan Utara':8,'Bali':8,'Nusa Tenggara Barat':8,'Nusa Tenggara Timur':8,
+  'Sulawesi Utara':8,'Gorontalo':8,'Sulawesi Tengah':8,'Sulawesi Barat':8,
+  'Sulawesi Selatan':8,'Sulawesi Tenggara':8,
+  'Maluku':9,'Maluku Utara':9,'Papua':9,'Papua Barat':9,'Papua Barat Daya':9,
+  'Papua Tengah':9,'Papua Pegunungan':9,'Papua Selatan':9
+};
+function tzFromProvince(name){
+  if(!name) return null;
+  const norm = String(name).trim().toLowerCase().replace(/^provinsi\s+/, '').replace(/^d\.i\.\s+/, '');
+  for(const k in PROVINCE_TZ){ if(k.toLowerCase() === norm) return PROVINCE_TZ[k]; }
+  return null;
+}
+function tzFromLng(lng){ return lng < 115 ? 7 : (lng < 128 ? 8 : 9); }
+function prayerTz(pr){
+  pr = pr || ((appSettings()||{}).prayer) || {};
+  if(pr.tzOffset === 7 || pr.tzOffset === 8 || pr.tzOffset === 9) return pr.tzOffset;
+  const pv = tzFromProvince(pr.province);
+  if(pv) return pv;
+  const lng = pr.lng ? parseFloat(String(pr.lng).replace(',','.')) : NaN;
+  if(isFinite(lng)) return tzFromLng(lng);
+  return 7;
+}
+function localPrayerNow(){
+  const tz = prayerCity().tzOffset;
+  const t = new Date(Date.now() + tz*3600*1000);
   return { y:t.getUTCFullYear(), mo:t.getUTCMonth()+1, d:t.getUTCDate(), h:t.getUTCHours(), mi:t.getUTCMinutes(), s:t.getUTCSeconds() };
 }
-function wibDateISO(){ const n=wibNow(); return n.y+'-'+String(n.mo).padStart(2,'0')+'-'+String(n.d).padStart(2,'0'); }
+function wibDateISO(){ const n=localPrayerNow(); return n.y+'-'+String(n.mo).padStart(2,'0')+'-'+String(n.d).padStart(2,'0'); }
 
 const PRAYER_METHODS = {
   kemenag:{ name:'Kemenag RI (default)', fajr:20, isha:18, ishaIsAngle:true, maghrib:0, maghribIsAngle:false, asr:1, dhuhr:0 },
@@ -2328,7 +2464,7 @@ function prayerCity(){
   const city = PRAYER_CITIES.find(c=>c.id===pr.city) || PRAYER_CITIES[0];
   const lat = pr.lat ? parseFloat(String(pr.lat).replace(',','.')) : city.lat;
   const lng = pr.lng ? parseFloat(String(pr.lng).replace(',','.')) : city.lng;
-  return { id:city.id, name:city.name, lat, lng, method:pr.method || 'kemenag' };
+  return { id:city.id, name:city.name, lat, lng, method:pr.method || 'kemenag', tzOffset:prayerTz(pr), label:pr.label || city.name, province:pr.province || '', gpsAttrib:!!pr.gpsAttrib };
 }
 function pf(a){ a = a - 360*Math.floor(a/360); return a<0 ? a+360 : a; }
 function ph(a){ a = a - 24*Math.floor(a/24); return a<0 ? a+24 : a; }
@@ -2347,11 +2483,11 @@ function ha(angle, lat, decl){
   const v = Math.min(1, Math.max(-1, num/den));
   return Math.acos(v)*180/Math.PI/15;
 }
-function prayerTimesFor(lat, lng, methodId, y, mo, d){
+function prayerTimesFor(lat, lng, methodId, y, mo, d, tz){
   const m = PRAYER_METHODS[methodId] || PRAYER_METHODS.kemenag;
   const jd = (Date.UTC(y, mo-1, d)/86400000) + 2440587.5 - lng/360;
   const sp = sunPos(jd);
-  const noon = ph(12 - sp.eqt - lng/15 + WIB_TZ);
+  const noon = ph(12 - sp.eqt - lng/15 + (tz==null ? 7 : tz));
   const fajr = ph(noon - ha(-m.fajr, lat, sp.decl));
   const sunrise = ph(noon - ha(-0.833, lat, sp.decl));
   const dhuhr = ph(noon + m.dhuhr/60);
@@ -2368,13 +2504,13 @@ function prayerListFor(dateISO){
   if(parts.length!==3) return null;
   const loc = prayerCity();
   if(!isFinite(loc.lat) || !isFinite(loc.lng)) return null;
-  const t = prayerTimesFor(loc.lat, loc.lng, loc.method, parts[0], parts[1], parts[2]);
+  const t = prayerTimesFor(loc.lat, loc.lng, loc.method, parts[0], parts[1], parts[2], loc.tzOffset);
   return { loc, items:[
     {k:'Subuh', t:t.fajr}, {k:'Terbit', t:t.sunrise}, {k:'Dzuhur', t:t.dhuhr}, {k:'Ashar', t:t.asr}, {k:'Maghrib', t:t.maghrib}, {k:'Isya', t:t.isha}
   ]};
 }
 function nextPrayer(list){
-  const n = wibNow();
+  const n = localPrayerNow();
   const nowMin = n.h*60 + n.mi + n.s/60;
   for(const it of list.items){ if(it.t*60 > nowMin) return { it, waitMin: it.t*60 - nowMin }; }
   return { it: list.items[0], waitMin: 24*60 - nowMin + list.items[0].t*60 };
@@ -2389,21 +2525,31 @@ function renderPrayerCard(){
   const list = prayerListFor(wibDateISO());
   if(!list) return '';
   const next = nextPrayer(list);
+  const tzLabel = list.loc.tzOffset===7 ? 'WIB (UTC+7)' : (list.loc.tzOffset===8 ? 'WITA (UTC+8)' : 'WIT (UTC+9)');
   return `
   <div class="card">
     <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-      <p class="card-title" style="margin:0;">${icon('clock')} Jam &amp; Waktu Sholat (WIB)</p>
-      <span class="prayer-loc" title="Lokasi perhitungan">${icon('location')} ${escapeHtml(list.loc.name)}</span>
+      <p class="card-title" style="margin:0;">${icon('clock')} Jam &amp; Waktu Sholat</p>
+      <span class="prayer-loc" title="Lokasi perhitungan">${icon('location')} ${escapeHtml(list.loc.label)}</span>
     </div>
     <div class="prayer-clock-line">
-      <span class="prayer-clock" id="prayerClock">${(function(){const n=wibNow();return String(n.h).padStart(2,'0')+':'+String(n.mi).padStart(2,'0')+':'+String(n.s).padStart(2,'0');})()}</span>
+      <span class="prayer-clock" id="prayerClock">${(function(){const n=localPrayerNow();return String(n.h).padStart(2,'0')+':'+String(n.mi).padStart(2,'0')+':'+String(n.s).padStart(2,'0');})()}</span>
       <span class="prayer-tgl" id="prayerDate"></span>
     </div>
-    <div class="prayer-grid" id="prayerGrid">
-      ${list.items.map(it=>{ const isNext = next.it===it; return `
-        <div class="prayer-item ${isNext?'now':''}"><span class="prayer-name">${it.k}</span><span class="prayer-time">${hhmm(it.t)}</span>${isNext?`<span class="prayer-next">${fmtCountdown(next.waitMin)}</span>`:''}</div>`; }).join('')}
+    <div class="prayer-next-block">
+      <span class="prayer-next-name">Sholat berikutnya: <b id="prayerNextName">${next.it.k}</b></span>
+      <span class="prayer-next-time" id="prayerNextTime">${hhmm(next.it.t)}</span>
+      <span class="prayer-next-count" id="prayerNextCount">${fmtCountdown(next.waitMin)}</span>
     </div>
-    <p style="font-size:11px; color:var(--ink-soft); margin:8px 0 0;">Metode ${escapeHtml(PRAYER_METHODS[list.loc.method].name)} · waktu Indonesia Barat (UTC+7). Atur lokasi di Lainnya → Pengaturan.</p>
+    <div class="prayer-wrap ${App.prayerExpanded?'open':''}" id="prayerWrap">
+      <div class="prayer-grid" id="prayerGrid">
+        ${list.items.map(it=>{ const isNext = next.it===it; return `
+          <div class="prayer-item ${isNext?'now':''}"><span class="prayer-name">${it.k}</span><span class="prayer-time">${hhmm(it.t)}</span>${isNext?`<span class="prayer-next">${fmtCountdown(next.waitMin)}</span>`:''}</div>`; }).join('')}
+      </div>
+    </div>
+    <button class="prayer-toggle ${App.prayerExpanded?'open':''}" id="prayerToggle" type="button">${icon('chevron')}<span id="prayerToggleLbl">${App.prayerExpanded?'Sembunyikan':'Lihat semua jadwal'}</span></button>
+    ${list.loc.gpsAttrib ? '<div style="font-size:10px; color:var(--ink-soft); margin-top:6px;">Lokasi: data &copy; OpenStreetMap contributors</div>' : ''}
+    <p style="font-size:11px; color:var(--ink-soft); margin:6px 0 0;">Metode ${escapeHtml(PRAYER_METHODS[list.loc.method].name)} · zona waktu ${tzLabel}. Atur lokasi di Lainnya → Pengaturan.</p>
   </div>`;
 }
 function renderSocCard(){
@@ -2443,15 +2589,23 @@ function bindPrayerClock(){
     const d = document.getElementById('prayerDate');
     const g = document.getElementById('prayerGrid');
     if(!c){ clearInterval(__prayerTimer); __prayerTimer = null; return; }
-    const n = wibNow();
+    const n = localPrayerNow();
     c.textContent = String(n.h).padStart(2,'0')+':'+String(n.mi).padStart(2,'0')+':'+String(n.s).padStart(2,'0');
     if(d){
-      const ut = new Date(Date.now() + WIB_TZ*3600*1000);
+      const ut = new Date(Date.now() + prayerCity().tzOffset*3600*1000);
       d.textContent = dayNames[ut.getUTCDay()]+', '+fmtDateID(wibDateISO());
     }
-    if(g){
-      const list = prayerListFor(wibDateISO());
-      if(!list){ g.innerHTML = '<div style="font-size:12px;color:var(--ink-soft);">Atur lokasi di Pengaturan.</div>'; return; }
+    const list = prayerListFor(wibDateISO());
+    if(list){
+      const next = nextPrayer(list);
+      const nm = document.getElementById('prayerNextName');
+      const tm = document.getElementById('prayerNextTime');
+      const ct = document.getElementById('prayerNextCount');
+      if(nm) nm.textContent = next.it.k;
+      if(tm) tm.textContent = hhmm(next.it.t);
+      if(ct) ct.textContent = fmtCountdown(next.waitMin);
+    }
+    if(g && App.prayerExpanded && list){
       const next = nextPrayer(list);
       const html = list.items.map(it=>{
         const isNext = next.it===it;
@@ -2460,6 +2614,59 @@ function bindPrayerClock(){
       if(g.innerHTML !== html) g.innerHTML = html;
     }
   }, 1000);
+  const tgl = document.getElementById('prayerToggle');
+  if(tgl){
+    tgl.addEventListener('click', ()=>{
+      App.prayerExpanded = !App.prayerExpanded;
+      const wrap = document.getElementById('prayerWrap');
+      const lbl = document.getElementById('prayerToggleLbl');
+      if(wrap) wrap.classList.toggle('open', App.prayerExpanded);
+      tgl.classList.toggle('open', App.prayerExpanded);
+      if(lbl) lbl.textContent = App.prayerExpanded ? 'Sembunyikan' : 'Lihat semua jadwal';
+    });
+  }
+}
+
+/* ---------- Deteksi lokasi (GPS) + reverse geocode untuk jadwal sholat ---------- */
+let __geoBusy = false;
+function prayerUseGps(){
+  if(__geoBusy) return;
+  if(!('geolocation' in navigator)){ showToast('Lokasi (GPS) tidak didukung di browser ini.', 'error'); return; }
+  __geoBusy = true;
+  const btn = document.getElementById('prGpsBtn');
+  if(btn){ btn.disabled = true; btn.innerHTML = icon('location')+' Mendeteksi…'; }
+  const done = (msg, type)=>{ __geoBusy = false; if(btn){ btn.disabled = false; btn.innerHTML = icon('location')+' Deteksi Lokasi Sekarang (GPS)'; } if(msg) showToast(msg, type); render(); };
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const lat = +pos.coords.latitude.toFixed(6);
+    const lng = +pos.coords.longitude.toFixed(6);
+    const pr = Object.assign({}, (appSettings().prayer || {}));
+    pr.city = 'custom'; pr.lat = lat; pr.lng = lng;
+    pr.tzOffset = null; pr.province = ''; pr.label = ''; pr.gpsAttrib = false;
+    try{
+      const url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lng+'&zoom=18&addressdetails=1&accept-language=id';
+      const res = await fetch(url);
+      const j = await res.json();
+      const a = (j && j.address) || {};
+      const prov = a.state || a.state_district || '';
+      const tz = tzFromProvince(prov);
+      if(tz) pr.tzOffset = tz;
+      pr.province = prov;
+      pr.gpsAttrib = true;
+      const parts = [a.village||a.hamlet||a.suburb||a.town||a.city||'', a.county||a.municipality||a.city_district||'', a.state||''];
+      pr.label = parts.filter(Boolean).join(', ') || (lat.toFixed(5)+', '+lng.toFixed(5));
+    }catch(e){
+      pr.label = lat.toFixed(5)+', '+lng.toFixed(5);
+      pr.tzOffset = tzFromLng(lng);
+    }
+    const s = appSettings(); s.prayer = pr; saveAppSettings(s);
+    done('Lokasi terdeteksi: '+pr.label, 'success');
+  }, (err)=>{
+    const msg = err.code===1 ? 'Izin lokasi ditolak — aktifkan di pengaturan browser.'
+      : err.code===2 ? 'Lokasi tidak dapat ditentukan saat ini.'
+      : err.code===3 ? 'Waktu deteksi lokasi habis — coba lagi.'
+      : 'Gagal mendeteksi lokasi.';
+    done(msg, 'error');
+  }, { enableHighAccuracy:true, timeout:10000 });
 }
 
 /* ---------------------------- Root render ---------------------------- */
@@ -2560,7 +2767,6 @@ const NAV_ITEMS = [
 const MORE_ITEMS = [
   {id:'finance', label:'Keuangan', icon:'wallet'},
   {id:'students', label:'Data Santri', icon:'students'},
-  {id:'barcodes', label:'Kartu Barcode', icon:'barcode'},
   {id:'classes', label:'Kelas', icon:'classes'},
   {id:'share', label:'Bagikan JPG', icon:'share'},
   {id:'poto', label:'Poto & Video', icon:'photo'},
@@ -2572,7 +2778,6 @@ const ALL_NAV = [
   {id:'recap', label:'Rekap', icon:'recap'},
   {id:'finance', label:'Keuangan', icon:'wallet'},
   {id:'students', label:'Data Santri', icon:'students'},
-  {id:'barcodes', label:'Kartu Barcode', icon:'barcode'},
   {id:'classes', label:'Kelas', icon:'classes'},
   {id:'share', label:'Bagikan JPG', icon:'share'},
   {id:'poto', label:'Poto & Video', icon:'photo'},
@@ -2631,7 +2836,7 @@ function renderNav(){
     items = isDesktopLike ? ALL_NAV : NAV_ITEMS;
     bottomAction = isDesktopLike ? {id:'logout', label:'Keluar', icon:'logout'} : null;
   }
-  const activeId = (App.view==='students'||App.view==='barcodes'||App.view==='classes'||App.view==='share'||App.view==='settings'||App.view==='finance'||App.view==='poto') && !isDesktopLike ? 'more' : App.view;
+  const activeId = (App.view==='barcodes') ? 'input' : ((App.view==='students'||App.view==='classes'||App.view==='share'||App.view==='settings'||App.view==='finance'||App.view==='poto') && !isDesktopLike ? 'more' : App.view);
   let html = `<nav class="bottom-nav" aria-label="Navigasi utama">`;
   items.forEach(it=>{
 html += `<button class="nav-btn ${activeId===it.id?'active':''}" data-nav="${it.id}"><span class="nav-ic">${icon(it.icon)}</span><span class="nav-lbl">${it.label}</span></button>`;
@@ -3424,7 +3629,7 @@ function renderBarcodeModal(){
   return `
   <div class="modal-backdrop" id="barcodeModalBackdrop">
     <div class="modal">
-      <div class="modal-head"><h3>${icon('barcode')} Absen via Barcode</h3><button class="icon-btn" id="closeBarcodeModal" aria-label="Tutup absen barcode">${icon('close')}</button></div>
+      <div class="modal-head"><h3>${icon('barcode')} Absen via QR Code</h3><button class="icon-btn" id="closeBarcodeModal" aria-label="Tutup absen QR">${icon('close')}</button></div>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Arahkan kartu QR/barcode santri ke kamera — langsung tercatat <b>Hadir</b> (status bisa diubah setelahnya). Kelas: <b style="color:var(--green-900);">${escapeHtml(curClass.name||'-')}</b> &middot; ${fmtDateID(App.inputDate)} &middot; ${done} dari ${st.length} sudah ditandai.</p>
       <div class="barcode-cam-wrap">
         <video id="barcodeVideo" autoplay playsinline muted></video>
@@ -3551,7 +3756,7 @@ const s = findStudentByQrPayload(value) || findStudentByBarcode(value);
   const res = document.getElementById('barcodeResult');
   if(!res) return;
   if(!s){
-    res.innerHTML = `<div class="alert">${icon('alert')} <div><b>QR/Kode "${escapeHtml(value)}" tidak dikenali</b>Bukan milik santri mana pun — data tidak diubah. Periksa kartunya, atau cek kartu QR di menu Kartu Barcode.</div></div>`;
+    res.innerHTML = `<div class="alert">${icon('alert')} <div><b>QR/Kode "${escapeHtml(value)}" tidak dikenali</b>Bukan milik santri mana pun — data tidak diubah. Periksa kartunya, atau cek kartu QR di tab Absensi.</div></div>`;
     return;
   }
   // Sudah pernah absen di tanggal ini → peringatan, JANGAN input ganda
@@ -3696,9 +3901,12 @@ function viewBarcodes(){
   }).filter(g=>g.list.length>0);
   const total = groups.reduce((n,g)=>n+g.list.length,0);
   const selClass = cls.find(c=>c.id===App.barcodeClassFilter);
-  return `
-  <h1 class="page-title">Kartu Barcode</h1>
-  <p class="page-sub">Cetak atau simpan kartu QR santri (foto + QR Code otomatis) — guru memindai saat absensi (tab Absensi &rarr; Absen via Barcode)</p>
+return `
+  <div style="display:flex; gap:10px; margin-bottom:12px; align-items:center;">
+    <button class="btn btn-outline" id="backFromBarcodesBtn" style="flex:0 0 auto;">${icon('chevron')} Kembali ke Absensi</button>
+  </div>
+  <h1 class="page-title">Kartu QR Santri</h1>
+  <p class="page-sub">Cetak atau simpan kartu QR santri (foto + QR Code otomatis) — guru memindai saat absensi (tab Absensi &rarr; Absen via QR Code)</p>
 
   <div class="card print-hide">
     <p class="card-title">${icon('barcode')} Pilih Kelas</p>
@@ -3718,7 +3926,7 @@ function viewBarcodes(){
     </defs></svg>
     <div style="text-align:center; margin-bottom:14px;">
       <div style="font-family:var(--font-display); font-weight:700; font-size:16px; color:var(--green-900);">${escapeHtml(p.name||'')}</div>
-      <div style="font-size:11px; color:var(--ink-soft);">Kartu Barcode Santri &middot; ${fmtDateID(todayISO())}${selClass?(' &middot; '+escapeHtml(selClass.name)):''} &middot; ${total} santri</div>
+      <div style="font-size:11px; color:var(--ink-soft);">Kartu QR Santri &middot; ${fmtDateID(todayISO())}${selClass?(' &middot; '+escapeHtml(selClass.name)):''} &middot; ${total} santri</div>
     </div>
     ${groups.length===0 ? `<div class="empty">${icon('barcode')}<b>Belum ada santri</b>Tambahkan santri terlebih dahulu di menu Data Santri.</div>` : groups.map(g=>`
       <h4 style="font-family:var(--font-display); margin:14px 0 8px; color:var(--green-900); font-size:14px;">${escapeHtml(g.c.name)} <span style="font-weight:400; font-size:11px; color:var(--ink-soft);">(${g.list.length} santri)</span></h4>
@@ -3740,6 +3948,8 @@ function viewBarcodes(){
   `;
 }
 function bindBarcodes(){
+  const backBtn = document.getElementById('backFromBarcodesBtn');
+  if(backBtn) backBtn.addEventListener('click', ()=>{ App.view = 'input'; render(); });
   document.querySelectorAll('[data-bc-filter]').forEach(b=>b.addEventListener('click', ()=>{ App.barcodeClassFilter = b.getAttribute('data-bc-filter'); render(); }));
   const printBtn = document.getElementById('printBarcodesBtn');
   if(printBtn) printBtn.addEventListener('click', ()=> window.print());
@@ -3824,7 +4034,8 @@ function viewInput(){
     ` : `
     <div class="alert" style="margin-bottom:0; flex:1;">${icon('camera')} <div><b>Selfie belum siap</b>Tambahkan foto santri di Data Santri.</div></div>
     `}
-    <button class="btn btn-outline" id="barcodeBtn" style="flex:1;">${icon('barcode')} Absen via Barcode</button>
+<button class="btn btn-outline" id="barcodeBtn" style="flex:1;">${icon('barcode')} Absen via QR Code</button>
+    <button class="btn btn-outline" id="barcodeCardsBtn" style="flex:1;">${icon('qrcode')} Kartu QR Santri</button>
   </div>
 
   <div class="card" id="attendanceList">
@@ -3873,8 +4084,10 @@ function bindInput(){
   if(classEl) classEl.addEventListener('change', e=>{ App.inputClassId = e.target.value; render(); });
   const selfieBtn = document.getElementById('selfieBtn');
   if(selfieBtn) selfieBtn.addEventListener('click', ()=>{ App.selfieOpen = true; render(); });
-  const barcodeBtn = document.getElementById('barcodeBtn');
+const barcodeBtn = document.getElementById('barcodeBtn');
   if(barcodeBtn) barcodeBtn.addEventListener('click', ()=>{ App.barcodeOpen = true; render(); });
+  const barcodeCardsBtn = document.getElementById('barcodeCardsBtn');
+  if(barcodeCardsBtn) barcodeCardsBtn.addEventListener('click', ()=>{ App.view = 'barcodes'; render(); });
   bindSelfie();
 
   document.querySelectorAll('[data-status]').forEach(btn=>{
@@ -4223,9 +4436,220 @@ function applyStudentSearchFilter(){
     }
   }
 }
+/* =========================================================================
+   KARTU KELUARGA (KK) — isi otomatis data santri dari foto KK
+   Foto KK disimpan sebagai Blob di IndexedDB (bukan base64 di localStorage
+   agar kuota tidak cepat penuh). OCR dijalankan oleh Tesseract.js (lazy-load,
+   berjalan di worker internal-nya sehingga tidak membekukan antarmuka).
+   ========================================================================= */
+const KkDB = (()=>{
+  const DB_NAME = 'mda_kk', STORE = 'kk', VERSION = 1;
+  let dbp = null;
+  function open(){
+    if(dbp) return dbp;
+    return new Promise((resolve, reject)=>{
+      const req = indexedDB.open(DB_NAME, VERSION);
+      req.onupgradeneeded = ()=>{ if(!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE); };
+      req.onsuccess = ()=>{ dbp = req.result; resolve(dbp); };
+      req.onerror = ()=>reject(req.error);
+    });
+  }
+  return {
+    async put(id, blob){
+      const db = await open();
+      return new Promise((res, rej)=>{
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).put(blob, id);
+        tx.oncomplete = ()=>res();
+        tx.onerror = ()=>rej(tx.error);
+      });
+    },
+    async get(id){
+      if(!id) return null;
+      const db = await open();
+      return new Promise((res, rej)=>{
+        const tx = db.transaction(STORE, 'readonly');
+        const rq = tx.objectStore(STORE).get(id);
+        rq.onsuccess = ()=>res(rq.result || null);
+        rq.onerror = ()=>rej(rq.error);
+      });
+    },
+    async remove(id){
+      if(!id) return;
+      const db = await open();
+      return new Promise((res, rej)=>{
+        const tx = db.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).delete(id);
+        tx.oncomplete = ()=>res();
+        tx.onerror = ()=>rej(tx.error);
+      });
+    }
+  };
+})();
+function dataUrlToBlob(dataUrl){
+  const parts = dataUrl.split(',');
+  const mime = (parts[0].match(/data:([^;]+)/)||[])[1] || 'image/jpeg';
+  const bin = atob(parts[1]);
+  const arr = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], {type:mime});
+}
+function normDobId(str){
+  const m = String(str||'').replace(/\s+/g,' ').match(/\b(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{2,4})\b/);
+  if(!m) return '';
+  let d = +m[1], mo = +m[2], y = +m[3];
+  if(mo > 12 && d <= 12){ const t = d; d = mo; mo = t; }
+  if(mo > 12 || mo < 1 || d > 31 || d < 1) return '';
+  if(y < 100) y += (y > 60 ? 1900 : 2000);
+  if(y < 1950 || y > 2020) return '';
+  return y+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+}
+function parseKkText(text){
+  const addr = {};
+  const clean = (s)=>String(s||'').trim().replace(/[|(){}\[\]]+/g,' ').replace(/\s{2,}/g,' ');
+  const full = String(text||'').replace(/\r/g,'').replace(/[^\x00-\x7F\w\s.,\/\-]/g,' ').split(/\n+/).map(clean).filter(Boolean).join('\n');
+  const grab = (re)=>{ const m = full.match(re); return m ? clean(m[1]) : ''; };
+  addr.provinsi = grab(/Provinsi\s*[:.]?\s*([^\n]+)/i);
+  addr.kabupaten = grab(/Kabupaten\s*\/?\s*Kota\s*[:.]?\s*([^\n]+)/i) || grab(/Kabupaten\s*[:.]?\s*([^\n]+)/i);
+  addr.kecamatan = grab(/Kecamatan\s*[:.]?\s*([^\n]+)/i);
+  addr.desa = grab(/Desa\s*\/?\s*Kelurahan\s*[:.]?\s*([^\n]+)/i) || grab(/Desa\s*[:.]?\s*([^\n]+)/i);
+  addr.kodepos = grab(/Kode\s*Pos\s*[:.]?\s*([0-9]{4,6})/i);
+  const rtm = full.match(/RT\s*[\/.:]?\s*(\d{1,3})/i);
+  const rwm = full.match(/RW\s*[\/.:]?\s*(\d{1,3})/i);
+  addr.rt = rtm ? rtm[1] : '';
+  addr.rw = rwm ? rwm[1] : '';
+  const al = grab(/Alamat\s*[:.]?\s*([^\n]+)/i);
+  addr.jalan = al.replace(/RT\s*\d+.*/i,'').replace(/[;,]+$/,'').trim();
+  if(!addr.rt){ const jrt = (al||'').match(/RT\s*[\/.:]?\s*(\d{1,3})/i); if(jrt) addr.rt = jrt[1]; }
+  if(!addr.rw){ const jrw = (al||'').match(/RW\s*[\/.:]?\s*(\d{1,3})/i); if(jrw) addr.rw = jrw[1]; }
+  const members = [];
+  const seen = {};
+  const nikRe = /\b(\d{16})\b/g;
+  let m;
+  while((m = nikRe.exec(full))){
+    const nik = m[1];
+    if(seen[nik]) continue;
+    seen[nik] = true;
+    const win = full.slice(m.index + 16, m.index + 16 + 240);
+    const nameM = win.match(/^\s*[\n\s]*([A-Za-z][A-Za-z .'\'-]{2,39})/);
+    let name = nameM ? clean(nameM[1].replace(/^(NAMA|ANAK|SUAMI|ISTRI|KEPALA)\s+/i,'').replace(/\s+TANGGAL.*$/i,'').replace(/\s+[LP]\s*$/i,'')) : '';
+    const dobM = win.match(/\b(\d{1,2})[\s\-\\\/.]{1,3}(\d{1,2})[\s\-\\\/.]{1,3}(\d{2,4})\b/);
+    const dob = dobM ? normDobId(dobM[1]+'/'+dobM[2]+'/'+dobM[3]) : '';
+    const faM = win.match(/NAMA\s*AYAH\s*[:.]?\s*([A-Za-z][A-Za-z .'\'-]{2,39})/i);
+    const moM = win.match(/NAMA\s*IBU\s*[:.]?\s*([A-Za-z][A-Za-z .'\'-]{2,39})/i);
+    members.push({
+      name: name || 'Anggota KK (nama tidak terbaca)', dob, nik,
+      fatherName: faM ? clean(faM[1]) : '',
+      motherName: moM ? clean(moM[1]) : ''
+    });
+  }
+  if(!members.length){
+    const re = /([A-Z][A-Za-z .'\'-]{2,39})\s+\d{1,2}\s*[\/\-.]\s*\d{1,2}\s*[\/\-.]\s*\d{2,4}/g;
+    let mm;
+    while((mm = re.exec(full))){
+      const name = clean(mm[1]).replace(/^(NAMA|ANAK|SUAMI|ISTRI)\s+/i,'').replace(/\s+TANGGAL.*$/i,'').replace(/\s+[LP]\s*$/i,'');
+      const d = mm[0].match(/(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{2,4})/);
+      members.push({ name, dob: d ? normDobId(d[1]+'/'+d[2]+'/'+d[3]) : '', nik:'', fatherName:'', motherName:'' });
+    }
+  }
+  const gf = full.match(/Nama\s*Ayah\s*[:.]?\s*([A-Z][A-Za-z .'\'-]{2,39})/i);
+  const gm = full.match(/Nama\s*Ibu\s*[:.]?\s*([A-Z][A-Za-z .'\'-]{2,39})/i);
+  return {
+    address: addr,
+    members,
+    globalFather: gf ? clean(gf[1]) : '',
+    globalMother: gm ? clean(gm[1]) : ''
+  };
+}
+let kkScan = null; // { photoDataUrl, members, address, globalFather, globalMother, pob, busy }
+let pendingKkBlob = null; // blob KK terkompresi yang akan disimpan saat save
+function kkFillStatus(html){
+  const el = document.getElementById('kkStatus');
+  if(el) el.innerHTML = html;
+}
+function kkHandleFile(file){
+  if(!file) return;
+  resizeImageFile(file, 1200, (smallDataUrl)=>{
+    pendingKkBlob = dataUrlToBlob(smallDataUrl);
+    kkScan = { photoDataUrl: smallDataUrl, members: [], address: {}, globalFather:'', globalMother:'', pob:'', busy:false };
+    const prev = document.getElementById('kkPreview');
+    if(prev) prev.innerHTML = '<img src="'+smallDataUrl+'" alt="">';
+    runKkOcr();
+  });
+}
+async function runKkOcr(){
+  if(!kkScan || !kkScan.photoDataUrl){ showToast('Pilih foto KK dulu.', 'warn'); return; }
+  if(kkScan.busy) return;
+  kkScan.busy = true;
+  kkFillStatus('<span style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft);">'+icon('refresh','spin')+' Membaca Kartu Keluarga…</span>');
+  try{
+    await ensureLib('tesseract');
+    if(typeof Tesseract === 'undefined') throw new Error('Pustaka OCR tidak termuat.');
+    const worker = await Tesseract.createWorker('ind', 1, {
+      logger: (m)=>{ if(m && m.status === 'recognizing text') kkFillStatus('<span style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-soft);">'+icon('refresh','spin')+' Membaca Kartu Keluarga… '+Math.round((m.progress||0)*100)+'%</span>'); }
+    });
+    let res = await worker.recognize(kkScan.photoDataUrl);
+    let text = (res.data && res.data.text) || '';
+    if(text.trim().length < 40){
+      await worker.setLanguage('eng');
+      const r2 = await worker.recognize(kkScan.photoDataUrl);
+      text = ((r2.data && r2.data.text) || '') + '\n' + text;
+    }
+    await worker.terminate();
+    const parsed = parseKkText(text);
+    kkScan.members = parsed.members;
+    kkScan.address = parsed.address;
+    kkScan.globalFather = parsed.globalFather;
+    kkScan.globalMother = parsed.globalMother;
+    const box = document.getElementById('kkMembers');
+    if(box) box.style.display = '';
+    if(!kkScan.members.length){
+      kkFillStatus('<div class="alert" style="margin:8px 0 0;">'+icon('alert')+' <div><b>Anggota KK tidak terbaca</b> Foto kurang jelas, miring, atau terkena cahaya. Isi manual di bawah, atau pilih foto ulang yang lebih jelas.</div></div>');
+    }else{
+      kkFillStatus('<span style="font-size:12.5px; color:var(--green-800); font-weight:700;">Ditemukan '+kkScan.members.length+' anggota. Ketik inisial untuk memfilter, lalu pilih santrinya.</span>');
+      kkRenderMembers();
+    }
+  }catch(err){
+    console.error(err);
+    kkFillStatus('<div class="alert" style="margin:8px 0 0;">'+icon('alert')+' <div><b>Gagal membaca Kartu Keluarga</b> '+(err && err.message ? escapeHtml(err.message) : 'Tidak dapat memuat pustaka OCR — butuh koneksi internet pada pemindaian pertama.')+'</div></div>');
+  }finally{
+    kkScan.busy = false;
+  }
+}
+function kkRenderMembers(){
+  const list = document.getElementById('kkMemberList');
+  if(!list) return;
+  const q = (document.getElementById('kkMemberFilter')||{}).value || '';
+  const filt = q.trim().toLowerCase();
+  const arr = (kkScan.members||[]).map((mm, idx)=>({mm, idx}))
+    .filter(x=> !filt || (x.mm.name||'').toLowerCase().indexOf(filt)!==-1 || (x.mm.nik||'').indexOf(filt)!==-1);
+  list.innerHTML = arr.length ? arr.map(x=>`
+    <button type="button" class="kk-member" data-kk-member="${x.idx}">
+      <b>${escapeHtml(x.mm.name)}</b>
+      <span>${x.mm.dob ? 'Lahir '+fmtDateID(x.mm.dob) : (x.mm.nik ? 'NIK '+escapeHtml(x.mm.nik) : '')}</span>
+    </button>`).join('') : '<div style="font-size:12px; color:var(--ink-soft); padding:8px 0;">Tidak ada yang cocok.</div>';
+}
+function kkSelectMember(idx){
+  const mm = (kkScan.members||[])[idx];
+  if(!mm) return;
+  const fill = (id, val)=>{ const el = document.getElementById(id); if(el) el.value = val || ''; };
+  fill('sName', mm.name);
+  fill('sDob', mm.dob);
+  fill('sPob', (kkScan.pob || ''));
+  const a = kkScan.address || {};
+  fill('sAddrJalan', a.jalan); fill('sAddrRt', a.rt); fill('sAddrRw', a.rw);
+  fill('sAddrDesa', a.desa); fill('sAddrKec', a.kecamatan); fill('sAddrKab', a.kabupaten);
+  fill('sAddrProv', a.provinsi); fill('sAddrPos', a.kodepos);
+  const fa = mm.fatherName || kkScan.globalFather;
+  const mo = mm.motherName || kkScan.globalMother;
+  if(fa){ fill('sGuardian', fa); fill('sRel', 'ayah'); }
+  else if(mo){ fill('sGuardian', mo); fill('sRel', 'ibu'); }
+  showToast('Data dari KK terisi — periksa sebelum menyimpan.', 'success');
+}
+
 function renderStudentModal(){
   const isNew = App.editingStudentId === 'new';
-  const s = isNew ? {id:'', name:'', nis:'', classId:(classes()[0]||{}).id||'', guardianName:'', guardianContact:'', active:true} : students().find(x=>x.id===App.editingStudentId);
+const s = isNew ? {id:'', name:'', nis:'', classId:(classes()[0]||{}).id||'', guardianName:'', guardianContact:'', active:true, dob:'', pob:'', address:{}, parentRelation:'wali'} : (students().find(x=>x.id===App.editingStudentId) || {});
   if(!s) return '';
   const cls = classes();
   return `
@@ -4235,6 +4659,27 @@ function renderStudentModal(){
         <h3>${isNew?'Tambah Santri':'Edit Santri'}</h3>
         <button class="icon-btn" id="closeStudentModal" aria-label="Tutup formulir santri">${icon('close')}</button>
       </div>
+      <div class="field">
+        <label>Pindai Kartu Keluarga (Isi Otomatis)</label>
+        <div style="display:flex; align-items:flex-start; gap:12px;">
+          <div id="kkPreview" style="width:64px;height:64px;border-radius:12px;background:var(--green-50);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);flex-shrink:0;">${icon('photo','preview-icon')}</div>
+          <div style="flex:1;">
+            ${!isNew && s.kkPhotoId ? `
+            <div style="display:flex; gap:8px; margin-bottom:6px;" id="kkExistingRow">
+              <button class="btn btn-outline btn-sm" type="button" id="kkViewBtn">${icon('photo')} Lihat Foto KK</button>
+              <button class="btn btn-outline btn-sm" type="button" id="kkRemoveBtn">${icon('trash')} Lepas</button>
+            </div>` : ''}
+            <input type="file" id="kkPhoto" accept="image/*" capture="environment">
+          </div>
+        </div>
+        <p style="font-size:11px; color:var(--ink-soft); margin-top:6px;">Opsional — bisa juga isi manual di bawah. Foto KK dikompresi &amp; disimpan aman di penyimpanan perangkat.</p>
+        <div id="kkStatus" style="margin-top:2px;"></div>
+        <div id="kkMembers" style="display:none; margin-top:8px; background:var(--green-50); border:1px solid var(--line); border-radius:12px; padding:10px;">
+          <div class="field" style="margin-bottom:8px;"><input type="text" id="kkMemberFilter" placeholder="Ketik inisial nama atau NIK…"></div>
+          <div id="kkMemberList" style="display:flex; flex-direction:column; gap:6px;"></div>
+          <button class="btn btn-outline btn-sm" type="button" id="kkRescanBtn" style="margin-top:8px;">${icon('refresh')} Pindai Ulang Foto Ini</button>
+        </div>
+      </div>
       <div class="field"><label>Nama Lengkap *</label><input type="text" id="sName" value="${escapeHtml(s.name)}" placeholder="Nama santri"></div>
       <div class="field"><label>Kelas *</label>
         <select id="sClass">
@@ -4242,6 +4687,10 @@ function renderStudentModal(){
         </select>
       </div>
       <div class="field"><label>NIS / No. Induk (Opsional)</label><input type="text" id="sNis" value="${escapeHtml(s.nis)}" placeholder="Opsional"></div>
+      <div class="field-row">
+        <div class="field"><label>Tempat Lahir (Opsional)</label><input type="text" id="sPob" value="${escapeHtml(s.pob||'')}" placeholder="Opsional"></div>
+        <div class="field"><label>Tanggal Lahir (Opsional)</label><input type="date" id="sDob" value="${escapeHtml(s.dob||'')}"></div>
+      </div>
       <div class="field">
         <label>Foto Santri (untuk Absensi Selfie)</label>
         <div style="display:flex; align-items:center; gap:12px;">
@@ -4254,17 +4703,42 @@ function renderStudentModal(){
         <p style="font-size:11px; color:var(--ink-soft); margin-top:6px;">Foto wajah santri dipakai untuk mencocokkan selfie saat absensi. Pilih kamera depan (selfie) di ponsel.</p>
       </div>
 <div class="field">
-        <label>Kartu QR (untuk Absen via Barcode/QR)</label>
+        <label>Kartu QR (untuk Absen via QR Code)</label>
         ${!isNew ? `
         <div class="bcode-box">
           <canvas class="bcode-qr" data-qr="${escapeHtml(qrcodeOf(s))}"></canvas>
           <div class="bcode-num">${escapeHtml(qrcodeOf(s))}</div>
         </div>
-        <p style="font-size:11px; color:var(--ink-soft); margin-top:6px;">QR Code dibuat otomatis dari ID unik santri saat data disimpan (diperbarui bersamaan dengan upload foto). Cetak/simpan gambar ini untuk kartu santri — guru memindai saat absensi (tombol "Absen via Barcode" di tab Absensi).</p>` : `
+        <p style="font-size:11px; color:var(--ink-soft); margin-top:6px;">QR Code dibuat otomatis dari ID unik santri saat data disimpan (diperbarui bersamaan dengan upload foto). Cetak/simpan gambar ini untuk kartu santri — guru memindai saat absensi (tombol "Absen via QR Code" di tab Absensi).</p>` : `
         <div class="bcode-box" style="color:var(--ink-soft); font-size:12px; text-align:center; padding:18px;">QR Code santri dibuat otomatis dari ID uniknya begitu data disimpan — langsung siap dipindai.</div>`}
       </div>
-      <div class="field"><label>Nama Wali/Orang Tua (Opsional)</label><input type="text" id="sGuardian" value="${escapeHtml(s.guardianName)}" placeholder="Opsional"></div>
+<div class="field-row">
+        <div class="field"><label>Hubungan</label>
+          <select id="sRel">
+            <option value="wali" ${(s.parentRelation||'wali')==='wali'?'selected':''}>Wali</option>
+            <option value="ayah" ${s.parentRelation==='ayah'?'selected':''}>Ayah</option>
+            <option value="ibu" ${s.parentRelation==='ibu'?'selected':''}>Ibu</option>
+          </select>
+        </div>
+        <div class="field"><label>Nama Wali/Orang Tua (Opsional)</label><input type="text" id="sGuardian" value="${escapeHtml(s.guardianName)}" placeholder="Opsional"></div>
+      </div>
       <div class="field"><label>Kontak Wali - No. WhatsApp (Opsional)</label><input type="text" id="sContact" value="${escapeHtml(s.guardianContact)}" placeholder="Opsional, 08xxxxxxxxxx"></div>
+      <div style="height:1px; background:var(--line); margin:14px 0;"></div>
+      <p style="font-size:12.5px; font-weight:700; color:var(--green-900); margin:0 0 10px;">Alamat Lengkap (Opsional)</p>
+      <div class="field"><label>Jalan / Dusun</label><input type="text" id="sAddrJalan" value="${escapeHtml((s.address||{}).jalan||'')}" placeholder="Contoh: Dukuh Rembet RT 01"></div>
+      <div class="field-row">
+        <div class="field"><label>RT</label><input type="text" id="sAddrRt" value="${escapeHtml((s.address||{}).rt||'')}" inputmode="numeric"></div>
+        <div class="field"><label>RW</label><input type="text" id="sAddrRw" value="${escapeHtml((s.address||{}).rw||'')}" inputmode="numeric"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Desa / Kelurahan</label><input type="text" id="sAddrDesa" value="${escapeHtml((s.address||{}).desa||'')}"></div>
+        <div class="field"><label>Kecamatan</label><input type="text" id="sAddrKec" value="${escapeHtml((s.address||{}).kecamatan||'')}"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Kabupaten / Kota</label><input type="text" id="sAddrKab" value="${escapeHtml((s.address||{}).kabupaten||'')}"></div>
+        <div class="field"><label>Kode Pos</label><input type="text" id="sAddrPos" value="${escapeHtml((s.address||{}).kodepos||'')}" inputmode="numeric"></div>
+      </div>
+      <div class="field"><label>Provinsi</label><input type="text" id="sAddrProv" value="${escapeHtml((s.address||{}).provinsi||'')}"></div>
       <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; margin-bottom:16px;">
         <input type="checkbox" id="sActive" ${s.active!==false?'checked':''}> Santri aktif
       </label>
@@ -4276,15 +4750,18 @@ function renderStudentModal(){
   </div>`;
 }
 function bindStudents(){
-  const addBtn = document.getElementById('addStudentBtn');
-  if(addBtn) addBtn.addEventListener('click', ()=>{ pendingPhoto = null; App.editingStudentId='new'; render(); });
-  document.querySelectorAll('[data-edit-student]').forEach(b=>b.addEventListener('click', ()=>{ pendingPhoto = null; App.editingStudentId = b.getAttribute('data-edit-student'); render(); }));
+const addBtn = document.getElementById('addStudentBtn');
+  if(addBtn) addBtn.addEventListener('click', ()=>{ pendingPhoto = null; kkScan = null; pendingKkBlob = null; App.editingStudentId='new'; render(); });
+  document.querySelectorAll('[data-edit-student]').forEach(b=>b.addEventListener('click', ()=>{ pendingPhoto = null; kkScan = null; pendingKkBlob = null; App.editingStudentId = b.getAttribute('data-edit-student'); render(); }));
   document.querySelectorAll('[data-classfilter]').forEach(b=>b.addEventListener('click', ()=>{ App.studentClassFilter = b.getAttribute('data-classfilter'); render(); }));
   const search = document.getElementById('studentSearch');
   if(search){
     search.addEventListener('input', ()=>{ App.studentSearch = search.value; applyStudentSearchFilter(); });
   }
-  applyStudentSearchFilter();
+applyStudentSearchFilter();
+  attachVoiceInput('studentSearch');
+  attachVoiceInput('sName');
+  attachVoiceInput('sGuardian');
   const backdrop = document.getElementById('studentModalBackdrop');
   if(backdrop) backdrop.addEventListener('click', e=>{ if(e.target===backdrop){ App.editingStudentId=null; render(); } });
   const closeBtn = document.getElementById('closeStudentModal');
@@ -4312,24 +4789,79 @@ function bindStudents(){
     photoRemove.remove();
   });
 
+  /* ---------- Pemindaian Kartu Keluarga (KK) ---------- */
+  const kkPhoto = document.getElementById('kkPhoto');
+  if(kkPhoto) kkPhoto.addEventListener('change', ()=>{ kkHandleFile(kkPhoto.files[0]); });
+  const kkFilter = document.getElementById('kkMemberFilter');
+  if(kkFilter) kkFilter.addEventListener('input', kkRenderMembers);
+  const kkList = document.getElementById('kkMemberList');
+  if(kkList) kkList.addEventListener('click', e=>{
+    const b = e.target.closest('[data-kk-member]');
+    if(!b) return;
+    kkSelectMember(parseInt(b.getAttribute('data-kk-member'),10)||0);
+  });
+  const kkRescan = document.getElementById('kkRescanBtn');
+  if(kkRescan) kkRescan.addEventListener('click', runKkOcr);
+  const curSt = App.editingStudentId==='new' ? null : (students().find(x=>x.id===App.editingStudentId) || null);
+  if(curSt && curSt.kkPhotoId){
+    KkDB.get(curSt.kkPhotoId).then(blob=>{
+      if(!blob) return;
+      const url = URL.createObjectURL(blob);
+      const prev = document.getElementById('kkPreview');
+      if(prev) prev.innerHTML = '<img src="'+url+'" alt="" style="width:100%;height:100%;object-fit:cover;">';
+      const kkView = document.getElementById('kkViewBtn');
+      if(kkView) kkView.addEventListener('click', ()=>{ window.open(url, '_blank'); });
+    }).catch(()=>{});
+    const kkRemove = document.getElementById('kkRemoveBtn');
+    if(kkRemove) kkRemove.addEventListener('click', async ()=>{
+      try{ await KkDB.remove(curSt.kkPhotoId); }catch(e){}
+      const list = students().map(s=>s.id===curSt.id ? Object.assign({}, s, { kkPhotoId:null }) : s);
+      saveStudents(list);
+      render();
+      showToast('Foto KK dilepas.', 'info');
+    });
+  }
+
   const saveBtn = document.getElementById('saveStudentBtn');
   if(saveBtn){
-    saveBtn.addEventListener('click', ()=>{
+    saveBtn.addEventListener('click', async ()=>{
       const name = document.getElementById('sName').value.trim();
       const classId = document.getElementById('sClass').value;
       if(!name){ showToast('Nama santri wajib diisi.', 'error'); return; }
       if(!classId){ showToast('Kelas wajib dipilih. Tambahkan kelas terlebih dahulu jika belum ada.', 'error'); return; }
       const existing = students().find(x=>x.id===App.editingStudentId);
+      let kkPhotoId = (existing && existing.kkPhotoId) || null;
+      if(pendingKkBlob){
+        try{
+          kkPhotoId = uid();
+          await KkDB.put(kkPhotoId, pendingKkBlob);
+        }catch(e){
+          showToast('Gagal menyimpan foto KK ke perangkat.', 'error');
+          kkPhotoId = (existing && existing.kkPhotoId) || null;
+        }
+        pendingKkBlob = null;
+      }
+      const val = (id)=>(document.getElementById(id)||{}).value||'';
       const data = {
         name,
-        nis: document.getElementById('sNis').value.trim(),
+        nis: val('sNis').trim(),
         classId,
-        guardianName: document.getElementById('sGuardian').value.trim(),
-        guardianContact: document.getElementById('sContact').value.trim(),
+        dob: val('sDob'),
+        pob: val('sPob').trim(),
+        parentRelation: val('sRel') || 'wali',
+        guardianName: val('sGuardian').trim(),
+        guardianContact: val('sContact').trim(),
+        address: {
+          jalan: val('sAddrJalan').trim(), rt: val('sAddrRt').trim(), rw: val('sAddrRw').trim(),
+          desa: val('sAddrDesa').trim(), kecamatan: val('sAddrKec').trim(),
+          kabupaten: val('sAddrKab').trim(), provinsi: val('sAddrProv').trim(), kodepos: val('sAddrPos').trim()
+        },
+        kkPhotoId,
         active: document.getElementById('sActive').checked,
         photo: pendingPhoto !== null ? pendingPhoto : (existing && existing.photo ? existing.photo : ''),
       };
       pendingPhoto = null;
+      kkScan = null;
       let list = students();
       if(App.editingStudentId==='new'){
         list.push(Object.assign({id:uid()}, data));
@@ -5059,9 +5591,10 @@ function bindFinance(){
           : (it.key==='infaq' ? `Infaq sukarela — minimal ${fmtRp(it.min)} per pembayaran.` : `Isi nominal sesuai kesepakatan (min ${fmtRp(it.min)}).`);
       }
     };
-    itemSel.addEventListener('change', syncHint);
+itemSel.addEventListener('change', syncHint);
     syncHint();
   }
+  attachVoiceInput('finNote');
   const submit = document.getElementById('finSubmit');
   if(submit){
     submit.addEventListener('click', ()=>{
@@ -5219,14 +5752,29 @@ function viewSettings(){
 </div>
 
   <div class="card">
-    <p class="card-title">${icon('clock')} Jam &amp; Waktu Sholat (WIB)</p>
-    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Tampil di <b>Beranda</b>: jam digital + jadwal sholat presisi (metode Kemenag RI, zona WIB).</p>
+    <p class="card-title">${icon('clock')} Jam &amp; Waktu Sholat</p>
+    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Tampil di <b>Beranda</b>: jam digital + jadwal sholat presisi (metode Kemenag RI). Zona waktu menyesuaikan lokasi madrasah (WIB/WITA/WIT).</p>
+    <button class="btn btn-primary" id="prGpsBtn" style="margin-bottom:12px; width:100%;">${icon('location')} Deteksi Lokasi Sekarang (GPS)</button>
+    ${s.prayer && (s.prayer.label || s.prayer.province) ? `
+    <div style="font-size:12.5px; background:var(--green-50); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:12px;">
+      <b>Lokasi terdeteksi:</b> ${escapeHtml(s.prayer.label || '')}${s.prayer.province?(' &middot; '+escapeHtml(s.prayer.province)):''}
+      ${s.prayer.gpsAttrib ? '<div style="font-size:10px; color:var(--ink-soft); margin-top:4px;">Lokasi: data &copy; OpenStreetMap contributors</div>' : ''}
+    </div>` : ''}
     <div class="field"><label>Lokasi Madrasah</label>
       <select id="prCity">${PRAYER_CITIES.map(c=>`<option value="${c.id}" ${(s.prayer&&s.prayer.city)===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select>
     </div>
     <div class="field-row" id="prCoords" style="${(s.prayer&&s.prayer.city)==='custom'?'':'display:none;'}">
       <div class="field"><label>Lintang (lat)</label><input type="text" id="prLat" inputmode="decimal" value="${attr(s.prayer&&s.prayer.lat?String(s.prayer.lat).replace(',','.'):'')}" placeholder="cth: -6.2088"></div>
       <div class="field"><label>Bujur (lng)</label><input type="text" id="prLng" inputmode="decimal" value="${attr(s.prayer&&s.prayer.lng?String(s.prayer.lng).replace(',','.'):'')}" placeholder="cth: 106.8456"></div>
+    </div>
+    <div class="field"><label>Zona Waktu</label>
+      <select id="prTz">
+        <option value="" ${!(s.prayer&&(s.prayer.tzOffset===7||s.prayer.tzOffset===8||s.prayer.tzOffset===9))?'selected':''}>Otomatis (deteksi dari lokasi)</option>
+        <option value="7" ${s.prayer&&s.prayer.tzOffset===7?'selected':''}>WIB (UTC+7)</option>
+        <option value="8" ${s.prayer&&s.prayer.tzOffset===8?'selected':''}>WITA (UTC+8)</option>
+        <option value="9" ${s.prayer&&s.prayer.tzOffset===9?'selected':''}>WIT (UTC+9)</option>
+      </select>
+      <div style="font-size:11px; color:var(--ink-soft); margin-top:4px;">Pilih manual bila lokasi jauh dari kota bawaan (perkiraan zona waktu bila GPS tidak aktif).</div>
     </div>
     <div class="field"><label>Metode Perhitungan</label>
       <select id="prMethod">${Object.keys(PRAYER_METHODS).map(k=>`<option value="${k}" ${(s.prayer&&s.prayer.method)===k?'selected':''}>${escapeHtml(PRAYER_METHODS[k].name)}</option>`).join('')}</select>
@@ -5384,6 +5932,8 @@ function bindSettings(){
     const el = document.getElementById(id);
     if(el){ el.addEventListener('input', saveRek); el.addEventListener('change', saveRek); }
   });
+  attachVoiceInput('pName');
+
 
 const logoInput = document.getElementById('pLogo');
   if(logoInput){
@@ -5409,6 +5959,12 @@ const logoInput = document.getElementById('pLogo');
     if(lng) pr.lng = lng.value.trim();
     const m = document.getElementById('prMethod');
     if(m) pr.method = m.value;
+    const tz = document.getElementById('prTz');
+    if(tz){
+      const v = tz.value;
+      if(v==='7'||v==='8'||v==='9') pr.tzOffset = Number(v);
+      else delete pr.tzOffset;
+    }
     s.prayer = pr;
     saveAppSettings(s);
   }, 400);
@@ -5420,7 +5976,9 @@ const logoInput = document.getElementById('pLogo');
       prSave();
     });
   }
-  ['prLat','prLng','prMethod'].forEach(id=>{
+  const prGpsBtn = document.getElementById('prGpsBtn');
+  if(prGpsBtn) prGpsBtn.addEventListener('click', prayerUseGps);
+  ['prLat','prLng','prMethod','prTz'].forEach(id=>{
     const el = document.getElementById(id);
     if(el){ el.addEventListener('input', prSave); el.addEventListener('change', prSave); }
   });
@@ -6171,6 +6729,8 @@ function bindPotoVideo(){
   if(filter) filter.addEventListener('change', e=>{ App.pvClassFilter = e.target.value; loadPvGallery(); });
   bindPvLightbox();
   loadPvGallery();
+  attachVoiceInput('pvFotoJudul');
+  attachVoiceInput('pvVideoJudul');
 }
 
 /* ---------- galeri ---------- */
@@ -6535,8 +7095,9 @@ function bindSlideshow(){
   document.querySelectorAll('#slideDots .slide-dot').forEach(d=>{
     d.addEventListener('click', ()=>{ SlideShow.go(parseInt(d.getAttribute('data-slide-go'), 10) || 0); });
   });
-  const mgmtBtn = document.getElementById('slideMgmtBtn');
+const mgmtBtn = document.getElementById('slideMgmtBtn');
   if(mgmtBtn) mgmtBtn.addEventListener('click', ()=>{ SlideShow.adminOpen = !SlideShow.adminOpen; render(); });
+  attachVoiceInput('slideCaption');
   const addBtn = document.getElementById('slideAddBtn');
   if(addBtn) addBtn.addEventListener('click', slideAddPhotos);
   const list = document.getElementById('slideList');
