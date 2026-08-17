@@ -33,14 +33,24 @@ function parsePathname(p) {
 
 const extOf = (p) => String(p || '').split('.').pop().toLowerCase();
 
-export default async function handler(req) {
-  try {
-    if (req.method === 'OPTIONS') return new Response('ok', { status: 204, headers: CORS });
+export function OPTIONS() {
+  return new Response('ok', { status: 204, headers: CORS });
+}
 
-    const url = new URL(req.url);
+export async function GET(request) {
+  try {
+    const url = new URL(request.url);
     const isVid = url.searchParams.get('type') === 'video';
     const { blobs } = await list({ prefix: 'galeri/', limit: 1000 });
-    const token = await issueSignedToken({ pathname: 'galeri/*', operations: ['get'], validUntil: Date.now() + 7 * 24 * 3600 * 1000 });
+
+    // Satu delegation token untuk seluruh folder galeri (get, 7 hari).
+    let token = null;
+    try {
+      token = await issueSignedToken({ pathname: 'galeri/*', operations: ['get'], validUntil: Date.now() + 7 * 24 * 3600 * 1000 });
+    } catch (e) {
+      console.error('[gallery/list] token:', e && e.message ? e.message : e);
+    }
+
     const items = [];
     for (const b of blobs || []) {
       const ext = extOf(b.pathname);
@@ -48,7 +58,12 @@ export default async function handler(req) {
       if (!isVid && IMG_EXT.indexOf(ext) === -1) continue;
       const meta = parsePathname(b.pathname);
       let readable = b.url;
-      try { const { presignedUrl } = await presignUrl(token, { operation: 'get', pathname: b.pathname, access: 'private' }); readable = presignedUrl; } catch (e) { /* pakai URL asli bila gagal */ }
+      if (token) {
+        try {
+          const { presignedUrl } = await presignUrl(token, { operation: 'get', pathname: b.pathname, access: 'private' });
+          readable = presignedUrl;
+        } catch (e) { /* pakai URL asli bila presign gagal */ }
+      }
       items.push({
         id: b.pathname,
         pathname: b.pathname,
