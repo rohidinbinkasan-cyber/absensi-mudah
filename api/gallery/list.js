@@ -46,7 +46,7 @@ export async function GET(request) {
     // Satu delegation token untuk seluruh folder galeri (get, 7 hari).
     let token = null;
     try {
-      token = await issueSignedToken({ pathname: 'galeri/*', operations: ['get'], validUntil: Date.now() + 7 * 24 * 3600 * 1000 });
+      token = await issueSignedToken({ pathname: '*', operations: ['get'], validUntil: Date.now() + 7 * 24 * 3600 * 1000 });
     } catch (e) {
       console.error('[gallery/list] token:', e && e.message ? e.message : e);
     }
