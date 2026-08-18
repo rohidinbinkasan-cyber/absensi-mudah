@@ -47,7 +47,7 @@
   font-src 'self' data: https://fonts.gstatic.com;
   img-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://*.googlesyndication.com https://*.google.com https://*.googleusercontent.com https://*.doubleclick.net https://*.blob.vercel-storage.com;
   media-src 'self' blob: https://*.supabase.co https://*.blob.vercel-storage.com;
-  connect-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://pagead2.googlesyndication.com https://*.google.com https://absensi-mudah.vercel.app https://*.blob.vercel-storage.com https://nominatim.openstreetmap.org https://cdn.jsdelivr.net https://tessdata.projectnaptha.com;
+  connect-src 'self' data: blob: https://*.supabase.co http://127.0.0.1:9400 https://pagead2.googlesyndication.com https://*.google.com https://absensi-mudah.vercel.app https://*.blob.vercel-storage.com https://nominatim.openstreetmap.org https://ipapi.co http://ip-api.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com;
   frame-src 'self' https://googleads.g.doubleclick.net https://*.googlesyndication.com;
   manifest-src 'self' blob:;
   object-src 'none';
@@ -2757,21 +2757,41 @@ function bindPrayerClock(){
 
 /* ---------- Deteksi lokasi (GPS) + reverse geocode untuk jadwal sholat ---------- */
 let __geoBusy = false;
+async function ipLocation(){
+  // Deteksi lokasi perkiraan via IP publik (fallback saat GPS perangkat tidak
+  // tersedia, mis. halaman dibuka lewat HTTP di jaringan lokal).
+  const tryUrl = async (u)=>{
+    try{
+      const res = await fetch(u, { method:'GET' });
+      if(!res.ok) return null;
+      return await res.json();
+    }catch(e){ return null; }
+  };
+  const j = await tryUrl('https://ipapi.co/json/') || await tryUrl('http://ip-api.com/json/');
+  if(!j) return null;
+  const lat = parseFloat(j.latitude != null ? j.latitude : j.lat);
+  const lng = parseFloat(j.longitude != null ? j.longitude : j.lon);
+  if(!isFinite(lat) || !isFinite(lng)) return null;
+  return { lat, lng };
+}
 function prayerUseGps(){
   if(__geoBusy) return;
-  if(!('geolocation' in navigator)){ showToast('Lokasi (GPS) tidak didukung di browser ini.', 'error'); return; }
   __geoBusy = true;
   const btn = document.getElementById('prGpsBtn');
+  const btnLabel = btn ? btn.innerHTML : '';
   if(btn){ btn.disabled = true; btn.innerHTML = icon('location')+' Mendeteksi…'; }
-  const done = (msg, type)=>{ __geoBusy = false; if(btn){ btn.disabled = false; btn.innerHTML = icon('location')+' Deteksi Lokasi Sekarang (GPS)'; } if(msg) showToast(msg, type); render(); };
-  navigator.geolocation.getCurrentPosition(async (pos)=>{
-    const lat = +pos.coords.latitude.toFixed(6);
-    const lng = +pos.coords.longitude.toFixed(6);
+  const done = (msg, type)=>{
+    __geoBusy = false;
+    if(btn){ btn.disabled = false; btn.innerHTML = btnLabel || (icon('location')+' Deteksi Lokasi Sekarang (GPS)'); }
+    if(msg) showToast(msg, type);
+    render();
+  };
+  const applyLoc = async (lat, lng)=>{
     const pr = Object.assign({}, (appSettings().prayer || {}));
-    pr.city = 'custom'; pr.lat = lat; pr.lng = lng;
+    pr.city = 'custom'; pr.lat = +lat.toFixed(6); pr.lng = +lng.toFixed(6);
     pr.tzOffset = null; pr.province = ''; pr.label = ''; pr.gpsAttrib = false;
     try{
-      const url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lng+'&zoom=18&addressdetails=1&accept-language=id';
+      const url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+pr.lat+'&lon='+pr.lng+'&zoom=18&addressdetails=1&accept-language=id';
       const res = await fetch(url);
       const j = await res.json();
       const a = (j && j.address) || {};
@@ -2781,20 +2801,37 @@ function prayerUseGps(){
       pr.province = prov;
       pr.gpsAttrib = true;
       const parts = [a.village||a.hamlet||a.suburb||a.town||a.city||'', a.county||a.municipality||a.city_district||'', a.state||''];
-      pr.label = parts.filter(Boolean).join(', ') || (lat.toFixed(5)+', '+lng.toFixed(5));
+      pr.label = parts.filter(Boolean).join(', ') || (pr.lat.toFixed(5)+', '+pr.lng.toFixed(5));
     }catch(e){
-      pr.label = lat.toFixed(5)+', '+lng.toFixed(5);
-      pr.tzOffset = tzFromLng(lng);
+      pr.label = pr.lat.toFixed(5)+', '+pr.lng.toFixed(5);
+      pr.tzOffset = tzFromLng(pr.lng);
     }
     const s = appSettings(); s.prayer = pr; saveAppSettings(s);
-    done('Lokasi terdeteksi: '+pr.label, 'success');
-  }, (err)=>{
-    const msg = err.code===1 ? 'Izin lokasi ditolak — aktifkan di pengaturan browser.'
-      : err.code===2 ? 'Lokasi tidak dapat ditentukan saat ini.'
-      : err.code===3 ? 'Waktu deteksi lokasi habis — coba lagi.'
-      : 'Gagal mendeteksi lokasi.';
-    done(msg, 'error');
-  }, { enableHighAccuracy:true, timeout:10000 });
+    return pr.label;
+  };
+  if('geolocation' in navigator){
+    // GPS perangkat tersedia (HTTPS / localhost) — paling presisi.
+    navigator.geolocation.getCurrentPosition(async (pos)=>{
+      const label = await applyLoc(pos.coords.latitude, pos.coords.longitude);
+      done('Lokasi terdeteksi: '+label, 'success');
+    }, async (err)=>{
+      const hint = err.code===1 ? 'izin lokasi ditolak' : (err.code===2 ? 'lokasi tidak ditemukan' : 'waktu deteksi habis');
+      showToast('GPS perangkat: '+hint+'. Mencoba deteksi via IP…', 'warn');
+      const ip = await ipLocation();
+      if(!ip){ done('Gagal mendeteksi lokasi (GPS & IP).', 'error'); return; }
+      const label = await applyLoc(ip.lat, ip.lng);
+      done('Lokasi (perkiraan via IP): '+label, 'success');
+    }, { enableHighAccuracy:true, timeout:10000 });
+    return;
+  }
+  // Halaman dibuka lewat HTTP (mis. http://192.168.1.8:3000) — API GPS tidak
+  // disediakan browser. Pakai deteksi via IP (perkiraan kota) sebagai gantinya.
+  (async ()=>{
+    const ip = await ipLocation();
+    if(!ip){ done('GPS tidak tersedia di browser ini dan deteksi via IP gagal. Pilih "Lokasi lain" lalu isi koordinat manual dari Google Maps.', 'error'); return; }
+    const label = await applyLoc(ip.lat, ip.lng);
+    done('Lokasi (perkiraan via IP): '+label+'. Untuk presisi maksimal pilih "Lokasi lain" lalu isi koordinat dari Google Maps.', 'success');
+  })();
 }
 
 /* ---------------------------- Root render ---------------------------- */
@@ -5976,7 +6013,7 @@ function viewSettings(){
 
   <div class="card">
     <p class="card-title">${icon('clock')} Jam &amp; Waktu Sholat</p>
-    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Tampil di <b>Beranda</b>: jam digital + jadwal sholat presisi (metode Kemenag RI). Zona waktu menyesuaikan lokasi madrasah (WIB/WITA/WIT).</p>
+    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Tampil di <b>Beranda</b>: jam digital + jadwal sholat presisi (metode Kemenag RI). Zona waktu menyesuaikan lokasi madrasah (WIB/WITA/WIT). Bila dibuka lewat <b>HTTP</b> di jaringan lokal (GPS perangkat tidak tersedia), tombol di bawah otomatis memakai deteksi <b>via IP</b> (perkiraan kota); untuk presisi maksimal pilih "Lokasi lain" lalu isi koordinat dari Google Maps.</p>
     <button class="btn btn-primary" id="prGpsBtn" style="margin-bottom:12px; width:100%;">${icon('location')} Deteksi Lokasi Sekarang (GPS)</button>
     ${s.prayer && (s.prayer.label || s.prayer.province) ? `
     <div style="font-size:12.5px; background:var(--green-50); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:12px;">
