@@ -736,6 +736,16 @@ svg.spin{animation:mda-spin 1s linear infinite;}
   color:var(--green-700); background:#fff; padding:1px 7px; border-radius:6px;
   box-shadow:0 1px 4px rgba(0,0,0,.1);
 }
+.pwd-wrap{position:relative;}
+.pwd-wrap input{padding-right:40px;}
+.login-card .field .pwd-wrap input{padding-right:44px;}
+.pwd-toggle{
+  position:absolute; right:4px; top:50%; transform:translateY(-50%);
+  background:transparent; border:none; width:34px; height:34px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:2;
+}
+.pwd-toggle svg{width:18px; height:18px; stroke:var(--ink-soft); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.pwd-toggle:active{opacity:.55;}
 
 /* ---------- 7. Aksesibilitas: hormati prefers-reduced-motion ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -2268,6 +2278,8 @@ const ICONS = {
   more:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
   logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>',
   close:'<path d="M18 6 6 18"/><path d="M6 6l12 12"/>',
+  eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  eyeoff:'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>',
   plus:'<path d="M12 5v14"/><path d="M5 12h14"/>',
   search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>',
   edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
@@ -2694,7 +2706,6 @@ if(!auth()){
     if(App.forceSetup && !isPublicSite()){ root.innerHTML = renderSetupOrLogin(); bindSetupOrLogin(); applyTheme(); return; }
     if(App.loginOpen){ root.innerHTML = renderLogin(); bindLogin(); applyTheme(); return; }
     const sess = sessionInfo();
-    if(sess && sess.role!=='tamu'){ root.innerHTML = renderLogin(); bindLogin(); applyTheme(); return; }
     if(!sess) sessionStorage.setItem('mda_session', JSON.stringify({role:'tamu'}));
   } else if(App.loginOpen){
     root.innerHTML = renderLogin(); bindLogin(); applyTheme(); return;
@@ -6262,8 +6273,8 @@ function renderSetupOrLogin(){
       <div class="login-title">Selamat Datang</div>
       <div class="login-sub">Buat akun admin untuk mulai menggunakan Absensi Digital Madrasah</div>
       <div class="field"><label>Nama Pengguna</label><input type="text" id="setupUser" placeholder="admin" autocomplete="username"></div>
-      <div class="field"><label>Kata Sandi</label><input type="password" id="setupPass" placeholder="Minimal 4 karakter" autocomplete="new-password"></div>
-      <div class="field"><label>Ulangi Kata Sandi</label><input type="password" id="setupPass2" placeholder="Ulangi kata sandi"></div>
+<div class="field"><label>Kata Sandi</label><div class="pwd-wrap"><input type="password" id="setupPass" placeholder="Minimal 4 karakter" autocomplete="new-password"><button type="button" class="pwd-toggle" id="setupPassToggle" aria-label="Tampilkan kata sandi">${icon('eye')}</button></div></div>
+      <div class="field"><label>Ulangi Kata Sandi</label><div class="pwd-wrap"><input type="password" id="setupPass2" placeholder="Ulangi kata sandi" autocomplete="new-password"><button type="button" class="pwd-toggle" id="setupPass2Toggle" aria-label="Tampilkan kata sandi">${icon('eye')}</button></div></div>
       <button class="btn btn-primary btn-block" id="setupBtn" style="margin-top:6px;">Buat Akun &amp; Mulai</button>
       <p style="font-size:11px; color:var(--ink-soft); text-align:center; margin-top:14px;">Data tersimpan hanya di perangkat/browser ini.</p>
     </div>
@@ -6278,10 +6289,21 @@ function bindSetupOrLogin(){
     const pass2 = document.getElementById('setupPass2').value;
     if(pass.length<4){ showToast('Kata sandi minimal 4 karakter.', 'error'); return; }
     if(pass!==pass2){ showToast('Konfirmasi kata sandi tidak cocok.', 'error'); return; }
-    const passHash = await sha256(pass);
+const passHash = await sha256(pass);
     Store.set('auth', {username:user, passHash}, true);
     sessionStorage.setItem('mda_session', JSON.stringify({role:'admin'}));
     render();
+  });
+  [['setupPass','setupPassToggle'],['setupPass2','setupPass2Toggle']].forEach(([inpId, btnId])=>{
+    const toggle = document.getElementById(btnId);
+    if(toggle) toggle.addEventListener('click', ()=>{
+      const inp = document.getElementById(inpId);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      toggle.setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+      toggle.innerHTML = icon(show ? 'eyeoff' : 'eye');
+      inp.focus();
+    });
   });
 }
 function renderLogin(){
@@ -6302,7 +6324,7 @@ function renderLogin(){
       </div>
       ${mode==='guru' && !hasTeachers ? `<div class="alert" style="padding:9px 12px; font-size:12px;">${icon('alert')} Belum ada akun guru. Minta admin menambahkannya di menu Pengaturan → Akses Guru.</div>` : ''}
       <div class="field"><label>${mode==='guru'?'Nama Pengguna Guru':'Nama Pengguna'}</label><input type="text" id="loginUser" value="${escapeHtml(mode==='admin'?(a?.username||''):'')}" autocomplete="username"></div>
-      <div class="field"><label>Kata Sandi</label><input type="password" id="loginPass" autocomplete="current-password"></div>
+      <div class="field"><label>Kata Sandi</label><div class="pwd-wrap"><input type="password" id="loginPass" placeholder=" " autocomplete="current-password"><button type="button" class="pwd-toggle" id="loginPassToggle" aria-label="Tampilkan kata sandi">${icon('eye')}</button></div></div>
       <div id="loginError" role="alert" style="color:var(--status-a); font-size:12.5px; margin-bottom:8px; display:none;">Nama pengguna atau kata sandi salah.</div>
       <button class="btn btn-primary btn-block" id="loginBtn">${mode==='guru'?'Masuk sebagai Guru':'Masuk'}</button>
       ${!auth() && !isPublicSite() ? `<p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="goSetupBtn" style="color:var(--green-800); text-decoration:underline;">Belum punya akun admin? Buat akun di sini</button></p>` : ''}
@@ -6326,16 +6348,16 @@ const submit = async ()=>{
     const user = document.getElementById('loginUser').value.trim();
     const pass = document.getElementById('loginPass').value;
     const hash = await sha256(pass);
-    const errEl = document.getElementById('loginError');
-    const fail = ()=>{ errEl.style.display='block'; };
+const errEl = document.getElementById('loginError');
+    const fail = (msg)=>{ errEl.style.display='block'; if(msg) errEl.textContent = msg; };
     if(App.loginMode==='guru'){
       // Guru: coba backend dulu (JWT). 401 = kredensial salah; offline -> fallback lokal.
-      let rejected = false;
+      let rejected = false, serverMsg = '';
       try{
         const u = await apiLogin(user, pass);
         if(u.role!=='guru') rejected = true;
       }catch(e){
-        if(e.status && e.status !== 0 && e.status !== 404) rejected = true;
+        if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; serverMsg = (e && e.message) || ''; }
       }
       if(!rejected && apiAvailable()){
         sessionStorage.setItem('mda_session', JSON.stringify({role:'guru'}));
@@ -6351,17 +6373,17 @@ const submit = async ()=>{
         render();
         return;
       }
-      fail(); return;
+      fail(serverMsg || undefined); return;
     }
     // Admin: coba backend dulu (JWT). Bila server merespons 'tidak sah' (401)
     // berarti kredensial salah -> tampilkan error. Bila offline (status 0) ->
     // fallback ke akun admin lokal.
-    let rejected = false;
+    let rejected = false, serverMsg = '';
     try{
       const u = await apiLogin(user, pass);
       if(u.role!=='admin') rejected = true;
     }catch(e){
-      if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; }
+      if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; serverMsg = (e && e.message) || ''; }
     }
     if(!rejected && apiAvailable()){
       sessionStorage.setItem('mda_session', JSON.stringify({role:'admin'}));
@@ -6377,14 +6399,23 @@ const submit = async ()=>{
     const a = auth();
     if(a && a.username===user && a.passHash===hash){
       sessionStorage.setItem('mda_session', JSON.stringify({role:'admin'}));
-      App.loginOpen=false;
+App.loginOpen=false;
       render();
       return;
     }
-    fail();
+    fail(serverMsg || undefined);
   };
   btn.addEventListener('click', submit);
   document.getElementById('loginPass').addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+  const pwdToggle = document.getElementById('loginPassToggle');
+  if(pwdToggle) pwdToggle.addEventListener('click', ()=>{
+    const inp = document.getElementById('loginPass');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    pwdToggle.setAttribute('aria-label', show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+    pwdToggle.innerHTML = icon(show ? 'eyeoff' : 'eye');
+    inp.focus();
+  });
 }
 
 /* ---------------------------- Android "app-like" manifest ----------------------------
