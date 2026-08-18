@@ -18,8 +18,8 @@
 <meta property="og:description" content="Sistem presensi digital untuk madrasah diniyah: data santri, presensi harian, laporan, iuran, dan galeri — tersimpan rapi dan aman di cloud.">
 <meta property="og:url" content="https://absensi-mudah.vercel.app/">
 <meta property="og:image" content="https://absensi-mudah.vercel.app/thumbnail.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
 <meta property="og:image:alt" content="Absensi Digital Madrasah">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Absensi Digital Madrasah — Presensi Santri">
@@ -1490,6 +1490,9 @@ const GAL = {
   cloud: 'https://absensi-mudah.vercel.app',
   api(){ return (location.origin === this.cloud || location.hostname.indexOf('.vercel.app') !== -1) ? location.origin : this.cloud; }
 };
+/* Situs publik (hosting Vercel) hanya untuk lihat; login & kelola data
+   hanya dari server madrasah (jaringan lokal). */
+function isPublicSite(){ return location.hostname.indexOf('.vercel.app') !== -1; }
 async function galReq(path, opts={}){
   const headers = Object.assign({'Content-Type':'application/json'}, opts.headers||{});
   const t = API.token();
@@ -2687,8 +2690,8 @@ function render(){
   destroyAllCharts();
   if(!App.selfieOpen) stopSelfieCamera();
   if(!App.barcodeOpen) stopBarcodeCamera();
-  if(!auth()){
-    if(App.forceSetup){ root.innerHTML = renderSetupOrLogin(); bindSetupOrLogin(); applyTheme(); return; }
+if(!auth()){
+    if(App.forceSetup && !isPublicSite()){ root.innerHTML = renderSetupOrLogin(); bindSetupOrLogin(); applyTheme(); return; }
     if(App.loginOpen){ root.innerHTML = renderLogin(); bindLogin(); applyTheme(); return; }
     const sess = sessionInfo();
     if(sess && sess.role!=='tamu'){ root.innerHTML = renderLogin(); bindLogin(); applyTheme(); return; }
@@ -6281,7 +6284,8 @@ function renderLogin(){
     <div class="login-card">
       <div class="login-crescent">${logoOrMoon(34,'50%')}</div>
       <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-      <div class="login-title">${escapeHtml(profile().name||DEFAULT_PROFILE.name)}</div>
+<div class="login-title">${escapeHtml(profile().name||DEFAULT_PROFILE.name)}</div>
+      ${isPublicSite() ? `<div class="alert" style="margin:10px 0 0;">${icon('alert')} <div><b>Login tidak tersedia di situs publik.</b> Masuk sebagai Admin/Guru hanya bisa dari <b>server madrasah</b> (jaringan lokal) — buka alamat server madrasah di peramban HP/PC Anda, lalu login di sana. Situs ini hanya untuk melihat galeri &amp; informasi.</div></div>` : ''}
       <div class="login-sub">${mode==='guru' ? 'Masuk sebagai guru untuk mengisi absensi' : 'Masuk sebagai admin untuk mengelola absensi'}</div>
       <div class="tab-row">
         <button class="tab-btn ${mode==='admin'?'active':''}" data-login-mode="admin">Admin</button>
@@ -6292,7 +6296,7 @@ function renderLogin(){
       <div class="field"><label>Kata Sandi</label><input type="password" id="loginPass" autocomplete="current-password"></div>
       <div id="loginError" role="alert" style="color:var(--status-a); font-size:12.5px; margin-bottom:8px; display:none;">Nama pengguna atau kata sandi salah.</div>
       <button class="btn btn-primary btn-block" id="loginBtn">${mode==='guru'?'Masuk sebagai Guru':'Masuk'}</button>
-      ${!auth() ? `<p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="goSetupBtn" style="color:var(--green-800); text-decoration:underline;">Belum punya akun admin? Buat akun di sini</button></p>` : ''}
+      ${!auth() && !isPublicSite() ? `<p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="goSetupBtn" style="color:var(--green-800); text-decoration:underline;">Belum punya akun admin? Buat akun di sini</button></p>` : ''}
       <p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="guestBackBtn" style="color:var(--ink-soft);">← Kembali sebagai Tamu / Wali Santri</button></p>
       <p style="font-size:11px; color:var(--ink-soft); text-align:center; margin-top:14px;">Data tersimpan hanya di perangkat/browser ini.</p>
     </div>
@@ -6308,7 +6312,8 @@ function bindLogin(){
   document.querySelectorAll('[data-login-mode]').forEach(b=>{
     b.addEventListener('click', ()=>{ App.loginMode = b.getAttribute('data-login-mode'); render(); });
   });
-  const submit = async ()=>{
+const submit = async ()=>{
+    if(isPublicSite()){ showToast('Login hanya tersedia dari server madrasah (jaringan lokal).', 'warn'); return; }
     const user = document.getElementById('loginUser').value.trim();
     const pass = document.getElementById('loginPass').value;
     const hash = await sha256(pass);
