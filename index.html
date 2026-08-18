@@ -27,7 +27,9 @@
 <meta name="twitter:image" content="https://absensi-mudah.vercel.app/thumbnail.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <!--
   Content-Security-Policy (best-effort). Karena aplikasi ini single-file & bisa
   dibuka langsung dari file://, batasan di bawah menjaga agar skrip/lintas-origin
@@ -60,29 +62,32 @@
 <noscript><style>#root{display:none;} .nojs-warn{display:block;}</style></noscript>
 <style>
 :root{
-  --green-950:#062A1F;
-  --green-900:#08543C;
-  --green-800:#0B6B4F;
-  --green-700:#0F8362;
-  --green-100:#E4F2EA;
-  --green-50:#F3F9F5;
-  --gold-700:#A9821D;
-  --gold-600:#C9A227;
-  --gold-400:#E8C766;
-  --gold-100:#FBF1D6;
-  --cream:#FFFFFF;
+  /* Palet utama — Hijau Islam + Emas, krem ivory, tinta gelap */
+  --green-950:#10241B;
+  --green-900:#1B4332;
+  --green-800:#2D6A4F;
+  --green-700:#3E7D5F;
+  --green-100:#DCE8E0;
+  --green-50:#F0F5F1;
+  --gold-700:#A97F12;
+  --gold-600:#D4A017;
+  --gold-500:#C8971C;
+  --gold-400:#DFB84F;
+  --gold-100:#F9F1DC;
+  --cream:#F5F0E8;
   --paper:#FFFFFF;
-  --ink:#1C2B24;
-  --ink-soft:#5B6B62;
-  --line:#E4DFD0;
+  --ink:#1A1A1A;
+  --ink-soft:#5C5A52;
+  --line:#E5DFD1;
   --status-h:#1B8A5A;
-  --status-s:#D8930C;
-  --status-i:#2F6FD6;
+  --status-s:#2F6FD6;
+  --status-i:#D8930C;
   --status-a:#D14343;
   --radius:14px;
-  --shadow:0 2px 10px rgba(8,50,36,.08);
-  --font-display:'Amiri', 'Plus Jakarta Sans', serif;
-  --font-body:'Plus Jakarta Sans', -apple-system, sans-serif;
+  --shadow:0 2px 10px rgba(27,67,50,.08);
+  --font-display:'Playfair Display','Cinzel','Amiri',serif;
+  --font-body:'Inter','Noto Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:'JetBrains Mono','DM Mono',ui-monospace,Consolas,monospace;
 }
 [data-theme="teal"]{ --green-950:#052426; --green-900:#063B3E; --green-800:#0A5C5F; --green-700:#0E7377; --gold-700:#A9821D; --gold-600:#C9A227; --gold-400:#E8C766; }
 [data-theme="navy"]{ --green-950:#071B30; --green-900:#0B2A4A; --green-800:#123B66; --green-700:#1A4E82; --gold-700:#B8860B; --gold-600:#D4AF37; --gold-400:#E9CE7C; }
@@ -182,10 +187,17 @@ button, input, select, textarea, a, .chip, .swatch, .tab-btn, .status-btn, .abse
 /* ---------- Nav (mobile bottom / desktop side) — lingkaran 3D ---------- */
 .bottom-nav{
   position:sticky; bottom:0; z-index:40;
+  margin-top:auto;
   background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,246,238,.98));
   border-top:1px solid rgba(232,199,102,.45);
   display:flex; padding:8px 6px calc(8px + env(safe-area-inset-bottom));
   box-shadow:0 -6px 18px rgba(8,50,36,.10);
+}
+@media(max-width:899px){
+  /* Nav mobile ditempatkan SETELAH konten di dalam flex #app, sehingga
+     sticky bottom benar-benar menempel di bawah layar (bukan ikut ter-scroll). */
+  .bottom-nav{order:2;}
+  #app > div:nth-child(2){order:-1;}
 }
 .nav-btn{
   flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px;
@@ -273,8 +285,8 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .stat-box .num{font-size:26px; font-weight:800; line-height:1; position:relative; z-index:1;}
 .stat-box .lbl{font-size:11.5px; opacity:.9; margin-top:4px; font-weight:600; position:relative; z-index:1;}
 .stat-h{background:linear-gradient(135deg,#1B8A5A,#0F6E44);}
-.stat-s{background:linear-gradient(135deg,#E0A72D,#B77E12);}
-.stat-i{background:linear-gradient(135deg,#3B7DD8,#2657A8);}
+.stat-s{background:linear-gradient(135deg,#3B7DD8,#2657A8);}
+.stat-i{background:linear-gradient(135deg,#E0A72D,#B77E12);}
 .stat-a{background:linear-gradient(135deg,#D64545,#A72E2E);}
 
 .alert{display:flex; gap:10px; align-items:flex-start; background:var(--gold-100); border:1px solid var(--gold-400); color:#5C4400; border-radius:12px; padding:12px 14px; font-size:13px; margin-bottom:14px;}
@@ -746,6 +758,107 @@ svg.spin{animation:mda-spin 1s linear infinite;}
 }
 .pwd-toggle svg{width:18px; height:18px; stroke:var(--ink-soft); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 .pwd-toggle:active{opacity:.55;}
+
+/* =========================================================================
+   REDESIGN — fondasi visual baru (header sticky, hero, kartu kelas, ornament)
+   Semua nilai ditambahkan di atas sistem lama; tidak menghapus komponen lama.
+   ========================================================================= */
+
+/* ---------- Ornamen geometris Islam (bintang 8 / pattern) ---------- */
+.islamic-pattern{position:absolute; inset:0; pointer-events:none; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-width='1'%3E%3Cpath d='M32 4 L37 27 L60 32 L37 37 L32 60 L27 37 L4 32 L27 27 Z'/%3E%3Ccircle cx='32' cy='32' r='9'/%3E%3Cpath d='M0 32 H64 M32 0 V64'/%3E%3C/g%3E%3C/svg%3E"); background-size:64px 64px; opacity:.07;}
+.islamic-pattern.dark{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%231B4332' stroke-width='1'%3E%3Cpath d='M32 4 L37 27 L60 32 L37 37 L32 60 L27 37 L4 32 L27 27 Z'/%3E%3Ccircle cx='32' cy='32' r='9'/%3E%3Cpath d='M0 32 H64 M32 0 V64'/%3E%3C/g%3E%3C/svg%3E"); opacity:.06;}
+.star8-badge{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; flex-shrink:0;}
+.star8-badge svg{width:22px; height:22px; stroke:var(--gold-600); fill:none; stroke-width:1.4;}
+.islamic-divider{display:flex; align-items:center; gap:10px; margin:14px 0; color:var(--gold-600);}
+.islamic-divider::before, .islamic-divider::after{content:""; flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(212,160,23,.5));}
+.islamic-divider::after{background:linear-gradient(90deg, rgba(212,160,23,.5), transparent);}
+
+/* ---------- Header: sticky, blur, tipis, aksen emas ---------- */
+.app-header{
+  position:sticky; top:0; z-index:30;
+  background:rgba(245,240,232,.86);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  color:var(--ink);
+  padding:10px 16px 12px;
+  border-bottom:1px solid rgba(212,160,23,.22);
+  box-shadow:0 1px 0 rgba(27,67,50,.05);
+  overflow:hidden;
+  transition:box-shadow .25s ease, background .25s ease;
+}
+.app-header.is-scrolled{background:rgba(245,240,232,.94); box-shadow:0 4px 18px rgba(27,67,50,.12);}
+.app-header::before{content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:linear-gradient(90deg, transparent, var(--gold-600), var(--gold-400), var(--gold-600), transparent); opacity:.7;}
+.app-header::after{content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%231B4332' stroke-width='1'%3E%3Cpath d='M32 4 L37 27 L60 32 L37 37 L32 60 L27 37 L4 32 L27 27 Z'/%3E%3Ccircle cx='32' cy='32' r='9'/%3E%3Cpath d='M0 32 H64 M32 0 V64'/%3E%3C/g%3E%3C/svg%3E"); background-size:64px 64px; opacity:.05; pointer-events:none;}
+.hdr-row{display:flex; align-items:center; gap:12px; position:relative; z-index:1;}
+.hdr-brand{display:flex; align-items:center; gap:10px; min-width:0; flex:1;}
+.brand-name{font-family:var(--font-display); font-weight:800; font-size:15.5px; letter-spacing:.4px; color:var(--green-900); line-height:1.15; white-space:nowrap;}
+.brand-sub{display:block; font-size:10px; color:var(--ink-soft); letter-spacing:.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.hdr-madrasah{display:none; align-items:center; gap:8px; padding-left:12px; border-left:1px solid var(--line); min-width:0;}
+.hdr-right{display:flex; align-items:center; gap:8px; flex-shrink:0;}
+.hijri-chip{font-size:10.5px; font-weight:700; color:var(--gold-700); background:var(--gold-100); border:1px solid rgba(212,160,23,.35); padding:4px 10px; border-radius:16px; white-space:nowrap;}
+.hdr-sec{display:flex; align-items:center; gap:8px; margin-top:8px; position:relative; z-index:1;}
+@media(min-width:700px){
+  .hdr-madrasah{display:flex; flex:1 1 auto; justify-content:flex-start;}
+  .hdr-brand{flex:0 1 auto;}
+  .hdr-right{flex:0 0 auto;}
+  .hdr-sec{display:none;}
+}
+/* penyelarasan label lama di header terang */
+.app-header .madrasah-name{color:var(--green-900); font-family:var(--font-display); font-size:16px;}
+.app-header .madrasah-loc{color:var(--ink-soft); opacity:.9;}
+.app-header .header-top{padding:0;}
+.app-header .header-titles{text-align:left;}
+.app-header .header-hijri{text-align:left; margin:0; font-size:10.5px; color:var(--ink-soft); opacity:1;}
+.app-header .login-chip{display:inline-flex; align-items:center; gap:6px; margin:0; padding:6px 13px; border-radius:20px; background:linear-gradient(135deg, var(--gold-600), var(--gold-500)); border:1px solid rgba(169,127,18,.45); color:#2A1F05; font-weight:700; font-size:11.5px; box-shadow:0 2px 8px rgba(169,127,18,.3);}
+.app-header .login-chip svg{stroke:#2A1F05;}
+.app-header .role-badge{background:var(--gold-100); color:var(--gold-700); border-color:rgba(212,160,23,.4);}
+.app-header .bismillah{display:none;}
+
+/* ---------- Hero landing (tamu) ---------- */
+.hero{position:relative; overflow:hidden; border-radius:var(--radius); background:linear-gradient(150deg, var(--green-900) 0%, var(--green-800) 55%, var(--green-700) 100%); color:#fff; padding:24px 20px 20px; margin-bottom:16px; box-shadow:0 10px 26px rgba(27,67,50,.18);}
+.hero .islamic-pattern{opacity:.08;}
+.hero::after{content:""; position:absolute; right:-50px; top:-50px; width:190px; height:190px; border-radius:50%; background:radial-gradient(circle, rgba(223,184,79,.28), transparent 65%); pointer-events:none;}
+.hero-title{font-family:var(--font-display); font-size:27px; font-weight:800; line-height:1.1; margin:0 0 4px; position:relative; z-index:1;}
+.hero-sub{font-size:13.5px; font-weight:700; color:rgba(255,255,255,.9); margin:0 0 3px; position:relative; z-index:1;}
+.hero-desc{font-size:12px; color:rgba(255,255,255,.72); margin:0 0 16px; position:relative; z-index:1;}
+.hero-cta{display:flex; gap:10px; flex-wrap:wrap; position:relative; z-index:1;}
+.hero-btn{display:inline-flex; align-items:center; gap:8px; border:none; border-radius:11px; padding:11px 18px; font-weight:700; font-size:13.5px; transition:transform .12s ease, box-shadow .18s ease;}
+.hero-btn:active{transform:scale(.96);}
+.hero-btn svg{width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+.hero-btn-primary{background:linear-gradient(135deg, var(--gold-600), var(--gold-500)); color:#2A1F05; box-shadow:0 6px 16px rgba(0,0,0,.22);}
+.hero-btn-ghost{background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.35); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);}
+.hero-stats{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:18px; position:relative; z-index:1;}
+@media(min-width:700px){ .hero-stats{grid-template-columns:repeat(4,1fr);} }
+.hero-stat{background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:11px 12px; text-align:left;}
+.hero-stat .num{font-family:var(--font-mono); font-size:23px; font-weight:700; line-height:1; letter-spacing:-.5px;}
+.hero-stat .lbl{font-size:10.5px; color:rgba(255,255,255,.78); margin-top:4px; font-weight:600;}
+
+/* ---------- Kartu Kelas ---------- */
+.class-grid{display:grid; gap:12px; margin-bottom:14px;}
+@media(min-width:700px){ .class-grid{grid-template-columns:repeat(2,1fr);} }
+.class-card{position:relative; background:var(--paper); border:1px solid rgba(27,67,50,.08); border-radius:var(--radius); padding:15px 16px 14px; box-shadow:var(--shadow); transition:transform .18s ease, box-shadow .18s ease; display:flex; flex-direction:column; gap:10px; text-align:left; width:100%; overflow:hidden; cursor:pointer;}
+.class-card::before{content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--gold-600) 0%, rgba(212,160,23,.25) 60%, transparent);}
+.class-card:hover{transform:translateY(-4px); box-shadow:0 12px 26px rgba(27,67,50,.14);}
+.class-card:active{transform:translateY(-1px) scale(.995);}
+.cc-head{display:flex; align-items:center; gap:10px; min-width:0;}
+.cc-icon{width:42px; height:42px; border-radius:12px; background:var(--green-100); color:var(--green-800); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.cc-icon svg{width:20px; height:20px; stroke:var(--green-800); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.cc-txt{flex:1; min-width:0;}
+.cc-name{font-family:var(--font-display); font-weight:700; color:var(--green-900); font-size:16px; line-height:1.2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.cc-meta{font-size:11.5px; color:var(--ink-soft); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.cc-edit{flex-shrink:0;}
+.cc-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:6px;}
+.cc-stat{background:var(--green-50); border-radius:10px; padding:8px 3px; text-align:center; min-width:0;}
+.cc-stat .n{font-family:var(--font-mono); font-weight:700; font-size:15px; line-height:1; letter-spacing:-.3px;}
+.cc-stat .l{font-size:9px; color:var(--ink-soft); margin-top:3px; font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
+.cc-n-h{color:var(--status-h);} .cc-n-s{color:var(--status-s);} .cc-n-i{color:var(--status-i);} .cc-n-a{color:var(--status-a);}
+.cc-foot{display:flex; align-items:center; gap:10px;}
+.cc-bar{flex:1; height:7px; background:var(--green-50); border-radius:6px; overflow:hidden;}
+.cc-bar-fill{height:100%; background:linear-gradient(90deg, var(--status-h), #58B98A); border-radius:6px; transition:width .6s ease;}
+.cc-pct{font-family:var(--font-mono); font-size:12.5px; font-weight:700; color:var(--status-h); white-space:nowrap;}
+
+/* angka data memakai font mono */
+.stat-box .num{font-family:var(--font-mono); letter-spacing:-.5px;}
+.bcode-num{font-family:var(--font-mono);}
 
 /* ---------- 7. Aksesibilitas: hormati prefers-reduced-motion ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -2121,9 +2234,9 @@ function fmtHijri(iso){
 
 /* ---------------------------- Defaults ---------------------------- */
 const DEFAULT_STATUS = [
-  {key:'H', label:'Hadir', color:'#1B8A5A'},
-  {key:'S', label:'Sakit', color:'#D8930C'},
-  {key:'I', label:'Izin',  color:'#2F6FD6'},
+{key:'H', label:'Hadir', color:'#1B8A5A'},
+  {key:'S', label:'Sakit', color:'#2F6FD6'},
+  {key:'I', label:'Izin',  color:'#D8930C'},
   {key:'A', label:'Alpa',  color:'#D14343'},
 ];
 const DEFAULT_PROFILE = {
@@ -2741,19 +2854,27 @@ if(!auth()){
 function renderHeader(){
   const p = profile();
   const loc = [p.dusun,p.desa,p.kecamatan,p.kabupaten,p.provinsi].filter(Boolean).join(', ');
+  const madrasahHtml = `
+        <div class="header-titles">
+          <p class="madrasah-name">${escapeHtml(p.name || DEFAULT_PROFILE.name)}</p>
+          <p class="madrasah-loc">${loc ? escapeHtml(loc) : 'Lengkapi alamat di menu Pengaturan'}</p>
+        </div>`;
+  const sessHtml = isGuest()
+    ? `<button class="login-chip" data-nav="login">${icon('logout')} Masuk</button>`
+    : `<span class="role-badge">${roleLabel()}</span><span id="connDot" class="conn-dot" title="..."></span>`;
   return `
-  <header class="app-header">
-    <div class="header-top">
-      <div class="crescent-badge">${logoOrMoon(28,'50%')}</div>
-      <div class="header-titles">
-        <p class="madrasah-name">${escapeHtml(p.name || DEFAULT_PROFILE.name)}</p>
-        <p class="madrasah-loc">${loc ? escapeHtml(loc) : 'Lengkapi alamat di menu Pengaturan'}</p>
+  <header class="app-header" id="appHeader">
+    <div class="hdr-row">
+      <div class="crescent-badge">${logoOrMoon(30,'50%')}</div>
+      <div class="hdr-brand">
+        <span class="brand-name">ABSENSI MUDAH</span>
+        <span class="brand-sub">Sistem Absensi Digital untuk Madrasah</span>
       </div>
+      <div class="hdr-madrasah">${madrasahHtml}</div>
+      <div class="hdr-right"><span class="hijri-chip">${fmtHijri(todayISO())}</span>${sessHtml}</div>
     </div>
-    <div class="bismillah"><span class="bism-flank">✦</span> بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ <span class="bism-flank">✦</span></div>
-    <div class="header-sub">Absensi Digital Santri &middot; T.A. ${escapeHtml(p.academicYear||'')} ${escapeHtml(p.term||'')}<span class="role-badge">${roleLabel()}</span><span id="connDot" class="conn-dot" title="..."></span></div>
-    ${isGuest()?`<button class="login-chip" data-nav="login">${icon('logout')} Masuk sebagai Guru / Admin</button>`:''}
-    <div class="header-hijri">${fmtHijri(todayISO())} &middot; ${fmtDateID(todayISO())}</div>
+    <div class="hdr-sec">${madrasahHtml}</div>
+    <div class="islamic-pattern dark" aria-hidden="true"></div>
   </header>`;
 }
 function moonSvg(size){
@@ -2915,6 +3036,45 @@ function bindGlobal(){
   }
 bindFinConfirm();
   NavIndicator.sync();
+  bindHeroCounters();
+  bindHeaderScroll();
+}
+
+/* Animasi angka hero (counter ringan) — hanya saat kartu masuk viewport */
+function bindHeroCounters(){
+  const nums = document.querySelectorAll('.hero-stat .num[data-count]');
+  if(!nums.length) return;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const animate = (el)=>{
+    const target = parseInt(el.getAttribute('data-count'),10) || 0;
+    if(reduce || !('requestAnimationFrame' in window)){ el.textContent = String(target); return; }
+    const dur = 900, t0 = performance.now();
+    const tick = (t)=>{
+      const p = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(target * eased));
+      if(p < 1) requestAnimationFrame(tick); else el.textContent = String(target);
+    };
+    requestAnimationFrame(tick);
+  };
+  if(!('IntersectionObserver' in window)){ nums.forEach(animate); return; }
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ animate(en.target); io.unobserve(en.target); } });
+  }, { threshold:.3 });
+  nums.forEach(n=>io.observe(n));
+}
+/* Header: perkuat blur+shadow ketika halaman di-scroll */
+function bindHeaderScroll(){
+  const apply = ()=>{
+    const hdr = document.getElementById('appHeader');
+    if(hdr) hdr.classList.toggle('is-scrolled', (window.scrollY || document.documentElement.scrollTop || 0) > 4);
+  };
+  if(!window.__mdaScrollBound){
+    window.__mdaScrollBound = true;
+    window.addEventListener('scroll', apply, { passive:true });
+    window.addEventListener('resize', apply, { passive:true });
+  }
+  apply();
 }
 
 function renderView(){
@@ -3011,7 +3171,16 @@ function viewDashboard(){
     weekData.H.push(h); weekData.S.push(s); weekData.I.push(i2); weekData.A.push(a);
   });
 
-  const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active!==false).length : st.filter(s=>s.active!==false).length;
+const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active!==false).length : st.filter(s=>s.active!==false).length;
+
+  // Statistik untuk hero (tamu) — angka nyata dari data tersimpan
+  const heroStudents = st.filter(s=>s.active!==false).length;
+  const heroClasses = cls.length;
+  const heroTeachers = [...new Set(cls.map(c=>(c.teacher||'').trim()).filter(Boolean))].length;
+  const heroTodayRec = att[todayISO()] || {};
+  let heroMarked = 0, heroH = 0;
+  Object.values(heroTodayRec).forEach(rec=>Object.values(rec).forEach(v=>{ heroMarked++; if(v==='H') heroH++; }));
+  const heroPct = heroMarked ? Math.round(heroH/heroMarked*100) : 0;
 
   const syncApplied = sessionStorage.getItem('mda_syncApplied');
   if(syncApplied) sessionStorage.removeItem('mda_syncApplied');
@@ -3021,6 +3190,23 @@ function viewDashboard(){
   <div class="alert" style="background:var(--green-50); border-color:var(--green-700); color:var(--green-900);">
     ${icon('check')} <div><b>Data terbaru dari file diterapkan otomatis</b>Absensi, santri &amp; kelas sudah diperbarui sesuai file yang dibuka. Tidak perlu impor manual.</div>
   </div>` : ''}
+  ${isGuest() ? `
+  <section class="hero" aria-label="Selamat datang di Absensi Mudah">
+    <div class="islamic-pattern" aria-hidden="true"></div>
+    <h1 class="hero-title">Absensi Mudah</h1>
+    <p class="hero-sub">Sistem Kehadiran Digital untuk Madrasah</p>
+    <p class="hero-desc">Rekap Cepat &middot; Data Akurat &middot; Aman &amp; Terpercaya</p>
+    <div class="hero-cta">
+      <button class="hero-btn hero-btn-primary" data-nav="login">${icon('input')} Mulai Absensi</button>
+      <button class="hero-btn hero-btn-ghost" data-nav="poto">${icon('play')} Lihat Demo</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" data-count="${heroStudents}">0</div><div class="lbl">Total Santri</div></div>
+      <div class="hero-stat"><div class="num" data-count="${heroClasses}">0</div><div class="lbl">Kelas Aktif</div></div>
+      <div class="hero-stat"><div class="num" data-count="${heroPct}">0</div><div class="lbl">Kehadiran (%)</div></div>
+      <div class="hero-stat"><div class="num" data-count="${heroTeachers}">0</div><div class="lbl">Ustadz/Guru</div></div>
+    </div>
+  </section>` : ''}
   <h1 class="page-title">Assalamu'alaikum 👋</h1>
 <p class="page-sub">${fmtDateID(selDate)} &middot; <span style="color:var(--gold-700); font-weight:700;">${fmtHijri(selDate)}</span></p>
 
@@ -3179,8 +3365,8 @@ const dateEl = document.getElementById('dashDate');
     type:'bar',
     data:{ labels:dayLabels, datasets:[
       {label:'Hadir', data:weekData.H, backgroundColor:'#1B8A5A', borderRadius:4},
-      {label:'Sakit', data:weekData.S, backgroundColor:'#D8930C', borderRadius:4},
-      {label:'Izin', data:weekData.I, backgroundColor:'#2F6FD6', borderRadius:4},
+{label:'Sakit', data:weekData.S, backgroundColor:'#2F6FD6', borderRadius:4},
+      {label:'Izin', data:weekData.I, backgroundColor:'#D8930C', borderRadius:4},
       {label:'Alpa', data:weekData.A, backgroundColor:'#D14343', borderRadius:4},
     ]},
     options:{ responsive:true, maintainAspectRatio:false,
@@ -4908,6 +5094,9 @@ applyStudentSearchFilter();
 function viewClasses(){
   const cls = classes();
   const st = students();
+  const att = attendance();
+  const today = todayISO();
+  const todayRec = att[today] || {};
   return `
   <div style="display:flex; justify-content:space-between; align-items:center;">
     <h1 class="page-title">Kelas</h1>
@@ -4915,18 +5104,38 @@ function viewClasses(){
   </div>
   <p class="page-sub">Kelola tingkatan/kelas madrasah</p>
 
-  <div class="card">
-    ${cls.length===0 ? `<div class="empty">${icon('classes')}<b>Belum ada kelas</b>Tambahkan kelas pertama, misalnya "Kelas 1".</div>` :
-    cls.map(c=>{
+  ${cls.length===0 ? `<div class="card"><div class="empty">${icon('classes')}<b>Belum ada kelas</b>Tambahkan kelas pertama, misalnya "Kelas 1".</div></div>` :
+  `<div class="class-grid">
+    ${cls.map(c=>{
       const count = st.filter(s=>s.classId===c.id && s.active!==false).length;
+      const rec = todayRec[c.id] || {};
+      let h=0,s=0,i=0,a=0;
+      st.filter(x=>x.classId===c.id && x.active!==false).forEach(x=>{ const v=rec[x.id]; if(v==='H')h++; else if(v==='S')s++; else if(v==='I')i++; else if(v==='A')a++; });
+      const marked = h+s+i+a;
+      const pct = marked ? Math.round(h/marked*100) : 0;
       return `
-      <div class="list-row">
-        <div class="avatar" style="background:var(--gold-100); color:var(--gold-700);">${icon('classes')}</div>
-        <div class="list-main"><div class="t1">${escapeHtml(c.name)}</div><div class="t2">${count} santri${c.teacher?(' &middot; Guru: '+escapeHtml(c.teacher)):''}</div></div>
-        <button class="icon-btn" data-edit-class="${c.id}" aria-label="Edit kelas ${escapeHtml(c.name)}">${icon('edit')}</button>
+      <div class="class-card" data-edit-class="${c.id}" aria-label="Edit kelas ${escapeHtml(c.name)}">
+        <div class="cc-head">
+          <div class="cc-icon">${icon('classes')}</div>
+          <div class="cc-txt">
+            <div class="cc-name">${escapeHtml(c.name)}</div>
+            <div class="cc-meta">${c.teacher?('Ustadz: '+escapeHtml(c.teacher)+' &middot; '):''}${count} santri</div>
+          </div>
+          <span class="cc-edit icon-btn" aria-hidden="true">${icon('edit')}</span>
+        </div>
+        <div class="cc-stats">
+          <div class="cc-stat"><div class="n cc-n-h">${h}</div><div class="l">Hadir</div></div>
+          <div class="cc-stat"><div class="n cc-n-s">${s}</div><div class="l">Sakit</div></div>
+          <div class="cc-stat"><div class="n cc-n-i">${i}</div><div class="l">Izin</div></div>
+          <div class="cc-stat"><div class="n cc-n-a">${a}</div><div class="l">Alpha</div></div>
+        </div>
+        <div class="cc-foot">
+          <div class="cc-bar"><div class="cc-bar-fill" style="width:${pct}%"></div></div>
+          <span class="cc-pct">${pct}% Hadir</span>
+        </div>
       </div>`;
     }).join('')}
-  </div>
+  </div>`}
   ${App.editingClassId!==null ? renderClassModal() : ''}
   `;
 }
