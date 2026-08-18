@@ -11,6 +11,10 @@
 <meta name="apple-mobile-web-app-title" content="Absensi Madrasah">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B6B4F'/%3E%3Ccircle cx='57' cy='44' r='25' fill='%23E8C766'/%3E%3Ccircle cx='46' cy='39' r='23' fill='%230B6B4F'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B6B4F'/%3E%3Ccircle cx='57' cy='44' r='25' fill='%23E8C766'/%3E%3Ccircle cx='46' cy='39' r='23' fill='%230B6B4F'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
 <!-- Open Graph / thumbnail saat link dibagikan -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Absensi Digital Madrasah">
@@ -95,6 +99,33 @@
 [data-theme="purple"]{ --green-950:#1F1035; --green-900:#331A57; --green-800:#4A2680; --green-700:#5E33A0; --gold-700:#A9821D; --gold-600:#C9A227; --gold-400:#E8C766; }
 [data-theme="brown"]{ --green-950:#2A1B0E; --green-900:#432C16; --green-800:#5F3F1F; --green-700:#7A5228; --gold-700:#A9821D; --gold-600:#C9A227; --gold-400:#E8C766; }
 [data-theme="slate"]{ --green-950:#151B23; --green-900:#232D3A; --green-800:#334155; --green-700:#475569; --gold-700:#A9821D; --gold-600:#C9A227; --gold-400:#E8C766; }
+/* ---------- Dark mode (identitas hijau-emas-ivory tetap terjaga) ---------- */
+[data-dark="1"]{
+  --cream:#0E1612;
+  --paper:#15201A;
+  --ink:#E9EEE9;
+  --ink-soft:#A3ADA5;
+  --line:#2B382F;
+  --green-50:#18251E;
+  --green-100:#22392E;
+  --gold-100:#2A2414;
+  --shadow:0 2px 12px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+[data-dark="1"] body{background:var(--cream);}
+[data-dark="1"] #bgLayer{
+  background-image:
+    radial-gradient(circle at 0% 0%, var(--green-100) 0%, transparent 55%),
+    radial-gradient(circle at 100% 0%, var(--gold-100) 0%, transparent 45%);
+}
+[data-dark="1"] .app-header{background:rgba(21,32,26,.88);}
+[data-dark="1"] .side-nav{background:linear-gradient(180deg,var(--green-950),#0A120E);}
+[data-dark="1"] .bottom-nav{background:rgba(21,32,26,.96);}
+[data-dark="1"] input,[data-dark="1"] select,[data-dark="1"] textarea{background:var(--green-50); color:var(--ink);}
+[data-dark="1"] .btn-outline{color:var(--ink);}
+[data-dark="1"] .login-card{background:var(--paper);}
+[data-dark="1"] .fin-sum,[data-dark="1"] .stat-box{background:var(--paper);}
+[data-dark="1"] .print-report th,[data-dark="1"] .print-report td{color:#111;} /* cetak selalu terang */
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
 body{
@@ -123,6 +154,8 @@ body{
 button{font-family:inherit; cursor:pointer; -webkit-user-select:none; user-select:none;}
 input,select,textarea{font-family:inherit; font-size:15px;}
 a{color:inherit;}
+:focus-visible{outline:2.5px solid var(--gold-600); outline-offset:2px; border-radius:6px;}
+.side-item:focus-visible,.nav-btn:focus-visible,.btn:focus-visible,.icon-btn:focus-visible,.tab-btn:focus-visible,.chip:focus-visible,.sheet-item:focus-visible,.side-menu-btn:focus-visible,.status-btn:focus-visible{outline:2.5px solid var(--gold-600); outline-offset:2px;}
 button, input, select, textarea, a, .chip, .swatch, .tab-btn, .status-btn, .absent-tile, .class-link-chip, .stat-grid.linkable, .sheet-item, .icon-btn{touch-action:manipulation;}
 ::selection{background:var(--gold-400); color:var(--green-950);}
 
@@ -571,7 +604,23 @@ svg.spin{animation:mda-spin 1s linear infinite;}
   #app{max-width:none !important; display:block !important; min-height:0 !important;}
   .bcode-sheet{grid-template-columns:repeat(4,1fr);}
   .bcode-card{border:1px solid #ccc; box-shadow:none; break-inside:avoid; page-break-inside:avoid;}
+  main:has(.print-report) > *:not(.print-report){display:none !important;}
+  .print-report{display:block !important; box-shadow:none !important;}
+  .print-report table{width:100%; border-collapse:collapse; font-size:11px;}
+  .print-report th,.print-report td{border:1px solid #333; padding:5px 7px; text-align:left; color:#111;}
+  .print-report thead th{background:#f2f2f2;}
+  .print-report .pr-tbl{text-align:center;}
 }
+.print-report{display:none;}
+.print-report .pr-hdr{display:flex; align-items:center; gap:12px; border-bottom:2.5px solid #0B6B4F; padding-bottom:10px; margin-bottom:12px;}
+.print-report .pr-logo{width:58px; height:58px; border-radius:50%; object-fit:cover; flex-shrink:0;}
+.print-report .pr-madrasah{flex:1; text-align:center;}
+.print-report .pr-madrasah h2{margin:0; font-size:17px; color:#0B6B4F; font-weight:800;}
+.print-report .pr-madrasah .pr-addr{font-size:10.5px; color:#444; margin-top:3px; line-height:1.5;}
+.print-report .pr-title{text-align:center; font-size:13.5px; font-weight:800; text-decoration:underline; margin:10px 0 4px; color:#111;}
+.print-report .pr-sub{text-align:center; font-size:11px; color:#333; margin-bottom:12px;}
+.print-report .pr-table-wrap{margin-bottom:12px;}
+.print-report .pr-foot{display:flex; justify-content:space-between; font-size:10.5px; color:#333; margin-top:26px;}
 
 /* ---------- Dashboard <-> Absensi link affordance ---------- */
 .stat-grid.linkable{cursor:pointer;}
@@ -997,6 +1046,26 @@ svg.spin{animation:mda-spin 1s linear infinite;}
 .conn-sync{ background:#F2C94C; box-shadow:0 0 6px rgba(242,201,76,.9); }
 .conn-off{ background:#F87171; box-shadow:0 0 6px rgba(248,113,113,.9); }
 @keyframes connPulse{ 0%,100%{opacity:1;} 50%{opacity:.45;} }
+.sync-badge{
+  display:inline-block; margin-left:8px; vertical-align:middle;
+  font-size:9.5px; font-weight:800; letter-spacing:.2px;
+  padding:2px 8px; border-radius:12px; color:#fff;
+}
+.sync-badge.sync-wait{ background:rgba(176,122,10,.95); }
+.sync-badge.sync-fail{ background:rgba(185,50,50,.95); }
+[hidden]{display:none !important;}
+.offline-banner{
+  position:fixed; top:0; left:0; right:0; z-index:3000;
+  background:linear-gradient(135deg,#7A2E2E,#A04545); color:#FFF7E6;
+  font-size:12.5px; font-weight:700; text-align:center;
+  padding:8px 12px 8px 34px; box-shadow:0 2px 10px rgba(0,0,0,.25);
+  transform:translateY(-100%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.offline-banner.show{ transform:translateY(0); }
+.offline-banner::before{
+  content:''; position:absolute; left:12px; top:50%; width:10px; height:10px;
+  margin-top:-5px; border-radius:50%; background:#F87171; box-shadow:0 0 8px rgba(248,113,113,.9);
+}
 
 .toast-undo{ background:rgba(11,107,79,.95); padding-right:8px; cursor:default; }
 .toast-undo-btn{
@@ -1649,12 +1718,31 @@ function updateConnIndicator(){
   const synced = online && (!apiAvailable() || Sync.online);
   dot.className = 'conn-dot ' + (synced ? 'conn-on' : (online ? 'conn-sync' : 'conn-off'));
   dot.title = synced ? 'Terhubung & tersinkron' : (online ? 'Online — sinkronisasi berjalan…' : 'Offline — data tetap tersimpan lokal');
+  try{ Sync.updateSyncBadge(); }catch(e){}
+}
+function updateOfflineBanner(){
+  let el = document.getElementById('offlineBanner');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'offlineBanner';
+    el.className = 'offline-banner';
+    el.setAttribute('role','alert');
+    el.textContent = 'Anda sedang offline — data tetap tersimpan lokal & akan tersinkron otomatis saat koneksi kembali.';
+    document.body.appendChild(el);
+  }
+  el.classList.toggle('show', !navigator.onLine);
+}
+function registerServiceWorker(){
+  if(!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
 }
 function bindConnEvents(){
   if(window.__connBound) return;
   window.__connBound = true;
-  window.addEventListener('online', ()=>{ updateConnIndicator(); try{ if(typeof Sync.pull === 'function') Sync.pull(); }catch(e){} });
-  window.addEventListener('offline', ()=>updateConnIndicator());
+  window.addEventListener('online', ()=>{ updateOfflineBanner(); updateConnIndicator(); try{ if(typeof Sync.pull === 'function') Sync.pull(); }catch(e){} try{ if(typeof Sync.flushQueue === 'function') Sync.flushQueue(); }catch(e){} });
+  window.addEventListener('offline', ()=>{ updateOfflineBanner(); updateConnIndicator(); });
 }
 
 /* ---------- 5b. Shortcut keyboard: Ctrl+F fokus pencarian, Esc tutup modal ---------- */
@@ -1770,17 +1858,18 @@ async function galReq(path, opts={}){
   return data;
 }
 
+const syncUnwrap = r => (r && typeof r==='object' && !Array.isArray(r) && Array.isArray(r.data)) ? r.data : (r||[]);
 const Sync = {
   _q: 0,
   online: false,
   async ids(){
-    const [cls, sts] = await Promise.all([
+const [cls, sts] = await Promise.all([
       API.req('/api/classes').catch(()=>[]),
       API.req('/api/students').catch(()=>[]),
     ]);
     const byName={}, byNis={};
-    (cls||[]).forEach(c=>byName[String(c.name).toLowerCase()]=c.id);
-    (sts||[]).forEach(s=>byNis[String(s.nis).toLowerCase()]=s.id);
+    (syncUnwrap(cls)||[]).forEach(c=>byName[String(c.name).toLowerCase()]=c.id);
+    (syncUnwrap(sts)||[]).forEach(s=>byNis[String(s.nis).toLowerCase()]=s.id);
     return {byName, byNis};
   },
   async pushAll(){
@@ -1829,10 +1918,10 @@ const Sync = {
       // Mirror penuh (hapus lalu unggah ulang) agar server selalu sama dengan
       // kondisi lokal; hanya berjalan bila ada catatan lokal (hindari wipe
       // bila perangkat reset).
-      const fin = finance()||[];
+const fin = finance()||[];
       if(fin.length){
         let serverPays = [];
-        try{ serverPays = await API.req('/api/payments')||[]; }catch(e){ serverPays=[]; }
+        try{ serverPays = syncUnwrap(await API.req('/api/payments'))||[]; }catch(e){ serverPays=[]; }
         for(const sp of serverPays){ try{ await API.req('/api/payments/'+sp.id,{method:'DELETE'}); }catch(e){} }
         for(const f of fin){
           const s = sts.find(x=>x.id===f.studentId);
@@ -1870,11 +1959,12 @@ const Sync = {
   async pull(){
     if(!apiAvailable()) return;
     try{
-      const [prof, cls, sts] = await Promise.all([
+const [prof, cls, sts] = await Promise.all([
         API.req('/api/profile').catch(()=>null),
         API.req('/api/classes').catch(()=>[]),
         API.req('/api/students').catch(()=>[]),
       ]);
+      const clsArr = syncUnwrap(cls); const stsArr = syncUnwrap(sts);
       if(prof && (prof.name || prof.logo || prof.motto || prof.bg_color)){
         const p = profile();
         Store.set('profile', {...p,
@@ -1884,19 +1974,19 @@ const Sync = {
           phone: prof.phone||p.phone, motto: prof.motto||p.motto,
           bgColor: prof.bg_color||p.bgColor, bgImage: prof.bg_image||p.bgImage}, true);
       }
-      if((cls||[]).length){
+if((clsArr||[]).length){
         const local = classes();
         const names = new Set(local.map(c=>String(c.name).toLowerCase()));
         const merged = local.slice();
-        for(const c of cls) if(!names.has(String(c.name).toLowerCase())) merged.push({id:uid(), name:c.name});
+        for(const c of clsArr) if(!names.has(String(c.name).toLowerCase())) merged.push({id:uid(), name:c.name});
         Store.set('classes', merged, true);
       }
-      if((sts||[]).length){
+      if((stsArr||[]).length){
         const local = students();
         const nises = new Set(local.map(s=>String(s.nis).toLowerCase()));
         const clsMap = {}; classes().forEach(c=>clsMap[String(c.name).toLowerCase()]=c.id);
         const merged = local.slice();
-        for(const s of sts) if(!nises.has(String(s.nis).toLowerCase()))
+        for(const s of stsArr) if(!nises.has(String(s.nis).toLowerCase()))
           merged.push({id:uid(), nis:s.nis, name:s.name, gender:s.gender||'L',
             classId: s.class_name ? (clsMap[String(s.class_name).toLowerCase()]||null) : null,
             photo: s.photo||null});
@@ -1908,6 +1998,69 @@ Store.set('students', merged, true);
     }catch(e){ this.online=false; }
   }
 };
+
+/* ---------------------------- Antrian Sinkronisasi Offline ----------------------------
+   Input absensi saat offline → masuk antrian berstatus Pending. Saat kembali online /
+   terhubung server, antrian dikirim SATU PER SATU dengan header X-Idempotency-Key
+   (anti-duplikat: retry dengan kunci sama tidak menulis dua kali). Status item:
+   Pending → Synced (berhasil) atau Failed (gagal, akan dicoba lagi). */
+function syncQueue(){ return Store.get('syncQueue', []); }
+function syncQueueSave(q){ Store.set('syncQueue', q, true); }
+Sync.pending = 0; Sync.failed = 0;
+Sync.enqueueAttendance = function(date, studentId, status){
+  if(!date || !studentId) return;
+  const q = syncQueue();
+  const key = 'att:'+date+':'+studentId;
+  const found = q.find(o=>o.key===key);
+  if(found){ found.status = status; found.state = 'pending'; found.error = ''; found.attempts = (found.attempts||0)+1; }
+  else q.push({ key, date, studentId, status, state:'pending', attempts:1, addedAt:Date.now() });
+  syncQueueSave(q.slice(-300));
+  this.updateSyncBadge();
+  this.flushSoon();
+}
+Sync.flushSoon = function(){
+  if(this._fq) clearTimeout(this._fq);
+  this._fq = setTimeout(()=>{ this._fq = 0; this.flushQueue(); }, 1500);
+}
+Sync.flushQueue = async function(){
+  if(!apiAvailable()){ this.updateSyncBadge(); return; }
+  const q = syncQueue();
+  const pending = q.filter(o=>o.state==='pending');
+  if(!pending.length){ this.updateSyncBadge(); return; }
+  const sts = students();
+  let byNis = {};
+  try{ byNis = (await this.ids()).byNis; }catch(e){}
+  let changed = false;
+  for(const op of pending){
+    if(op.status == null){ op.state='synced'; op.syncedAt=Date.now(); changed=true; continue; }
+    const local = sts.find(s=>s.id===op.studentId);
+    const sid = local ? byNis[String(local.nis).toLowerCase()] : (Number(op.studentId) ? Number(op.studentId) : byNis[String(op.studentId).toLowerCase()]);
+    if(!sid){ op.state='failed'; op.error='santri belum tersinkron'; op.attempts=(op.attempts||0)+1; changed=true; continue; }
+    try{
+      await API.req('/api/attendance',{method:'PUT',headers:{'X-Idempotency-Key':op.key},body:JSON.stringify({student_id:sid, date:op.date, status:op.status})});
+      op.state='synced'; op.syncedAt=Date.now(); op.error=''; changed=true;
+    }catch(e){
+      op.state='failed'; op.error=(e&&e.message)||'gagal'; op.attempts=(op.attempts||0)+1; changed=true;
+    }
+  }
+  if(changed) syncQueueSave(q);
+  this.online = true;
+  this.updateSyncBadge();
+  if(q.some(o=>o.state==='pending') || q.some(o=>o.state==='failed')){ this.flushSoon(); }
+}
+Sync.updateSyncBadge = function(){
+  const q = syncQueue();
+  this.pending = q.filter(o=>o.state==='pending').length;
+  this.failed = q.filter(o=>o.state==='failed').length;
+  const badge = document.getElementById('syncBadge');
+  if(badge){
+    const total = this.pending + this.failed;
+    badge.hidden = total===0;
+    badge.textContent = this.failed ? (this.failed+' gagal') : (this.pending+' menunggu');
+    badge.className = 'sync-badge ' + (this.failed ? 'sync-fail' : 'sync-wait');
+    badge.title = this.failed ? (this.failed+' item gagal, '+this.pending+' menunggu — buka Pengaturan → Sinkronisasi untuk detail') : (this.pending+' absensi menunggu dikirim ke server');
+  }
+}
 
 /* ---------------------------- Sinkronisasi Cloud (Supabase) ----------------------------
    "Mode Cloud": salin data (santri, foto, absensi, dsb.) ke proyek Supabase gratis agar
@@ -2390,7 +2543,7 @@ const DEFAULT_PROFILE = {
   academicYear: (new Date().getFullYear())+'/'+(new Date().getFullYear()+1),
   term:'Ganjil'
 };
-const DEFAULT_SETTINGS = { theme:'green', bgColor:'', bgImage:'', prayer:{ city:'jakarta', lat:'', lng:'', method:'kemenag' } };
+const DEFAULT_SETTINGS = { theme:'green', bgColor:'', bgImage:'', darkMode:false, prayer:{ city:'jakarta', lat:'', lng:'', method:'kemenag' } };
 
 /* ---------------------------- App State ---------------------------- */
 const App = {
@@ -2480,18 +2633,24 @@ function sessionInfo(){
 }
 function isTeacher(){ const s = sessionInfo(); return !!(s && s.role==='guru'); }
 function isAdmin(){ const s = sessionInfo(); return !!(s && s.role==='admin'); }
+function isKepala(){ const s = sessionInfo(); return !!(s && s.role==='kepala'); }
 function isGuest(){ const s = sessionInfo(); return !!(s && s.role==='tamu'); }
-function roleLabel(){ return isTeacher() ? 'Guru' : (isGuest() ? 'Tamu / Wali Santri' : 'Admin'); }
+function guruClassIds(){ const s = sessionInfo(); return (s && s.role==='guru' && Array.isArray(s.classIds) && s.classIds.length) ? s.classIds : null; }
+function roleLabel(){ return isTeacher() ? 'Guru / Ustadz' : (isKepala() ? 'Kepala Madrasah' : (isGuest() ? 'Tamu / Wali Santri' : 'Admin')); }
 function allowedView(v){
   if(isTeacher()) return ['dashboard','input','recap','share','finance','poto','barcodes'].includes(v) ? v : 'dashboard';
+  if(isKepala()) return ['dashboard','recap','share','finance','poto','auditlog'].includes(v) ? v : 'dashboard';
   if(isGuest()) return ['dashboard','poto','recap','finance','share'].includes(v) ? v : 'dashboard';
   return v; // admin: everything
 }
 function canManageFinance(){ return isAdmin() || isTeacher(); }
+function canEditStudents(){ return isAdmin(); }
 
 function applyTheme(){
   const t = appSettings().theme || 'green';
+  const s = appSettings();
   document.documentElement.setAttribute('data-theme', t==='green' ? '' : t);
+  document.documentElement.setAttribute('data-dark', s.darkMode ? '1' : '');
   applyBackground();
 }
 function applyBackground(){
@@ -3054,7 +3213,7 @@ function renderHeader(){
         </div>`;
   const sessHtml = isGuest()
     ? `<button class="login-chip" data-nav="login">${icon('logout')} Masuk</button>`
-    : `<span class="role-badge">${roleLabel()}</span><span id="connDot" class="conn-dot" title="..."></span>`;
+    : `<span class="role-badge">${roleLabel()}</span><span id="connDot" class="conn-dot" title="..."></span><span id="syncBadge" class="sync-badge" hidden></span>`;
   return `
   <header class="app-header" id="appHeader">
     <div class="hdr-row">
@@ -3099,23 +3258,24 @@ const NAV_MENUS = [
       { id:'students', label:'Absensi Per Santri', icon:'students', roles:['admin'] },
       { id:'recap', label:'Rekap Mingguan', icon:'recap', roles:['admin','guru'] },
     ]},
-  { id:'laporan', label:'LAPORAN', icon:'recap', roles:['admin','guru','guest'],
+  { id:'laporan', label:'LAPORAN', icon:'recap', roles:['admin','kepala','guru','guest'],
     items:[
-      { id:'recap', label:'Rekap Semua Kelas', icon:'recap', roles:['admin','guru','guest'] },
-      { id:'exportPdf', label:'Export PDF', icon:'download', roles:['admin','guru'], action:'printRecap' },
-      { id:'exportExcel', label:'Export Excel', icon:'list', roles:['admin','guru'], action:'exportExcel' },
-      { id:'chart', label:'Grafik Kehadiran', icon:'recap', roles:['admin','guru'], view:'dashboard', focus:'weekChartCard' },
-      { id:'history', label:'Riwayat Absensi', icon:'clock', roles:['admin','guru'], view:'recap', focus:'recapTableCard' },
-      { id:'finance', label:'Keuangan', icon:'wallet', roles:['admin','guru','guest'] },
-      { id:'share', label:'Bagikan JPG', icon:'share', roles:['admin','guru','guest'] },
+      { id:'recap', label:'Rekap Semua Kelas', icon:'recap', roles:['admin','kepala','guru','guest'] },
+      { id:'exportPdf', label:'Export PDF', icon:'download', roles:['admin','kepala','guru'], action:'printRecap' },
+      { id:'exportExcel', label:'Export Excel', icon:'list', roles:['admin','kepala','guru'], action:'exportExcel' },
+      { id:'chart', label:'Grafik Kehadiran', icon:'recap', roles:['admin','kepala','guru'], view:'dashboard', focus:'weekChartCard' },
+      { id:'history', label:'Riwayat Absensi', icon:'clock', roles:['admin','kepala','guru'], view:'recap', focus:'recapTableCard' },
+      { id:'finance', label:'Keuangan', icon:'wallet', roles:['admin','kepala','guru','guest'] },
+      { id:'share', label:'Bagikan JPG', icon:'share', roles:['admin','kepala','guru','guest'] },
     ]},
-  { id:'pengaturan', label:'PENGATURAN', icon:'settings', roles:['admin'],
+  { id:'pengaturan', label:'PENGATURAN', icon:'settings', roles:['admin','kepala'],
     items:[
       { id:'students', label:'Data Santri', icon:'students', roles:['admin'] },
       { id:'classes', label:'Data Kelas', icon:'classes', roles:['admin'] },
       { id:'teachers', label:'Data Ustadz/Guru', icon:'users2', roles:['admin'], view:'settings', focus:'setTeachers' },
       { id:'profil', label:'Profil Madrasah', icon:'settings', roles:['admin'], view:'settings', focus:'setProfile' },
       { id:'account', label:'Manajemen Akun', icon:'settings', roles:['admin'], view:'settings', focus:'setAccount' },
+      { id:'auditlog', label:'Log Aktivitas', icon:'clock', roles:['admin','kepala'], view:'auditlog' },
     ]},
 ];
 const GUEST_NAV_MENUS = [
@@ -3128,11 +3288,11 @@ const GUEST_NAV_MENUS = [
     { id:'login', label:'Masuk sebagai Guru / Admin', icon:'logout' },
   ]},
 ];
-const VIEW_MENU_MAP = { input:'absensi', barcodes:'absensi', classes:'absensi', recap:'laporan', finance:'laporan', share:'laporan', students:'pengaturan', settings:'pengaturan' };
+const VIEW_MENU_MAP = { input:'absensi', barcodes:'absensi', classes:'absensi', recap:'laporan', finance:'laporan', share:'laporan', students:'pengaturan', settings:'pengaturan', auditlog:'pengaturan' };
 
 function menusForRole(){
   if(isGuest()) return null;
-  const role = isTeacher() ? 'guru' : 'admin';
+  const role = isTeacher() ? 'guru' : (isKepala() ? 'kepala' : 'admin');
   return NAV_MENUS
     .filter(m=>m.roles.includes(role))
     .map(m=>({ id:m.id, label:m.label, icon:m.icon, items:m.items.filter(it=>it.roles.includes(role)) }))
@@ -3175,7 +3335,8 @@ function renderNav(){
 
   const collapsed = !!App.sideCollapsed;
   const openMenus = App.openMenus || ['absensi'];
-  const cls = classes();
+  const gids = guruClassIds();
+  const cls = gids ? classes().filter(c=>gids.includes(c.id)) : classes();
   const quick = cls.slice(0, 12);
   const sideMenuHtml = menus.map(m=>{
     const open = openMenus.includes(m.id);
@@ -3205,7 +3366,7 @@ function renderNav(){
       </div>
       <div class="side-grow"></div>
       <div class="side-foot">
-        <button class="side-item" data-nav="settings" data-nav-focus="setProfile">${icon('settings')}<span>Profil</span></button>
+        <button class="side-item" data-nav="${isKepala()?'auditlog':'settings'}" ${isKepala()?'':'data-nav-focus="setProfile"'}>${icon('settings')}<span>${isKepala()?'Log Aktivitas':'Profil'}</span></button>
         <button class="side-item" data-nav="logout">${icon('logout')}<span>Keluar</span></button>
         <button class="side-collapse" data-side-collapse title="${collapsed?'Perluas sidebar':'Persempit sidebar'}">${icon('chevron')}</button>
       </div>
@@ -3229,7 +3390,7 @@ function renderSheet(){
       ${menu.items.map(it=>sheetItemHTML(it, activeItemIn(menu)===it.id)).join('')}
       ${guest ? '' : `
       <div style="height:1px;background:var(--line);margin:6px 0;"></div>
-      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;" data-nav="settings" data-nav-focus="setProfile">${icon('settings')}<span>Profil</span></button>
+      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;" data-nav="${isKepala()?'auditlog':'settings'}" ${isKepala()?'':'data-nav-focus="setProfile"'}>${icon('settings')}<span>${isKepala()?'Log Aktivitas':'Profil'}</span></button>
       <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;color:var(--status-a);" data-nav="logout">${icon('logout')}<span>Keluar</span></button>`}
     </div>
   </div>`;
@@ -3237,6 +3398,8 @@ function renderSheet(){
 
 function bindGlobal(){
   updateConnIndicator();
+  updateOfflineBanner();
+  registerServiceWorker();
   bindConnEvents();
   bindShortcuts();
   document.querySelectorAll('[data-menu]').forEach(el=>{
@@ -3264,7 +3427,7 @@ function bindGlobal(){
       const a = el.getAttribute('data-nav-action');
       App.sheetOpen = false;
       if(a==='printRecap'){ App.view='recap'; render(); setTimeout(()=>{ if(App.view==='recap') window.print(); }, 450); return; }
-      if(a==='exportExcel'){ render(); exportRecapCSV(); return; }
+      if(a==='exportExcel'){ render(); exportRecapXLS(); return; }
       showToast('Aksi tidak tersedia.', 'warn');
     });
   });
@@ -3351,9 +3514,10 @@ function renderView(){
     case 'recap': return viewRecap();
     case 'students': return viewStudents();
     case 'classes': return viewClasses();
-    case 'share': return viewShare();
+case 'share': return viewShare();
     case 'finance': return viewFinance();
     case 'settings': return viewSettings();
+    case 'auditlog': return viewAuditlog();
     case 'barcodes': return viewBarcodes();
     case 'poto': return viewPotoVideo();
     default: return viewDashboard();
@@ -3366,9 +3530,10 @@ function bindView(){
     case 'recap': return bindRecap();
     case 'students': return bindStudents();
     case 'classes': return bindClasses();
-    case 'share': return bindShare();
+case 'share': return bindShare();
     case 'finance': return bindFinance();
     case 'settings': return bindSettings();
+    case 'auditlog': return bindAuditlog();
     case 'barcodes': return bindBarcodes();
     case 'poto': return bindPotoVideo();
   }
@@ -3496,12 +3661,17 @@ const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active
     {id:'recap',  label:'Rekap',           sub:'Mingguan/bulanan', icon:'recap'},
     {id:'barcodes', label:'Barcode',       sub:'Scan santri', icon:'qrcode'},
     {id:'poto',   label:'Poto & Video',    sub:'Galeri kegiatan', icon:'photo'},
+  ] : (isKepala() ? [
+    {id:'recap',  label:'Rekap Absensi',   sub:'Mingguan/bulanan', icon:'recap'},
+    {id:'finance', label:'Keuangan',       sub:'Status pembayaran', icon:'wallet'},
+    {id:'poto',   label:'Poto & Video',    sub:'Galeri kegiatan', icon:'photo'},
+    {id:'share',  label:'Bagikan JPG',     sub:'Rekap sebagai gambar', icon:'share'},
   ] : [
     {id:'input',  label:'Input Absensi',   sub:'Absen harian', icon:'input'},
     {id:'recap',  label:'Rekap Absensi',   sub:'Mingguan/bulanan', icon:'recap'},
     {id:'students', label:'Data Santri',   sub:'Tambah/edit', icon:'users2'},
     {id:'classes',  label:'Data Kelas',    sub:'Atur kelas', icon:'classes'},
-  ]);
+  ]));
   const trendArrow = hadirTrend===0 ? '' : (hadirTrend>0 ? icon('trendUp') : icon('trendDown'));
 
   const syncApplied = sessionStorage.getItem('mda_syncApplied');
@@ -4577,8 +4747,10 @@ function bindBarcodes(){
    VIEW: ATTENDANCE INPUT
    ========================================================================= */
 function viewInput(){
-  const cls = classes();
+  const gids = guruClassIds();
+  const cls = gids ? classes().filter(c=>gids.includes(c.id)) : classes();
   if(!App.inputClassId && cls.length) App.inputClassId = cls[0].id;
+  if(gids && cls.length && !gids.includes(App.inputClassId)) App.inputClassId = cls[0].id;
   const st = students().filter(s=>s.classId===App.inputClassId && s.active!==false)
                         .sort((a,b)=>a.name.localeCompare(b.name));
   const att = attendance();
@@ -4686,6 +4858,7 @@ function setStatusFor(studentId, statusKey){
   if(cur===statusKey){ delete rec[studentId]; } else { rec[studentId] = statusKey; }
   saveAttendanceWithUndo(before, att, cur===statusKey ? 'Absen dibatalkan' : 'Absen '+statusKey+' tersimpan');
   applyStatusUI(studentId, cur===statusKey ? null : statusKey);
+  Sync.enqueueAttendance(App.inputDate, studentId, cur===statusKey ? null : statusKey);
   if(navigator.vibrate) navigator.vibrate(15);
 }
 function highlightFocusRow(){
@@ -4730,9 +4903,9 @@ const barcodeBtn = document.getElementById('barcodeBtn');
       const before = JSON.parse(JSON.stringify(att));
       att[App.inputDate] = att[App.inputDate] || {};
       att[App.inputDate][App.inputClassId] = att[App.inputDate][App.inputClassId] || {};
-      st.forEach(s=>{ att[App.inputDate][App.inputClassId][s.id] = 'H'; });
+st.forEach(s=>{ att[App.inputDate][App.inputClassId][s.id] = 'H'; });
       saveAttendanceWithUndo(before, att, 'Semua santri ditandai hadir');
-      st.forEach(s=>applyStatusUI(s.id, 'H'));
+      st.forEach(s=>{ applyStatusUI(s.id, 'H'); Sync.enqueueAttendance(App.inputDate, s.id, 'H'); });
     });
   }
 }
@@ -4807,6 +4980,63 @@ function exportRecapCSV(){
   const blob = new Blob(['\uFEFF'+lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
   downloadFile(blob, 'Rekap-Absensi-'+from+'-s.d.-'+to+'.csv', 'text/csv');
   showToast('File Excel (.csv) berhasil dibuat.', 'success');
+}
+function exportRecapXLS(){
+  const p = profile();
+  const cls = classes();
+  const st = students();
+  const cfg = statusConfig();
+  const {from, to} = computeRange(App.recapPeriod, App.recapCustomFrom, App.recapCustomTo, App.recapWeeklyDate);
+  let rows;
+  if(App._recapRows && App._recapRows.length){ rows = App._recapRows; }
+  else {
+    rows = st.filter(s=>s.active!==false).map(s=>{
+      const {counts,total} = statsForStudent(s.id, s.classId, from, to);
+      const hadir = counts['H']||0;
+      const pct = total>0 ? Math.round(hadir/total*100) : 0;
+      return {name:s.name, nis:s.nis, classId:s.classId, counts, total, pct};
+    });
+  }
+  const classNames = {}; cls.forEach(c=>classNames[c.id]=c.name);
+  const filterLabel = App.recapFilterType==='class'
+    ? (cls.find(c=>c.id===App.recapFilterId)?.name || 'Semua Kelas')
+    : (st.find(s=>s.id===App.recapFilterId)?.name || '—');
+  const addr = [p.dusun, p.desa, p.kecamatan, p.kabupaten, p.provinsi].filter(Boolean).join(', ');
+  const contact = [p.phone, p.whatsapp, p.email].filter(Boolean).join(' · ');
+  const esc = v => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const th = (t, w) => `<th style="border:1pt solid #000; background:#DCE8E0; font-weight:bold; text-align:center; width:${w}pt;">${esc(t)}</th>`;
+  const dataRows = rows.map((r,i)=>`
+    <tr>
+      <td style="border:1pt solid #000; text-align:center;">${i+1}</td>
+      <td style="border:1pt solid #000;">${esc(r.name)}</td>
+      <td style="border:1pt solid #000; text-align:center;">${esc(r.nis||'')}</td>
+      <td style="border:1pt solid #000;">${esc(classNames[r.classId]||'')}</td>
+      ${cfg.map(c=>`<td style="border:1pt solid #000; text-align:center;">${r.counts[c.key]||0}</td>`).join('')}
+      <td style="border:1pt solid #000; text-align:center;">${r.total}</td>
+      <td style="border:1pt solid #000; text-align:center; font-weight:bold;">${r.pct}%</td>
+    </tr>`).join('');
+  const xls = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head><meta charset="UTF-8"><title>Rekap Absensi</title>
+<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Rekap Absensi</x:Name><x:WorksheetOptions><x:Print><x:ValidPrinterInfo/><x:HorizontalResolution>600</x:HorizontalResolution><x:VerticalResolution>600</x:VerticalResolution></x:Print></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>table{border-collapse:collapse;} td,th{font-family:Arial,sans-serif; font-size:10pt;}</style>
+</head><body>
+<table>
+  <tr><td colspan="${cfg.length+6}" style="font-size:15pt; font-weight:bold; text-align:center; border:none;">${esc(p.name || DEFAULT_PROFILE.name)}</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="text-align:center; border:none; font-size:9pt;">${esc(addr)}${contact?(' &middot; '+esc(contact)):''}</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="border:none;">&nbsp;</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="font-size:12pt; font-weight:bold; text-align:center; text-decoration:underline; border:none;">LAPORAN REKAP KEHADIRAN</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="text-align:center; border:none; font-size:10pt;">Periode ${from} s.d. ${to} &middot; ${esc(filterLabel)}</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="border:none;">&nbsp;</td></tr>
+  <tr>${th('No')}${th('Nama',120)}${th('NIS',60)}${th('Kelas',80)}${cfg.map(c=>th(c.label,40)).join('')}${th('Total',40)}${th('% Hadir',50)}</tr>
+  ${dataRows}
+  <tr><td colspan="${cfg.length+6}" style="border:none;">&nbsp;</td></tr>
+  <tr><td colspan="${cfg.length+6}" style="border:none; font-size:9pt;">Dicetak: ${todayISO()} &middot; Pencetak: ${esc((sessionInfo()||{}).name || roleLabel())}</td></tr>
+</table>
+</body></html>`;
+  const blob = new Blob(['\uFEFF'+xls], {type:'application/vnd.ms-excel;charset=utf-8;'});
+  downloadFile(blob, 'Rekap-Absensi-'+from+'-s.d.-'+to+'.xls', 'application/vnd.ms-excel');
+  showToast('File Excel (.xls) siap cetak berhasil dibuat.', 'success');
 }
 function viewRecap(){
   const cls = classes();
@@ -4913,9 +5143,65 @@ rows = classStudents.map(s=>{
         <button class="btn btn-outline btn-sm" id="printRecap">${icon('download')} Cetak / PDF</button>
       </div>
     </div>
-    <div id="recapTableWrap">${recapTableHTML()}</div>
+<div id="recapTableWrap">${recapTableHTML()}</div>
   </div>
+
+  ${printReportHTML()}
   `;
+}
+function printReportHTML(){
+  const p = profile();
+  const cls = classes();
+  const st = students();
+  const cfg = statusConfig();
+  const {from, to} = computeRange(App.recapPeriod, App.recapCustomFrom, App.recapCustomTo, App.recapWeeklyDate);
+  const rows = App._recapRows || [];
+  const q = (App.recapSearch||'').trim().toLowerCase();
+  const filtered = q ? rows.filter(r=>r.name.toLowerCase().indexOf(q)!==-1 || (r.nis||'').toLowerCase().indexOf(q)!==-1) : rows;
+  const filterLabel = App.recapFilterType==='class'
+    ? (cls.find(c=>c.id===App.recapFilterId)?.name || 'Semua Kelas')
+    : (st.find(s=>s.id===App.recapFilterId)?.name || '—');
+  const addrParts = [p.dusun, p.desa, p.kecamatan, p.kabupaten, p.provinsi].filter(Boolean).join(', ');
+  const contactParts = [p.phone, p.whatsapp, p.email].filter(Boolean).join(' · ');
+  const sess = sessionInfo() || {};
+  const pencetak = sess.name || roleLabel();
+  const trs = filtered.map((r,idx)=>`
+    <tr>
+      <td class="pr-tbl">${idx+1}</td>
+      <td>${escapeHtml(r.name)}${r.nis?('<br><span style="font-size:9px; color:#666;">NIS '+escapeHtml(r.nis)+'</span>'):''}</td>
+      ${cfg.map(c=>`<td class="pr-tbl">${r.counts[c.key]||0}</td>`).join('')}
+      <td class="pr-tbl"><b>${r.pct}%</b></td>
+    </tr>`).join('');
+  return `
+  <div class="print-report">
+    <div class="pr-hdr">
+      ${p.logo?`<img class="pr-logo" src="${sanitizeUrl(p.logo)}" alt="Logo">`:`<div class="pr-logo" style="background:#0B6B4F; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800;">M</div>`}
+      <div class="pr-madrasah">
+        <h2>${escapeHtml(p.name || DEFAULT_PROFILE.name)}</h2>
+        <div class="pr-addr">${escapeHtml(addrParts)}${contactParts?('<br>'+escapeHtml(contactParts)):''}</div>
+      </div>
+    </div>
+    <div class="pr-title">LAPORAN REKAP KEHADIRAN</div>
+    <div class="pr-sub">Periode ${fmtDateRangeID(from, to)} · ${escapeHtml(filterLabel)}</div>
+    <div class="pr-table-wrap">
+      <table>
+        <thead><tr>
+          <th class="pr-tbl" style="width:30px;">No</th>
+          <th>Nama Santri</th>
+          ${cfg.map(c=>`<th class="pr-tbl">${escapeHtml(c.label)}</th>`).join('')}
+          <th class="pr-tbl">% Hadir</th>
+        </tr></thead>
+        <tbody>${trs || '<tr><td colspan="'+(cfg.length+3)+'" class="pr-tbl">Tidak ada data</td></tr>'}</tbody>
+      </table>
+    </div>
+    <div class="pr-foot">
+      <span>Dicetak: ${fmtDateID(todayISO())}</span>
+      <span>Pencetak: ${escapeHtml(pencetak)}</span>
+    </div>
+    <div style="text-align:right; margin-top:70px; font-size:10.5px; color:#333;">
+      ${escapeHtml(pencetak)}<br><br><br><span style="border-top:1px solid #333; padding-top:2px;">(${escapeHtml(roleLabel())})</span>
+    </div>
+  </div>`;
 }
 function recapTableHTML(){
   const rows = App._recapRows || [];
@@ -6149,6 +6435,7 @@ function viewFinance(){
     <div class="fin-sum"><div class="fs-num">${fmtRp(totals.lainnya)}</div><div class="fs-lbl">Lainnya</div></div>
   </div>
 
+${managed ? `
   <div class="card">
     <p class="card-title">${icon('wallet')} Bayar / Catat Pembayaran</p>
     <p style="font-size:12px; color:var(--ink-soft); margin-top:-6px;">Pembayaran bisa dilakukan <b>langsung di aplikasi ini</b> — pilih santri, jenis pembayaran, dan nominal (minimal <b>Rp10.000</b>), lalu ketuk <b>Bayar Sekarang</b>. Pembayaran rutin boleh diangsur.</p>
@@ -6168,6 +6455,7 @@ function viewFinance(){
     <p class="fin-hint" id="finMinHint"></p>
     <button class="btn btn-gold btn-block" id="finSubmit" style="margin-top:10px;">${icon('wallet')} Bayar Sekarang</button>
   </div>
+  ` : ''}
 
   <div class="card">
     <p class="card-title">${icon('recap')} Status Pembayaran per Santri</p>
@@ -6308,6 +6596,98 @@ itemSel.addEventListener('change', syncHint);
       try{ el2.setSelectionRange(len, len); }catch(err){}
     }
   }, 350));
+}
+
+/* ---------------------------- Log Aktivitas (audit, server-side) ---------------------------- */
+const AUDIT_LABELS = {
+  'auth.login':'Login','auth.change_password':'Ganti kata sandi',
+  'user.create':'Tambah pengguna','user.update':'Ubah pengguna','user.delete':'Hapus pengguna',
+  'class.create':'Tambah kelas','class.update':'Ubah kelas','class.delete':'Hapus kelas',
+  'student.create':'Tambah santri','student.update':'Ubah santri','student.delete':'Hapus santri',
+  'attendance.update':'Catat absensi','attendance.bulk':'Absensi massal',
+  'payment.create':'Catat pembayaran','payment.delete':'Hapus pembayaran',
+  'profile.update':'Ubah profil madrasah','file.upload':'Unggah file','file.delete':'Hapus file',
+  'backup.create':'Backup database','notify.send_recap':'Kirim rekap WhatsApp',
+};
+function auditLabel(a){ return AUDIT_LABELS[a] || a; }
+function auditResultBadge(r){
+  if(r==='failed') return '<span class="fin-badge fin-none">Gagal</span>';
+  if(r==='denied') return '<span class="fin-badge fin-part">Ditolak</span>';
+  return '<span class="fin-badge fin-paid">Sukses</span>';
+}
+function viewAuditlog(){
+  const hasApi = apiAvailable();
+  return `
+  <h1 class="page-title">Log Aktivitas</h1>
+  <p class="page-sub">Riwayat tindakan pengguna di server madrasah (admin &amp; kepala)</p>
+  ${!hasApi ? `<div class="alert">${icon('alert')} <div><b>Butuh koneksi ke server madrasah.</b> Masuk lewat server (jaringan lokal) untuk melihat log aktivitas.</div></div>` : ''}
+  <div class="card">
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:12px;">
+      <button class="btn btn-primary btn-sm" id="auditRefreshBtn">${icon('refresh')} Muat Ulang</button>
+      <span style="font-size:12px; color:var(--ink-soft);" id="auditTotalLabel"></span>
+    </div>
+    <div id="auditList"></div>
+    <button class="btn btn-outline btn-block" id="auditMoreBtn" style="display:none;">${icon('chevron')} Muat Lebih Banyak</button>
+  </div>
+  `;
+}
+async function loadAudit(reset){
+  if(!apiAvailable()){ const el = document.getElementById('auditList'); if(el) el.innerHTML = ''; return; }
+  const resetFlag = reset !== false;
+  if(resetFlag) App.auditOffset = 0;
+  const moreBtn = document.getElementById('auditMoreBtn');
+  const list = document.getElementById('auditList');
+  const totalLabel = document.getElementById('auditTotalLabel');
+  if(moreBtn) moreBtn.disabled = true;
+  if(list && resetFlag) list.innerHTML = '<p class="empty">Memuat…</p>';
+  try{
+    const r = await API.req('/api/audit-logs?limit=30&offset=' + (App.auditOffset||0));
+    const rows = r.data || [];
+    App.auditOffset = (App.auditOffset||0) + rows.length;
+    if(totalLabel) totalLabel.textContent = 'Total ' + (r.total||0) + ' catatan';
+    const html = rows.map(a=>{
+      const d = a.detail;
+      let detailTxt = '';
+      try{
+        const obj = typeof d === 'string' ? JSON.parse(d) : d;
+        if(obj && typeof obj === 'object'){
+          const parts = [];
+          if(obj.name && obj.action==='student.create') parts.push('Santri: '+obj.name);
+          if(obj.username && obj.action==='user.create') parts.push('@'+obj.username);
+          if(obj.class !== undefined && obj.action==='class.update') parts.push('Kelas: '+obj.class);
+          if(obj.date && obj.action==='attendance.update') parts.push(obj.date+' → '+obj.after);
+          if(obj.count !== undefined) parts.push(obj.count+' santri');
+          if(obj.amount !== undefined) parts.push('Rp'+obj.amount);
+          if(obj.sent !== undefined) parts.push('terkirim '+obj.sent);
+          detailTxt = parts.join(' · ');
+        }
+      }catch(e){}
+      const time = a.created_at ? new Date(a.created_at.replace(' ','T')+'Z').toLocaleString('id-ID') : '';
+      return `<div class="list-row" style="align-items:flex-start;">
+        <div class="avatar" style="background:var(--green-50); color:var(--green-800);">${icon('clock')}</div>
+        <div class="list-main">
+          <div class="t1">${escapeHtml(auditLabel(a.action))} ${auditResultBadge(a.result)}</div>
+          <div class="t2">${escapeHtml(a.user_name||'Sistem')}${a.ip?(' · '+escapeHtml(a.ip)):''} · ${escapeHtml(time)}</div>
+          ${detailTxt ? `<div class="t2" style="opacity:.8;">${escapeHtml(detailTxt)}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    if(list) list.innerHTML = html || '<p class="empty">Belum ada catatan aktivitas.</p>';
+    if(moreBtn){
+      moreBtn.style.display = (App.auditOffset||0) < (r.total||0) ? 'block' : 'none';
+      moreBtn.disabled = false;
+    }
+  }catch(e){
+    if(list) list.innerHTML = `<p class="empty">${icon('alert')} Gagal memuat log: ${escapeHtml((e&&e.message)||'kesalahan server')}</p>`;
+    if(moreBtn) moreBtn.disabled = false;
+  }
+}
+function bindAuditlog(){
+  const refresh = document.getElementById('auditRefreshBtn');
+  if(refresh) refresh.addEventListener('click', ()=> loadAudit(true));
+  const more = document.getElementById('auditMoreBtn');
+  if(more) more.addEventListener('click', ()=> loadAudit(false));
+  loadAudit(true);
 }
 
 /* ---------------------------- Konfirmasi pembayaran (bayar di aplikasi) ---------------------------- */
@@ -6487,6 +6867,15 @@ function viewSettings(){
       <div class="swatch ${s.theme==='slate'?'sel':''}" data-theme-pick="slate" title="Abu-abu" style="background:linear-gradient(135deg,#334155,#C9A227);"></div>
     </div>
 
+<div style="height:1px; background:var(--line); margin:16px 0;"></div>
+
+    <div class="field"><label>Mode Gelap</label>
+      <label class="switch-row" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
+        <span style="font-size:12.5px; color:var(--ink-soft);">Gunakan tema gelap di seluruh aplikasi (identitas hijau-emas-ivory tetap dipertahankan)</span>
+        <input type="checkbox" id="darkModeToggle" ${s.darkMode?'checked':''} style="width:44px; height:24px; accent-color:var(--green-800);">
+      </label>
+    </div>
+
     <div style="height:1px; background:var(--line); margin:16px 0;"></div>
 
     <div class="field"><label>Warna Latar Belakang Aplikasi</label></div>
@@ -6523,10 +6912,34 @@ function viewSettings(){
       <button class="btn btn-outline btn-sm" id="exportBtn">${icon('download')} Ekspor Backup (.json)</button>
       <label class="btn btn-outline btn-sm" style="margin:0;">${icon('upload')} Impor Backup<input type="file" id="importFile" accept=".json,application/json,text/plain" style="display:none;"></label>
     </div>
-    <div style="height:1px; background:var(--line); margin:14px 0;"></div>
+<div style="height:1px; background:var(--line); margin:14px 0;"></div>
     <button class="btn btn-gold btn-block" id="shareAppBtn">${icon('download')} Bagikan Aplikasi ke Guru Lain (dengan Data Terbaru)</button>
 <p style="font-size:11.5px; color:var(--ink-soft); margin-top:8px;">Membuat salinan file aplikasi yang sudah berisi data terbaru (santri, kelas, absensi, akun guru). Kirim ke guru lain lewat WhatsApp — begitu dibuka di perangkatnya, data langsung tersimpan otomatis tanpa impor.</p>
   </div>
+
+  ${apiAvailable() ? `
+  <div class="card">
+    <p class="card-title">${icon('cloud')} Sinkronisasi Offline ke Server</p>
+    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Absensi yang dicatat saat offline masuk antrian lalu dikirim ke server madrasah. Setiap pengiriman memakai kunci anti-duplikat sehingga aman diulang.</p>
+    <div style="display:flex; gap:8px; margin:10px 0; flex-wrap:wrap;">
+      <span class="sync-badge sync-wait" id="sqPending">0 menunggu</span>
+      <span class="sync-badge" style="background:rgba(11,107,79,.92);" id="sqSynced">0 tersinkron</span>
+      <span class="sync-badge sync-fail" id="sqFailed">0 gagal</span>
+      <button class="btn btn-primary btn-sm" id="sqFlushBtn" style="margin-left:auto;">${icon('refresh')} Kirim Sekarang</button>
+    </div>
+    <div id="sqList" style="font-size:12px; color:var(--ink-soft);"></div>
+  </div>` : ''}
+
+  ${isAdmin() && apiAvailable() ? `
+  <div class="card">
+    <p class="card-title">${icon('download')} Backup Server (SQLite)</p>
+    <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Ambil salinan <b>database server madrasah</b> (bukan data perangkat). File .sqlite berisi seluruh data server dan dapat dipulihkan kapan saja.</p>
+    <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+      <button class="btn btn-outline btn-sm" id="backupSrvBtn">${icon('download')} Unduh Backup Server</button>
+      <button class="btn btn-outline btn-sm" id="backupStsBtn">${icon('refresh')} Cek Status</button>
+    </div>
+    <p style="font-size:11.5px; color:var(--ink-soft); margin-top:10px;" id="backupStsText"></p>
+  </div>` : ''}
 
   <div class="card">
     <p class="card-title">${icon('cloud')} Sinkronisasi Cloud (Supabase)</p>
@@ -6698,12 +7111,14 @@ const logoInput = document.getElementById('pLogo');
     });
   }
 
-  document.querySelectorAll('[data-theme-pick]').forEach(el=>{
+document.querySelectorAll('[data-theme-pick]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const s = appSettings(); s.theme = el.getAttribute('data-theme-pick'); saveAppSettings(s);
       document.querySelectorAll('[data-theme-pick]').forEach(x=>x.classList.toggle('sel', x===el));
     });
   });
+  const dm = document.getElementById('darkModeToggle');
+  if(dm) dm.addEventListener('change', ()=>{ const s = appSettings(); s.darkMode = dm.checked; saveAppSettings(s); });
 
   const bgColorEl = document.getElementById('pBgColor');
   if(bgColorEl) bgColorEl.addEventListener('input', ()=>{
@@ -6892,7 +7307,7 @@ const changePass = document.getElementById('changePassBtn');
     }, {password:true});
   });
 
-  const resetBtn = document.getElementById('resetBtn');
+const resetBtn = document.getElementById('resetBtn');
   if(resetBtn) resetBtn.addEventListener('click', ()=>{
     showPrompt('Tindakan ini akan menghapus SEMUA data (santri, kelas, absensi). Ketik "HAPUS" untuk konfirmasi:', 'HAPUS', v=>{
       if(v!=='HAPUS'){ showToast('Dibatalkan — teks tidak sesuai.', 'info'); return; }
@@ -6900,6 +7315,66 @@ const changePass = document.getElementById('changePassBtn');
       sessionStorage.clear();
       location.reload();
     });
+  });
+
+  // ---- Antrian sinkronisasi offline ----
+  const refreshSyncQueueUI = ()=>{
+    const q = syncQueue();
+    const pend = q.filter(o=>o.state==='pending').length;
+    const ok = q.filter(o=>o.state==='synced').length;
+    const bad = q.filter(o=>o.state==='failed').length;
+    const pe = document.getElementById('sqPending');
+    const se = document.getElementById('sqSynced');
+    const fe = document.getElementById('sqFailed');
+    const list = document.getElementById('sqList');
+    if(pe) pe.textContent = pend+' menunggu';
+    if(se) se.textContent = ok+' tersinkron';
+    if(fe) fe.textContent = bad+' gagal';
+    if(list){
+      const failed = q.filter(o=>o.state==='failed');
+      list.innerHTML = failed.length ? ('<div style="font-weight:700; color:var(--status-a); margin-bottom:4px;">Perlu perhatian:</div>'+failed.slice(0,8).map(o=>`<div>• ${escapeHtml(o.date)} — ${escapeHtml(o.error||'gagal')} (percobaan ${o.attempts||1}x)</div>`).join('')) : '';
+    }
+    try{ Sync.updateSyncBadge(); }catch(e){}
+  };
+  const sqFlush = document.getElementById('sqFlushBtn');
+  if(sqFlush) sqFlush.addEventListener('click', async ()=>{
+    sqFlush.disabled = true; sqFlush.innerHTML = 'Mengirim…';
+    await Sync.flushQueue();
+    refreshSyncQueueUI();
+    sqFlush.disabled = false; sqFlush.innerHTML = icon('refresh')+' Kirim Sekarang';
+    showToast(Sync.pending===0 && Sync.failed===0 ? 'Semua antrian tersinkron.' : (Sync.failed? Sync.failed+' item gagal.':'Masih ada '+Sync.pending+' menunggu.'), Sync.failed ? 'warn' : 'success');
+  });
+  refreshSyncQueueUI();
+
+  // ---- Backup server (SQLite) — admin ----
+  const backupSrvBtn = document.getElementById('backupSrvBtn');
+  if(backupSrvBtn) backupSrvBtn.addEventListener('click', async ()=>{
+    backupSrvBtn.disabled = true; backupSrvBtn.innerHTML = 'Membuat…';
+    try{
+      const r = await fetch('/api/admin/backup', { method:'POST', headers:{ authorization:'Bearer '+API.token() } });
+      if(!r.ok){ const j = await r.json().catch(()=>({})); throw new Error(j.error || ('HTTP '+r.status)); }
+      const blob = await r.blob();
+      const cd = r.headers.get('content-disposition') || '';
+      const m = cd.match(/filename="?([^";]+)"?/);
+      downloadFile(blob, m ? m[1] : ('absensi-backup-'+todayISO()+'.sqlite'), 'application/octet-stream');
+      showToast('Backup server berhasil diunduh.', 'success');
+    }catch(e){
+      showToast('Gagal membuat backup server: ' + (e.message||'kesalahan'), 'error', 6000);
+    }finally{
+      backupSrvBtn.disabled = false; backupSrvBtn.innerHTML = icon('download')+' Unduh Backup Server';
+    }
+  });
+  const backupStsBtn = document.getElementById('backupStsBtn');
+  if(backupStsBtn) backupStsBtn.addEventListener('click', async ()=>{
+    const txt = document.getElementById('backupStsText');
+    if(txt) txt.textContent = 'Memeriksa…';
+    try{
+      const j = await API.req('/api/admin/backup/status');
+      const m = j && j.mirrorEnabled ? (' · mirror: '+(j.mirrorLastSync ? new Date(j.mirrorLastSync).toLocaleString('id-ID') : 'belum')) : '';
+      if(txt) txt.textContent = 'Mode: '+((j&&j.mode)||'?')+' · driver: '+((j&&j.driver)||'?')+' · file: '+((j&&j.dbFile)||'?')+m;
+    }catch(e){
+      if(txt) txt.textContent = 'Gagal membaca status server: ' + ((e&&e.message)||'');
+    }
   });
 }
 async function exportBackup(){
@@ -6978,16 +7453,17 @@ function renderLogin(){
       <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 <div class="login-title">${escapeHtml(profile().name||DEFAULT_PROFILE.name)}</div>
       ${isPublicSite() ? `<div class="alert" style="margin:10px 0 0;">${icon('alert')} <div><b>Situs ini versi publik — login Admin/Guru hanya dari server madrasah.</b> Buka di peramban HP/PC Anda (jaringan Wi-Fi yang sama): <b>http://192.168.1.8:3000</b> &nbsp;atau&nbsp; <b>http://192.168.1.6:3000</b> / <b>http://192.168.1.7:3000</b>. Lalu masuk dengan nama pengguna &amp; kata sandi Anda di sana. Situs ini hanya untuk melihat galeri &amp; informasi.</div></div>` : ''}
-      <div class="login-sub">${mode==='guru' ? 'Masuk sebagai guru untuk mengisi absensi' : 'Masuk sebagai admin untuk mengelola absensi'}</div>
+<div class="login-sub">${mode==='guru' ? 'Masuk sebagai guru untuk mengisi absensi' : (mode==='kepala' ? 'Masuk sebagai kepala madrasah (baca laporan & data)' : 'Masuk sebagai admin untuk mengelola absensi')}</div>
       <div class="tab-row">
         <button class="tab-btn ${mode==='admin'?'active':''}" data-login-mode="admin">Admin</button>
         <button class="tab-btn ${mode==='guru'?'active':''}" data-login-mode="guru">Guru</button>
+        <button class="tab-btn ${mode==='kepala'?'active':''}" data-login-mode="kepala">Kepala</button>
       </div>
       ${mode==='guru' && !hasTeachers ? `<div class="alert" style="padding:9px 12px; font-size:12px;">${icon('alert')} Belum ada akun guru. Minta admin menambahkannya di menu Pengaturan → Akses Guru.</div>` : ''}
       <div class="field"><label>${mode==='guru'?'Nama Pengguna Guru':'Nama Pengguna'}</label><input type="text" id="loginUser" value="${escapeHtml(mode==='admin'?(a?.username||''):'')}" autocomplete="username"></div>
       <div class="field"><label>Kata Sandi</label><div class="pwd-wrap"><input type="password" id="loginPass" placeholder=" " autocomplete="current-password"><button type="button" class="pwd-toggle" id="loginPassToggle" aria-label="Tampilkan kata sandi">${icon('eye')}</button></div></div>
       <div id="loginError" role="alert" style="color:var(--status-a); font-size:12.5px; margin-bottom:8px; display:none;">Nama pengguna atau kata sandi salah.</div>
-      <button class="btn btn-primary btn-block" id="loginBtn">${mode==='guru'?'Masuk sebagai Guru':'Masuk'}</button>
+      <button class="btn btn-primary btn-block" id="loginBtn">${mode==='guru'?'Masuk sebagai Guru':(mode==='kepala'?'Masuk sebagai Kepala':'Masuk')}</button>
       ${!auth() && !isPublicSite() ? `<p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="goSetupBtn" style="color:var(--green-800); text-decoration:underline;">Belum punya akun admin? Buat akun di sini</button></p>` : ''}
       <p style="text-align:center; margin-top:10px;"><button class="btn btn-ghost btn-sm" id="guestBackBtn" style="color:var(--ink-soft);">← Kembali sebagai Tamu / Wali Santri</button></p>
       <p style="font-size:11px; color:var(--ink-soft); text-align:center; margin-top:14px;">Data tersimpan hanya di perangkat/browser ini.</p>
@@ -7011,22 +7487,24 @@ const submit = async ()=>{
     const hash = await sha256(pass);
 const errEl = document.getElementById('loginError');
     const fail = (msg)=>{ errEl.style.display='block'; if(msg) errEl.textContent = msg; };
+    // Coba backend dulu (JWT). 401 = kredensial salah; offline (status 0) -> fallback lokal.
+    let rejected = false, serverMsg = '', serverUser = null;
+    try{
+      serverUser = await apiLogin(user, pass);
+      if(!serverUser || !['guru','admin','kepala'].includes(serverUser.role)) rejected = true;
+    }catch(e){
+      if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; serverMsg = (e && e.message) || ''; }
+    }
+    if(!rejected && apiAvailable() && serverUser){
+      sessionStorage.setItem('mda_session', JSON.stringify({ role:serverUser.role, id:serverUser.id, name:serverUser.name, classIds:serverUser.classIds||null }));
+      App.loginOpen=false;
+      await Sync.pull();      // tarik data remote lalu gabung lokal
+      Sync.pushAll();         // unggah data lokal yang belum ada di server
+      render();
+      return;
+    }
+    // Fallback lokal (offline / tidak ada server): hanya guru & admin punya akun lokal.
     if(App.loginMode==='guru'){
-      // Guru: coba backend dulu (JWT). 401 = kredensial salah; offline -> fallback lokal.
-      let rejected = false, serverMsg = '';
-      try{
-        const u = await apiLogin(user, pass);
-        if(u.role!=='guru') rejected = true;
-      }catch(e){
-        if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; serverMsg = (e && e.message) || ''; }
-      }
-      if(!rejected && apiAvailable()){
-        sessionStorage.setItem('mda_session', JSON.stringify({role:'guru'}));
-        App.loginOpen=false;
-        await Sync.pull();
-        render();
-        return;
-      }
       const t = teachers().find(x=>x.username===user);
       if(t && t.passHash===hash){
         sessionStorage.setItem('mda_session', JSON.stringify({role:'guru', id:t.id}));
@@ -7036,27 +7514,6 @@ const errEl = document.getElementById('loginError');
       }
       fail(serverMsg || undefined); return;
     }
-    // Admin: coba backend dulu (JWT). Bila server merespons 'tidak sah' (401)
-    // berarti kredensial salah -> tampilkan error. Bila offline (status 0) ->
-    // fallback ke akun admin lokal.
-    let rejected = false, serverMsg = '';
-    try{
-      const u = await apiLogin(user, pass);
-      if(u.role!=='admin') rejected = true;
-    }catch(e){
-      if(e.status && e.status !== 0 && e.status !== 404){ rejected = true; serverMsg = (e && e.message) || ''; }
-    }
-    if(!rejected && apiAvailable()){
-      sessionStorage.setItem('mda_session', JSON.stringify({role:'admin'}));
-      App.loginOpen=false;
-      App.loginBtnLoading = true;
-      await Sync.pull();      // tarik data remote lalu gabung lokal
-      Sync.pushAll();         // unggah data lokal yang belum ada di server
-      App.loginBtnLoading = false;
-      render();
-      return;
-    }
-    // Fallback lokal (offline / tidak ada server)
     const a = auth();
     if(a && a.username===user && a.passHash===hash){
       sessionStorage.setItem('mda_session', JSON.stringify({role:'admin'}));
