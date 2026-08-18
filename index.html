@@ -266,6 +266,69 @@ button, input, select, textarea, a, .chip, .swatch, .tab-btn, .status-btn, .abse
 .sheet-item{display:flex; align-items:center; gap:14px; padding:13px 6px; border-radius:12px; font-weight:600; font-size:15px; color:var(--ink);}
 .sheet-item svg{width:15px;height:15px; stroke:var(--green-800); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 .sheet-item:active{background:var(--green-50);}
+.sheet-item.active{color:var(--green-900); background:rgba(27,67,50,.06);}
+.sheet-item.active svg{stroke:var(--gold-600);}
+.sheet-title{display:flex; align-items:center; gap:10px; font-weight:800; font-size:14px; letter-spacing:1.5px; color:var(--green-900); padding:2px 4px 10px;}
+.sheet-title svg{width:16px;height:16px; stroke:var(--gold-600); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+
+/* ---------- Sidebar desktop (3 menu utama) ---------- */
+.nav-shell{display:contents;}
+.side-nav{display:none;}
+@media(min-width:900px){
+  .bottom-nav{display:none;}
+  .side-nav{
+    display:flex; flex-direction:column; gap:2px;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(247,244,235,.96));
+    border-right:1px solid var(--line);
+    padding:14px 12px 12px;
+  }
+  .side-brand{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:4px 8px 12px; border-bottom:1px solid var(--line); margin-bottom:8px;}
+  .side-logo{width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--green-900); color:#fff; flex:none; overflow:hidden;}
+  .side-brand-txt{display:flex; flex-direction:column; line-height:1.2; min-width:0;}
+  .side-brand-txt b{font-family:var(--font-display); font-size:15px; color:var(--green-900); letter-spacing:.4px; white-space:nowrap;}
+  .side-brand-txt small{font-size:10.5px; color:var(--gold-700); font-weight:700; white-space:nowrap;}
+  .side-menus{display:flex; flex-direction:column; gap:4px;}
+  .side-menu{border-radius:12px;}
+  .side-menu-btn{display:flex; align-items:center; gap:11px; width:100%; background:none; border:none; color:var(--ink-soft); padding:11px 10px; border-radius:12px; font-size:12.5px; font-weight:800; letter-spacing:.6px; cursor:pointer; text-align:left; border-left:3px solid transparent;}
+  .side-menu.active .side-menu-btn{color:var(--green-900); border-left-color:var(--gold-600); background:rgba(27,67,50,.06);}
+  .side-menu-ic{width:26px; height:26px; display:flex; align-items:center; justify-content:center; color:var(--green-700); flex:none;}
+  .side-menu.active .side-menu-ic{color:var(--gold-600);}
+  .side-menu-chev{margin-left:auto; transition:transform .2s ease; width:16px; height:16px; color:var(--ink-soft);}
+  .side-menu-chev svg{width:16px; height:16px;}
+  .side-menu.open .side-menu-chev{transform:rotate(90deg);}
+  .side-menu-items{max-height:0; overflow:hidden; transition:max-height .28s ease;}
+  .side-menu.open .side-menu-items{max-height:340px;}
+  .side-item{display:flex; align-items:center; gap:10px; width:100%; background:none; border:none; text-align:left; padding:8px 8px 8px 14px; font-size:12.5px; color:var(--ink-soft); border-left:3px solid transparent; cursor:pointer; border-radius:0 8px 8px 0;}
+  .side-item:hover{background:rgba(27,67,50,.05);}
+  .side-item.active{color:var(--green-900); border-left-color:var(--gold-600); background:rgba(27,67,50,.06); font-weight:700;}
+  .side-item svg{width:16px; height:16px; flex:none; color:var(--green-700);}
+  .side-item.active svg{color:var(--gold-600);}
+  .side-quick{margin-top:12px; padding-top:10px; border-top:1px solid var(--line);}
+  .side-quick-lbl{display:flex; align-items:center; gap:7px; font-size:10.5px; letter-spacing:1px; color:var(--ink-soft); text-transform:uppercase; font-weight:800; padding:2px 8px 6px;}
+  .side-quick-lbl svg{width:14px; height:14px; color:var(--gold-700);}
+  .side-quick-item{display:flex; align-items:center; gap:9px; width:100%; background:none; border:none; text-align:left; padding:7px 8px; font-size:12px; color:var(--green-900); border-radius:8px; cursor:pointer; min-height:36px;}
+  .side-quick-item:hover{background:rgba(201,162,39,.14);}
+  .side-quick-item svg{width:15px; height:15px; color:var(--gold-700); flex:none;}
+  .side-quick-empty{font-size:11.5px; color:var(--ink-soft); padding:2px 8px 8px;}
+  .side-grow{flex:1; min-height:8px;}
+  .side-foot{display:flex; flex-direction:column; gap:2px; border-top:1px solid var(--line); padding-top:8px; margin-top:8px;}
+  .side-collapse{margin-top:6px; display:flex; align-items:center; justify-content:center; background:none; border:1px solid var(--line); border-radius:10px; color:var(--ink-soft); cursor:pointer; height:36px;}
+  .side-collapse svg{width:16px; height:16px; transform:rotate(180deg);}
+  /* Mode collapse: icon only */
+  #app.collapsed{grid-template-columns:66px 1fr;}
+  .side-nav.collapsed .side-brand{justify-content:center; padding:4px 0 12px;}
+  .side-nav.collapsed .side-brand-txt{display:none;}
+  .side-nav.collapsed .side-menu-btn{justify-content:center; padding:11px 0; border-left:none;}
+  .side-nav.collapsed .side-menu-lbl, .side-nav.collapsed .side-menu-chev{display:none;}
+  .side-nav.collapsed .side-item{justify-content:center; padding:9px 0; border-left:none;}
+  .side-nav.collapsed .side-item span{display:none;}
+  .side-nav.collapsed .side-menu-items{max-height:none; overflow:visible;}
+  .side-nav.collapsed .side-menu.active .side-menu-btn{border-left:none; background:rgba(27,67,50,.06);}
+  .side-nav.collapsed .side-quick{display:none;}
+  .side-nav.collapsed .side-grow{display:none;}
+  .side-nav.collapsed .side-collapse svg{transform:rotate(0);}
+}
 
 /* ---------- Main content ---------- */
 main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
@@ -288,6 +351,50 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .stat-s{background:linear-gradient(135deg,#3B7DD8,#2657A8);}
 .stat-i{background:linear-gradient(135deg,#E0A72D,#B77E12);}
 .stat-a{background:linear-gradient(135deg,#D64545,#A72E2E);}
+.stat-box .sub{font-size:10.5px; opacity:.85; margin-top:6px; font-weight:600; position:relative; z-index:1; line-height:1.35;}
+.stat-box .trend{display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:800;}
+.stat-box .trend.up{color:#E9F7D9;}
+.stat-box .trend.down{color:#FFD9D9;}
+.stat-box .trend svg{width:11px; height:11px;}
+
+/* Quick actions (dashboard, role-aware) */
+.quick-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px;}
+.quick-act{display:flex; align-items:center; gap:10px; width:100%; background:var(--paper); border:1px solid rgba(27,67,50,.08); border-radius:var(--radius); padding:13px 14px; box-shadow:var(--shadow); cursor:pointer; text-align:left; font-weight:700; font-size:13px; color:var(--green-900); transition:transform .15s ease, box-shadow .15s ease;}
+.quick-act:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(27,67,50,.14);}
+.quick-act:active{transform:scale(.98);}
+.quick-act svg{width:17px; height:17px; flex:none; color:var(--gold-700);}
+.quick-act small{display:block; font-weight:600; font-size:10.5px; color:var(--ink-soft); margin-top:1px;}
+
+/* Ringkasan kelas (dashboard) */
+.class-ov-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+.class-ov{position:relative; background:var(--paper); border:1px solid rgba(27,67,50,.08); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow); overflow:hidden;}
+.class-ov::before{content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--gold-600), rgba(212,160,23,.25) 60%, transparent);}
+.class-ov-top{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;}
+.class-ov-name{font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--green-900);}
+.class-ov-meta{font-size:11px; color:var(--ink-soft);}
+.class-ov-stats{display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 6px;}
+.class-ov-stat{font-size:11px; font-weight:800; padding:3px 8px; border-radius:20px; background:var(--green-50); color:var(--green-900);}
+.class-ov-stat.b-h{background:#E7F5EC; color:#0F6E44;}
+.class-ov-stat.b-a{background:#FBE9E9; color:#A72E2E;}
+.class-ov-bar{height:6px; border-radius:6px; background:var(--line); overflow:hidden;}
+.class-ov-bar i{display:block; height:100%; border-radius:6px; background:linear-gradient(90deg, var(--green-600), var(--green-800)); transition:width .5s ease;}
+.class-ov-foot{display:flex; align-items:center; justify-content:space-between; margin-top:10px;}
+.class-ov-empty{font-size:12px; color:var(--ink-soft);}
+
+/* Pencarian santri (dashboard) */
+.dash-search{width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:12px; font-size:14px; background:var(--green-50); color:var(--ink);}
+.dash-search:focus{outline:none; border-color:var(--gold-600); box-shadow:0 0 0 3px rgba(212,160,23,.15); background:#fff;}
+.search-result{display:flex; align-items:center; gap:10px; width:100%; background:none; border:none; border-bottom:1px solid var(--line); padding:11px 2px; text-align:left; cursor:pointer; font-size:13.5px; color:var(--ink);}
+.search-result:last-child{border-bottom:none;}
+.search-result:hover{background:var(--green-50);}
+.search-result .sr-name{font-weight:700; color:var(--green-900);}
+.search-result .sr-meta{font-size:11px; color:var(--ink-soft); margin-top:1px;}
+.search-result .sr-btn{margin-left:auto; flex:none;}
+
+@media(min-width:600px){
+  .quick-grid{grid-template-columns:repeat(4,1fr);}
+  .class-ov-grid{grid-template-columns:repeat(2,1fr);}
+}
 
 .alert{display:flex; gap:10px; align-items:flex-start; background:var(--gold-100); border:1px solid var(--gold-400); color:#5C4400; border-radius:12px; padding:12px 14px; font-size:13px; margin-bottom:14px;}
 .alert b{display:block; margin-bottom:2px;}
@@ -341,6 +448,14 @@ main{flex:1; padding:16px 16px 90px; overflow-x:hidden; overflow-anchor:none;}
 .status-btn{width:38px; height:38px; border-radius:10px; border:1.5px solid var(--line); background:#fff; font-weight:800; font-size:12px; color:var(--ink-soft); transition:transform .1s ease, background .1s ease, border-color .1s ease;}
 .status-btn.sel{color:#fff; border-color:transparent; box-shadow:0 2px 8px rgba(0,0,0,.18);}
 .status-btn:active{transform:scale(.85);}
+.status-row.focus{background:linear-gradient(90deg, rgba(212,160,23,.10), transparent 70%); border-radius:10px;}
+.status-row.focus .t1{color:var(--green-900);}
+.kbd{display:inline-block; min-width:22px; padding:2px 6px; border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; background:#fff; font-family:var(--font-mono); font-size:11px; font-weight:800; color:var(--green-900); text-align:center;}
+.input-hint{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-soft); margin:-6px 0 12px;}
+@media(max-width:899px){
+  .status-btn{width:46px; height:46px; font-size:14px; border-radius:12px;}
+  .input-hint{display:none;}
+}
 
 .empty{text-align:center; padding:36px 14px; color:var(--ink-soft);}
 .empty svg{width:44px; height:44px; stroke:var(--gold-600); fill:none; stroke-width:1.5; margin-bottom:10px;}
@@ -451,7 +566,7 @@ svg.spin{animation:mda-spin 1s linear infinite;}
 .bcode-card .code.qid{font-size:8px; letter-spacing:.4px; word-break:break-all; font-weight:600; color:var(--ink-soft);}
 @media print{
   @page{margin:8mm;}
-  #bgLayer, .app-header, .bottom-nav, .footer-note, .page-title, .page-sub, .print-hide{display:none !important;}
+  #bgLayer, .app-header, .bottom-nav, .side-nav, .footer-note, .page-title, .page-sub, .print-hide{display:none !important;}
   main{padding:0 !important; overflow:visible !important;}
   #app{max-width:none !important; display:block !important; min-height:0 !important;}
   .bcode-sheet{grid-template-columns:repeat(4,1fr);}
@@ -1562,8 +1677,35 @@ function bindShortcuts(){
       if(App.selfieOpen){ stopSelfieCamera(); App.selfieOpen = false; changed = true; }
       if(App.barcodeOpen){ stopBarcodeCamera(); App.barcodeOpen = false; changed = true; }
       if(App.pvLightbox){ App.pvLightbox = null; changed = true; }
-      if(document.getElementById('musicModal')){ closeMusicList(); changed = true; }
+if(document.getElementById('musicModal')){ closeMusicList(); changed = true; }
       if(changed) render();
+      return;
+    }
+    if(App.view==='input' && !e.ctrlKey && !e.metaKey && !e.altKey){
+      const ae = document.activeElement;
+      if(ae && ['INPUT','SELECT','TEXTAREA','BUTTON'].includes(ae.tagName)) return;
+      const rows = Array.from(document.querySelectorAll('#attendanceList .status-row'));
+      if(!rows.length) return;
+      const idx = App.focusStudentId ? rows.findIndex(r=>r.getAttribute('data-student')===App.focusStudentId) : -1;
+      const key = e.key.toLowerCase();
+      const cfg = statusConfig();
+      const statusMatch = cfg.find(c=>c.key.toLowerCase()===key);
+      if(statusMatch){
+        e.preventDefault();
+        const targetId = (idx>=0 ? rows[idx] : rows[0]).getAttribute('data-student');
+        setStatusFor(targetId, statusMatch.key);
+        const nIdx = (idx+1) % rows.length;
+        App.focusStudentId = rows[nIdx].getAttribute('data-student');
+        highlightFocusRow();
+        return;
+      }
+      if(e.key==='ArrowDown' || e.key==='ArrowUp'){
+        e.preventDefault();
+        const n = (idx + (e.key==='ArrowDown'?1:-1) + rows.length) % rows.length;
+        App.focusStudentId = rows[n].getAttribute('data-student');
+        highlightFocusRow();
+        rows[n].scrollIntoView({block:'nearest'});
+      }
     }
   });
 }
@@ -2254,8 +2396,14 @@ const DEFAULT_SETTINGS = { theme:'green', bgColor:'', bgImage:'', prayer:{ city:
 const App = {
   view: 'dashboard',
   sheetOpen:false,
-  dashDate: todayISO(),
+  sheetMenu:'',
+  sideCollapsed:false,
+  openMenus:['absensi'],
+  settingsFocus:'',
+  scrollTo:null,
+dashDate: todayISO(),
   dashClassId: '',
+  dashSearch:'',
   inputDate: todayISO(),
   inputClassId: null,
   recapPeriod:'weekly',
@@ -2402,6 +2550,8 @@ const ICONS = {
   alert:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
   check:'<polyline points="20 6 9 17 4 12"/>',
   chevron:'<path d="m9 18 6-6-6-6"/>',
+  trendUp:'<path d="M7 17 17 7"/><path d="M7 7h10v10"/>',
+  trendDown:'<path d="M7 7l10 10"/><path d="M17 7v10H7"/>',
   users2:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
   photo:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
@@ -2864,8 +3014,8 @@ if(!auth()){
     sessionStorage.setItem('mda_session', JSON.stringify({role:'tamu'}));
   }
 
-  root.innerHTML = `
-    <div id="app">
+root.innerHTML = `
+    <div id="app" class="${App.sideCollapsed?'collapsed':''}">
       ${renderNav()}
       <div style="display:flex; flex-direction:column; min-height:100vh; flex:1; min-width:0;">
         ${renderHeader()}
@@ -2878,9 +3028,14 @@ if(!auth()){
     ${App.barcodeOpen ? renderBarcodeModal() : ''}
     ${App.finConfirm ? renderFinConfirmModal() : ''}
   `;
-  applyTheme();
+applyTheme();
   bindGlobal();
   bindView();
+  if(App.scrollTo){
+    const el = document.getElementById(App.scrollTo);
+    if(el) setTimeout(()=>{ try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){} }, 120);
+    App.scrollTo = null;
+  }
   if(App.barcodeOpen) bindBarcode();
   paintBarcodes(root);
   paintQrCodes(root);
@@ -2931,108 +3086,151 @@ function renderFooter(){
   </footer>`;
 }
 
-const NAV_ITEMS = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'input', label:'Absensi', icon:'input'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'more', label:'Lainnya', icon:'more'},
+/* ---------------------------------------------------------------------------
+   NAVIGASI — 3 MENU UTAMA (ABSENSI / LAPORAN / PENGATURAN)
+   Model: satu struktur menu ber-role. Desktop = sidebar accordion;
+   Mobile = bottom-nav 3 tombol menu + bottom-sheet berisi item menu.
+   --------------------------------------------------------------------------- */
+const NAV_MENUS = [
+  { id:'absensi', label:'ABSENSI', icon:'input', roles:['admin','guru'],
+    items:[
+      { id:'input', label:'Input Absensi Harian', icon:'input', roles:['admin','guru'] },
+      { id:'classes', label:'Absensi Per Kelas', icon:'classes', roles:['admin'] },
+      { id:'students', label:'Absensi Per Santri', icon:'students', roles:['admin'] },
+      { id:'recap', label:'Rekap Mingguan', icon:'recap', roles:['admin','guru'] },
+    ]},
+  { id:'laporan', label:'LAPORAN', icon:'recap', roles:['admin','guru','guest'],
+    items:[
+      { id:'recap', label:'Rekap Semua Kelas', icon:'recap', roles:['admin','guru','guest'] },
+      { id:'exportPdf', label:'Export PDF', icon:'download', roles:['admin','guru'], action:'printRecap' },
+      { id:'exportExcel', label:'Export Excel', icon:'list', roles:['admin','guru'], action:'exportExcel' },
+      { id:'chart', label:'Grafik Kehadiran', icon:'recap', roles:['admin','guru'], view:'dashboard', focus:'weekChartCard' },
+      { id:'history', label:'Riwayat Absensi', icon:'clock', roles:['admin','guru'], view:'recap', focus:'recapTableCard' },
+      { id:'finance', label:'Keuangan', icon:'wallet', roles:['admin','guru','guest'] },
+      { id:'share', label:'Bagikan JPG', icon:'share', roles:['admin','guru','guest'] },
+    ]},
+  { id:'pengaturan', label:'PENGATURAN', icon:'settings', roles:['admin'],
+    items:[
+      { id:'students', label:'Data Santri', icon:'students', roles:['admin'] },
+      { id:'classes', label:'Data Kelas', icon:'classes', roles:['admin'] },
+      { id:'teachers', label:'Data Ustadz/Guru', icon:'users2', roles:['admin'], view:'settings', focus:'setTeachers' },
+      { id:'profil', label:'Profil Madrasah', icon:'settings', roles:['admin'], view:'settings', focus:'setProfile' },
+      { id:'account', label:'Manajemen Akun', icon:'settings', roles:['admin'], view:'settings', focus:'setAccount' },
+    ]},
 ];
-const MORE_ITEMS = [
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'students', label:'Data Santri', icon:'students'},
-  {id:'classes', label:'Kelas', icon:'classes'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'settings', label:'Pengaturan', icon:'settings'},
+const GUEST_NAV_MENUS = [
+  { id:'beranda', label:'BERANDA', icon:'dashboard', type:'view', view:'dashboard' },
+  { id:'galeri', label:'GALERI', icon:'photo', type:'view', view:'poto' },
+  { id:'laporan', label:'LAPORAN', icon:'recap', type:'menu', items:[
+    { id:'recap', label:'Rekap Kehadiran', icon:'recap' },
+    { id:'finance', label:'Keuangan', icon:'wallet' },
+    { id:'share', label:'Bagikan JPG', icon:'share' },
+    { id:'login', label:'Masuk sebagai Guru / Admin', icon:'logout' },
+  ]},
 ];
-const ALL_NAV = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'input', label:'Absensi', icon:'input'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'students', label:'Data Santri', icon:'students'},
-  {id:'classes', label:'Kelas', icon:'classes'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'settings', label:'Pengaturan', icon:'settings'},
-];
-const TEACHER_NAV_ITEMS = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'input', label:'Absensi', icon:'input'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'more', label:'Lainnya', icon:'more'},
-];
-const TEACHER_MORE_ITEMS = [
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'shareapp', label:'Bagikan Aplikasi (Data Terbaru)', icon:'download'},
-];
-const TEACHER_ALL_NAV = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'input', label:'Absensi', icon:'input'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-];
-const GUEST_NAV_ITEMS = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'more', label:'Lainnya', icon:'more'},
-];
-const GUEST_MORE_ITEMS = [
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-  {id:'login', label:'Masuk sebagai Guru / Admin', icon:'logout'},
-];
-const GUEST_ALL_NAV = [
-  {id:'dashboard', label:'Beranda', icon:'dashboard'},
-  {id:'poto', label:'Poto & Video', icon:'photo'},
-  {id:'recap', label:'Rekap', icon:'recap'},
-  {id:'finance', label:'Keuangan', icon:'wallet'},
-  {id:'share', label:'Bagikan JPG', icon:'share'},
-];
+const VIEW_MENU_MAP = { input:'absensi', barcodes:'absensi', classes:'absensi', recap:'laporan', finance:'laporan', share:'laporan', students:'pengaturan', settings:'pengaturan' };
+
+function menusForRole(){
+  if(isGuest()) return null;
+  const role = isTeacher() ? 'guru' : 'admin';
+  return NAV_MENUS
+    .filter(m=>m.roles.includes(role))
+    .map(m=>({ id:m.id, label:m.label, icon:m.icon, items:m.items.filter(it=>it.roles.includes(role)) }))
+    .filter(m=>m.items.length);
+}
+function activeMenuId(){
+  if(isGuest()){ if(App.view==='dashboard') return 'beranda'; if(App.view==='poto') return 'galeri'; return 'laporan'; }
+  return VIEW_MENU_MAP[App.view] || '';
+}
+function activeItemIn(menu){
+  const hit = menu.items.find(it=> !it.action && !it.focus && (it.view||it.id)===App.view);
+  return hit ? hit.id : '';
+}
+function navItemAttrs(it){
+  if(it.action) return `data-nav-action="${it.action}"`;
+  const target = it.view || it.id;
+  return `data-nav="${target}"` + (it.focus ? ` data-nav-focus="${it.focus}"` : '');
+}
+function sheetItemHTML(it, active){
+  return `<button class="sheet-item ${active?'active':''}" style="width:100%;text-align:left;background:none;border:none;" ${navItemAttrs(it)}>${icon(it.icon)}<span>${it.label}</span></button>`;
+}
+function sideItemHTML(it, active){
+  return `<button class="side-item ${active?'active':''}" ${navItemAttrs(it)}>${icon(it.icon)}<span>${it.label}</span></button>`;
+}
 
 function renderNav(){
   const isDesktopLike = window.innerWidth >= 900;
-  let items, bottomAction;
-  if(isGuest()){
-    items = isDesktopLike ? GUEST_ALL_NAV : GUEST_NAV_ITEMS;
-    bottomAction = isDesktopLike ? {id:'login', label:'Masuk', icon:'logout'} : null;
-  } else if(isTeacher()){
-    items = isDesktopLike ? TEACHER_ALL_NAV : TEACHER_NAV_ITEMS;
-    bottomAction = isDesktopLike ? {id:'logout', label:'Keluar', icon:'logout'} : null;
-  } else {
-    items = isDesktopLike ? ALL_NAV : NAV_ITEMS;
-    bottomAction = isDesktopLike ? {id:'logout', label:'Keluar', icon:'logout'} : null;
-  }
-  const activeId = (App.view==='barcodes') ? 'input' : ((App.view==='students'||App.view==='classes'||App.view==='share'||App.view==='settings'||App.view==='finance'||App.view==='poto') && !isDesktopLike ? 'more' : App.view);
-  let html = `<nav class="bottom-nav" aria-label="Navigasi utama">`;
-  items.forEach(it=>{
-html += `<button class="nav-btn ${activeId===it.id?'active':''}" data-nav="${it.id}"><span class="nav-ic">${icon(it.icon)}</span><span class="nav-lbl">${it.label}</span></button>`;
-  });
-  if(bottomAction){
-    html += `<div style="flex:1"></div><button class="nav-btn" data-nav="${bottomAction.id}"><span class="nav-ic">${icon(bottomAction.icon)}</span><span class="nav-lbl">${bottomAction.label}</span></button>`;
-  }
-  html += `</nav>`;
-  return html;
+  const guest = isGuest();
+  const menus = guest ? GUEST_NAV_MENUS : menusForRole();
+  const am = activeMenuId();
+  const bottomBtn = (m)=>{
+    if(guest && m.type==='view'){
+      return `<button class="nav-btn ${am===m.id?'active':''}" data-nav="${m.view}"><span class="nav-ic">${icon(m.icon)}</span><span class="nav-lbl">${m.label}</span></button>`;
+    }
+    return `<button class="nav-btn ${am===m.id?'active':''}" data-menu="${m.id}"><span class="nav-ic">${icon(m.icon)}</span><span class="nav-lbl">${m.label}</span></button>`;
+  };
+  const bottomHtml = `<nav class="bottom-nav" aria-label="Navigasi utama">${menus.map(bottomBtn).join('')}</nav>`;
+
+  if(guest || !isDesktopLike) return `<div class="nav-shell">${bottomHtml}</div>`;
+
+  const collapsed = !!App.sideCollapsed;
+  const openMenus = App.openMenus || ['absensi'];
+  const cls = classes();
+  const quick = cls.slice(0, 12);
+  const sideMenuHtml = menus.map(m=>{
+    const open = openMenus.includes(m.id);
+    const active = am===m.id;
+    return `
+    <div class="side-menu ${active?'active':''} ${open?'open':''}">
+      <button class="side-menu-btn" data-menu="${m.id}" aria-expanded="${open?'true':'false'}" title="${m.label}">
+        <span class="side-menu-ic">${icon(m.icon)}</span>
+        <span class="side-menu-lbl">${m.label}</span>
+        <span class="side-menu-chev">${icon('chevron')}</span>
+      </button>
+      <div class="side-menu-items">${m.items.map(it=>sideItemHTML(it, activeItemIn(m)===it.id)).join('')}</div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="nav-shell">
+    <aside class="side-nav ${collapsed?'collapsed':''}" aria-label="Navigasi utama">
+      <button class="side-brand" data-nav="dashboard" title="Beranda">
+        <span class="side-logo">${logoOrMoon(30,'50%')}</span>
+        <span class="side-brand-txt"><b>ABSENSI MUDAH</b><small>${fmtHijri(todayISO())}</small></span>
+      </button>
+      <div class="side-menus">${sideMenuHtml}</div>
+      <div class="side-quick">
+        <div class="side-quick-lbl">${icon('classes')} <span>Kelas</span></div>
+        ${quick.length ? quick.map(c=>`<button class="side-quick-item" data-quick-class="${c.id}" title="${escapeHtml(c.name)}">${icon('classes')}<span>${escapeHtml(c.name)}</span></button>`).join('') : `<div class="side-quick-empty">Belum ada kelas</div>`}
+      </div>
+      <div class="side-grow"></div>
+      <div class="side-foot">
+        <button class="side-item" data-nav="settings" data-nav-focus="setProfile">${icon('settings')}<span>Profil</span></button>
+        <button class="side-item" data-nav="logout">${icon('logout')}<span>Keluar</span></button>
+        <button class="side-collapse" data-side-collapse title="${collapsed?'Perluas sidebar':'Persempit sidebar'}">${icon('chevron')}</button>
+      </div>
+    </aside>
+    ${bottomHtml}
+  </div>`;
 }
 
 function renderSheet(){
-  let moreItems, showLogout = true;
-  if(isGuest()){ moreItems = GUEST_MORE_ITEMS; showLogout = false; }
-  else if(isTeacher()){ moreItems = TEACHER_MORE_ITEMS; }
-  else { moreItems = MORE_ITEMS; }
+  const guest = isGuest();
+  const menus = guest ? GUEST_NAV_MENUS : menusForRole();
+  const menu = menus.find(m=>m.id===App.sheetMenu && m.items) || menus.find(m=>m.items) || null;
+  if(!menu) return '';
   return `
   <div class="sheet-backdrop open" data-close-sheet="1">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="sheet-handle"></div>
-      ${moreItems.map(it=>`<button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;" data-nav="${it.id}">${icon(it.icon)}<span>${it.label}</span></button>`).join('')}
-      ${showLogout?`<div style="height:1px;background:var(--line);margin:6px 0;"></div>
-      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;color:var(--status-a);" data-nav="logout">${icon('logout')}<span>Keluar</span></button>`:''}
+      <div class="sheet-title">${icon(menu.icon)} ${menu.label}</div>
+      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;" data-nav="dashboard">${icon('dashboard')}<span>Beranda</span></button>
+      <div style="height:1px;background:var(--line);margin:6px 0;"></div>
+      ${menu.items.map(it=>sheetItemHTML(it, activeItemIn(menu)===it.id)).join('')}
+      ${guest ? '' : `
+      <div style="height:1px;background:var(--line);margin:6px 0;"></div>
+      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;" data-nav="settings" data-nav-focus="setProfile">${icon('settings')}<span>Profil</span></button>
+      <button class="sheet-item" style="width:100%;text-align:left;background:none;border:none;color:var(--status-a);" data-nav="logout">${icon('logout')}<span>Keluar</span></button>`}
     </div>
   </div>`;
 }
@@ -3041,13 +3239,44 @@ function bindGlobal(){
   updateConnIndicator();
   bindConnEvents();
   bindShortcuts();
+  document.querySelectorAll('[data-menu]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const id = el.getAttribute('data-menu');
+      if(id==='more'){ App.sheetOpen = true; render(); return; }
+      if(window.innerWidth >= 900){
+        // Desktop: accordion sidebar — buka/tutup daftar item menu
+        const arr = App.openMenus || [];
+        App.openMenus = arr.includes(id) ? arr.filter(x=>x!==id) : arr.concat([id]);
+        render();
+      } else {
+        App.sheetMenu = id; App.sheetOpen = true; render();
+      }
+    });
+  });
+  document.querySelectorAll('[data-side-collapse]').forEach(el=>{
+    el.addEventListener('click', ()=>{ App.sideCollapsed = !App.sideCollapsed; render(); });
+  });
+  document.querySelectorAll('[data-quick-class]').forEach(el=>{
+    el.addEventListener('click', ()=>{ gotoInputFrom(todayISO(), el.getAttribute('data-quick-class')); });
+  });
+  document.querySelectorAll('[data-nav-action]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const a = el.getAttribute('data-nav-action');
+      App.sheetOpen = false;
+      if(a==='printRecap'){ App.view='recap'; render(); setTimeout(()=>{ if(App.view==='recap') window.print(); }, 450); return; }
+      if(a==='exportExcel'){ render(); exportRecapCSV(); return; }
+      showToast('Aksi tidak tersedia.', 'warn');
+    });
+  });
   document.querySelectorAll('[data-nav]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const id = el.getAttribute('data-nav');
+      const focus = el.getAttribute('data-nav-focus');
       if(id==='more'){ App.sheetOpen = true; render(); return; }
       if(id==='logout'){ sessionStorage.removeItem('mda_session'); API.setToken(null); App.loginOpen=false; render(); return; }
       if(id==='login'){ App.sheetOpen = false; App.loginOpen = true; render(); return; }
       if(id==='shareapp'){ App.sheetOpen = false; render(); shareAppWithData(); return; }
+      if(focus){ if(String(focus).indexOf('set')===0){ App.settingsFocus = focus; } else { App.scrollTo = focus; } }
       App.view = id; App.sheetOpen = false; render();
     });
   });
@@ -3220,6 +3449,61 @@ const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active
   Object.values(heroTodayRec).forEach(rec=>Object.values(rec).forEach(v=>{ heroMarked++; if(v==='H') heroH++; }));
   const heroPct = heroMarked ? Math.round(heroH/heroMarked*100) : 0;
 
+  // --- Statistik dashboard: 4 kartu dengan trend nyata ---
+  const todayMarked = H+S+I+A;
+  const prevISO = (()=>{ const d=new Date(selDate+'T00:00:00'); d.setDate(d.getDate()-1); return isoOf(d); })();
+  const prevRec = att[prevISO]||{};
+  let prevH=0, prevMarked=0;
+  Object.keys(prevRec).forEach(cid=>{ if(selClassId && cid!==selClassId) return; Object.values(prevRec[cid]).forEach(v=>{ prevMarked++; if(v==='H') prevH++; }); });
+  const hadirTrend = prevMarked ? H - prevH : H; // kemarin belum tercatat → tampilkan sebagai nilai penuh
+  let sumPct7=0, daysN7=0;
+  for(let i=0;i<7;i++){ const d=new Date(selDate+'T00:00:00'); d.setDate(d.getDate()-i); const iso=isoOf(d); const rec=att[iso]||{}; let mk=0,h2=0;
+    Object.keys(rec).forEach(cid=>{ if(selClassId && cid!==selClassId) return; Object.values(rec[cid]).forEach(v=>{ mk++; if(v==='H') h2++; }); });
+    if(mk){ sumPct7 += h2/mk*100; daysN7++; }
+  }
+  const avgPct7 = daysN7 ? Math.round(sumPct7/daysN7) : 0;
+  const classOv = classesInScope.map(c=>{
+    const recs = (dateRec[c.id])||{};
+    const members = st.filter(s=>s.classId===c.id && s.active!==false);
+    let h2=0, mk=0;
+    members.forEach(s=>{ const v=recs[s.id]; if(v){ mk++; if(v==='H') h2++; } });
+    return {c, members:members.length, h:h2, marked:mk, pct: mk? Math.round(h2/mk*100):0};
+  });
+
+  // Salam sesuai waktu + nama sesuai peran
+  const sessInfo = sessionInfo();
+  const nowHr = new Date().getHours();
+  const salamTxt = nowHr>=5&&nowHr<11?'Selamat Pagi': nowHr>=11&&nowHr<15?'Selamat Siang': nowHr>=15&&nowHr<18?'Selamat Sore':'Selamat Malam';
+  let greetName='';
+  if(isAdmin()){ const hm=(profile().headmaster||'').trim(); greetName=hm||'Admin'; }
+  else if(sessInfo && sessInfo.id){ const t=teachers().find(x=>x.id===sessInfo.id); greetName=t?(t.name||t.username):''; }
+
+  // Pencarian santri (lokal & cepat)
+  const dashQ = (App.dashSearch||'').trim().toLowerCase();
+  let searchResults = [];
+  if(dashQ){
+    const clsByName = {}; cls.forEach(c=>clsByName[c.id]=c.name);
+    searchResults = st.filter(s=>s.active!==false && (
+      (s.name||'').toLowerCase().includes(dashQ) ||
+      String(s.nis||'').toLowerCase().includes(dashQ) ||
+      (clsByName[s.classId]||'').toLowerCase().includes(dashQ)
+    )).slice(0,8);
+  }
+
+  // Quick actions sesuai peran
+  const quickActs = isGuest() ? [] : (isTeacher() ? [
+    {id:'input',  label:'Input Absensi',   sub:'Absen harian', icon:'input'},
+    {id:'recap',  label:'Rekap',           sub:'Mingguan/bulanan', icon:'recap'},
+    {id:'barcodes', label:'Barcode',       sub:'Scan santri', icon:'qrcode'},
+    {id:'poto',   label:'Poto & Video',    sub:'Galeri kegiatan', icon:'photo'},
+  ] : [
+    {id:'input',  label:'Input Absensi',   sub:'Absen harian', icon:'input'},
+    {id:'recap',  label:'Rekap Absensi',   sub:'Mingguan/bulanan', icon:'recap'},
+    {id:'students', label:'Data Santri',   sub:'Tambah/edit', icon:'users2'},
+    {id:'classes',  label:'Data Kelas',    sub:'Atur kelas', icon:'classes'},
+  ]);
+  const trendArrow = hadirTrend===0 ? '' : (hadirTrend>0 ? icon('trendUp') : icon('trendDown'));
+
   const syncApplied = sessionStorage.getItem('mda_syncApplied');
   if(syncApplied) sessionStorage.removeItem('mda_syncApplied');
 
@@ -3245,8 +3529,8 @@ const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active
       <div class="hero-stat"><div class="num" data-count="${heroTeachers}">0</div><div class="lbl">Ustadz/Guru</div></div>
     </div>
   </section>` : ''}
-  <h1 class="page-title">Assalamu'alaikum 👋</h1>
-<p class="page-sub">${fmtDateID(selDate)} &middot; <span style="color:var(--gold-700); font-weight:700;">${fmtHijri(selDate)}</span></p>
+<h1 class="page-title">${greetName?('Assalamu\'alaikum, '+escapeHtml(greetName)):'Assalamu\'alaikum'}</h1>
+  <p class="page-sub">${salamTxt} &middot; ${fmtDateID(selDate)} &middot; <span style="color:var(--gold-700); font-weight:700;">${fmtHijri(selDate)}</span></p>
 
   ${SlideShow.renderHtml()}
   ${isAdmin() ? SlideShow.adminHtml() : ''}
@@ -3304,13 +3588,94 @@ const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active
     </div>
   </div>` : ''}
 
-  <div class="stat-grid linkable" id="statGridLink" title="Ketuk untuk buka Absensi">
-    <div class="stat-box stat-h"><div class="num">${H}</div><div class="lbl">Hadir</div></div>
-    <div class="stat-box stat-s"><div class="num">${S}</div><div class="lbl">Sakit</div></div>
-    <div class="stat-box stat-i"><div class="num">${I}</div><div class="lbl">Izin</div></div>
-    <div class="stat-box stat-a"><div class="num">${A}</div><div class="lbl">Alpa</div></div>
+<div class="stat-grid linkable" id="statGridLink" title="Ketuk untuk buka Absensi">
+    <div class="stat-box stat-h">
+      <div class="num">${totalActive}</div><div class="lbl">Total Santri</div>
+      <div class="sub">${cls.length} kelas &middot; ${heroTeachers} ustadz/guru</div>
+    </div>
+    <div class="stat-box" style="background:linear-gradient(135deg,#2F6FD6,#1F4E9C);">
+      <div class="num">${H}</div><div class="lbl">Hadir Hari Ini</div>
+      <div class="sub"><span class="trend ${hadirTrend>0?'up':(hadirTrend<0?'down':'')}">${trendArrow}${hadirTrend===0?'=&nbsp;':(hadirTrend>0?'+':'')+hadirTrend} kemarin</span> &middot; ${todayMarked} tercatat</div>
+    </div>
+    <div class="stat-box" style="background:linear-gradient(135deg,#7A4AA1,#5B3180);">
+      <div class="num">${avgPct7}%</div><div class="lbl">Rata-rata Kehadiran</div>
+      <div class="sub">${daysN7} hari terakhir tercatat</div>
+    </div>
+    <div class="stat-box" style="background:linear-gradient(135deg,#D8930C,#A86E08);">
+      <div class="num">${markedClassIds.size}</div><div class="lbl">Kelas Aktif</div>
+      <div class="sub">${unmarked.length===0?'Semua kelas sudah diabsen':unmarked.length+' kelas belum diabsen'}</div>
+    </div>
   </div>
   <p class="goto-hint">${icon('input')} Ketuk kartu statistik untuk membuka tab Absensi</p>
+
+  ${quickActs.length ? `
+  <div class="quick-grid">
+    ${quickActs.map(q=>`
+    <button class="quick-act" data-nav="${q.id}">
+      ${icon(q.icon)}
+      <span>${q.label}<small>${q.sub}</small></span>
+    </button>`).join('')}
+  </div>` : ''}
+
+  <div class="card">
+    <p class="card-title">${icon('search')} Cari Santri</p>
+    <input class="dash-search" id="dashSearch" placeholder="Ketik nama / NIS / nama kelas…" value="${escapeHtml(App.dashSearch||'')}" autocomplete="off">
+    ${dashQ ? `
+    <div style="margin-top:10px;">
+      ${searchResults.length===0 ? `<p style="font-size:12.5px; color:var(--ink-soft);">Tidak ada santri yang cocok dengan "${escapeHtml(dashQ)}".</p>` : searchResults.map(s=>{
+        const cn = cls.find(c=>c.id===s.classId);
+        return `
+        <button class="search-result" data-goto-class="${s.classId}" title="Buka absensi kelas ${escapeHtml(cn?cn.name:'')}">
+          <span>${icon('users2')}</span>
+          <span style="min-width:0;"><span class="sr-name">${escapeHtml(s.name)}</span><div class="sr-meta">${escapeHtml(s.nis||'')} &middot; ${escapeHtml(cn?cn.name:'Kelas ?')}</div></span>
+          <span class="btn btn-outline btn-sm sr-btn">${icon('input')} Absensi</span>
+        </button>`;
+      }).join('')}
+    </div>` : ''}
+  </div>
+
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <p class="card-title" style="margin:0;">${icon('classes')} Ringkasan Kelas</p>
+      ${cls.length>0 ? `<button class="btn btn-outline btn-sm" data-nav="classes">${icon('plus')} Kelola</button>` : ''}
+    </div>
+    ${classOv.length===0 ? `
+    <p class="class-ov-empty">Belum ada kelas. Buat kelas dulu lalu isi absensi santri.</p>
+    <button class="btn btn-primary btn-block" style="margin-top:10px;" data-nav="classes">${icon('plus')} Buat Kelas</button>
+    ` : `
+    <div class="class-ov-grid">
+      ${classOv.map(o=>{
+        const c=o.c;
+        return `
+        <div class="class-ov" data-goto-class="${c.id}" title="Ketuk untuk mengisi absensi kelas ini">
+          <div class="class-ov-top">
+            <div style="min-width:0;"><div class="class-ov-name">${escapeHtml(c.name)}</div>
+            <div class="class-ov-meta">${escapeHtml(c.teacher||'Belum ada ustadz/guru')} &middot; ${o.members} santri</div></div>
+            <span class="btn btn-gold btn-sm">Lihat Detail</span>
+          </div>
+          <div class="class-ov-stats">
+            <span class="class-ov-stat b-h">Hadir ${o.h}</span>
+            <span class="class-ov-stat b-a">Tidak ${o.marked-o.h}</span>
+            ${o.marked===0 ? `<span class="class-ov-stat">Belum diabsen</span>` : ''}
+          </div>
+          <div class="class-ov-bar"><i style="width:${o.pct}%"></i></div>
+          <div class="class-ov-foot">
+            <span class="class-ov-meta">Kehadiran hari ini</span>
+            <b style="color:var(--green-900); font-size:13px;">${o.pct}%</b>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`}
+  </div>
+
+<div class="card" id="weekChartCard">
+    <p class="card-title">${icon('recap')} Statistik Minggu Ini${curClass?(' — '+escapeHtml(curClass.name)):''}</p>
+    <div style="position:relative; height:170px;">
+      <div id="weekChartSkeleton" style="position:absolute; inset:0; z-index:1;"><div class="skeleton skeleton-card" style="height:150px;"></div></div>
+      <canvas id="weekChart" height="170" role="img" aria-label="Grafik statistik kehadiran mingguan (Hadir, Sakit, Izin, Alpa)"></canvas>
+    </div>
+    <p class="goto-hint" style="margin-bottom:0;">${icon('input')} Ketuk salah satu batang grafik untuk mengisi absensi hari itu</p>
+  </div>
 
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
@@ -3332,18 +3697,6 @@ const totalActive = selClassId ? st.filter(s=>s.classId===selClassId && s.active
     </div>
     `}
   </div>
-
-  <div class="card">
-    <p class="card-title">${icon('recap')} Statistik Minggu Ini${curClass?(' — '+escapeHtml(curClass.name)):''}</p>
-    <canvas id="weekChart" height="170" role="img" aria-label="Grafik statistik kehadiran mingguan (Hadir, Sakit, Izin, Alpa)"></canvas>
-    <p class="goto-hint" style="margin-bottom:0;">${icon('input')} Ketuk salah satu batang grafik untuk mengisi absensi hari itu</p>
-  </div>
-
-  <div class="card">
-    <p class="card-title">${icon('dashboard')} Ringkasan</p>
-    <div class="list-row"><div class="list-main"><div class="t1">Total Santri Aktif${curClass?(' — '+escapeHtml(curClass.name)):''}</div></div><b>${totalActive}</b></div>
-    <div class="list-row"><div class="list-main"><div class="t1">Jumlah Kelas</div></div><b>${cls.length}</b></div>
-  </div>
   `;
 }
 function gotoInputFrom(dateIso, classId){
@@ -3362,6 +3715,8 @@ const dateEl = document.getElementById('dashDate');
   const classEl = document.getElementById('dashClass');
   if(dateEl) dateEl.addEventListener('change', e=>{ App.dashDate = e.target.value || todayISO(); render(); });
   if(classEl) classEl.addEventListener('change', e=>{ App.dashClassId = e.target.value; render(); });
+  const searchEl = document.getElementById('dashSearch');
+  if(searchEl) searchEl.addEventListener('input', e=>{ App.dashSearch = e.target.value; render(); });
 
   bindSlideshow();
   bindPrayerClock();
@@ -3416,7 +3771,9 @@ const dateEl = document.getElementById('dashDate');
       plugins:{ legend:{position:'bottom', labels:{boxWidth:10, font:{size:10}}} },
       scales:{ x:{stacked:true, grid:{display:false}}, y:{stacked:true, ticks:{precision:0}} }
     }
-  });
+});
+  const sk = document.getElementById('weekChartSkeleton');
+  if(sk) sk.remove();
   };
   if(typeof Chart==='undefined'){ ensureLib('chart').then(buildChart).catch(()=>{}); }
   else { buildChart(); }
@@ -4232,9 +4589,13 @@ function viewInput(){
   const curClass = cls.find(c=>c.id===App.inputClassId);
   const hasPhotos = st.some(s=>s.photo);
 
-  return `
+return `
   <h1 class="page-title">Input Absensi</h1>
   <p class="page-sub">Pilih tanggal dan kelas, lalu tandai kehadiran santri</p>
+  <div class="input-hint">${icon('input')} Pintasan keyboard:
+    ${cfg.map(c=>`<span><span class="kbd">${c.key}</span> ${escapeHtml(c.label)}</span>`).join('')}
+    <span><span class="kbd">↑</span><span class="kbd">↓</span> pilih santri</span>
+  </div>
 
   <div class="card">
     <div class="field-row">
@@ -4315,6 +4676,22 @@ function updateProgressUI(){
   if(txt) txt.textContent = done+' dari '+total+' santri sudah ditandai';
   if(bar && total) bar.style.width = Math.round(done/total*100)+'%';
 }
+function setStatusFor(studentId, statusKey){
+  const att = attendance();
+  const before = JSON.parse(JSON.stringify(att));
+  att[App.inputDate] = att[App.inputDate] || {};
+  att[App.inputDate][App.inputClassId] = att[App.inputDate][App.inputClassId] || {};
+  const rec = att[App.inputDate][App.inputClassId];
+  const cur = rec[studentId];
+  if(cur===statusKey){ delete rec[studentId]; } else { rec[studentId] = statusKey; }
+  saveAttendanceWithUndo(before, att, cur===statusKey ? 'Absen dibatalkan' : 'Absen '+statusKey+' tersimpan');
+  applyStatusUI(studentId, cur===statusKey ? null : statusKey);
+  if(navigator.vibrate) navigator.vibrate(15);
+}
+function highlightFocusRow(){
+  const rows = document.querySelectorAll('#attendanceList .status-row');
+  rows.forEach(r=>r.classList.toggle('focus', r.getAttribute('data-student')===App.focusStudentId));
+}
 function bindInput(){
   const dateEl = document.getElementById('inpDate');
   const classEl = document.getElementById('inpClass');
@@ -4328,19 +4705,21 @@ const barcodeBtn = document.getElementById('barcodeBtn');
   if(barcodeCardsBtn) barcodeCardsBtn.addEventListener('click', ()=>{ App.view = 'barcodes'; render(); });
   bindSelfie();
 
+  document.querySelectorAll('#attendanceList .status-row').forEach(row=>{
+    row.addEventListener('click', (e)=>{
+      if(e.target.closest('.status-btn')) return;
+      App.focusStudentId = row.getAttribute('data-student');
+      highlightFocusRow();
+    });
+  });
+
   document.querySelectorAll('[data-status]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const studentId = btn.getAttribute('data-student');
       const status = btn.getAttribute('data-status');
-      const att = attendance();
-      const before = JSON.parse(JSON.stringify(att));
-      att[App.inputDate] = att[App.inputDate] || {};
-      att[App.inputDate][App.inputClassId] = att[App.inputDate][App.inputClassId] || {};
-      const rec = att[App.inputDate][App.inputClassId];
-      const cur = rec[studentId];
-      if(cur===status){ delete rec[studentId]; } else { rec[studentId] = status; }
-      saveAttendanceWithUndo(before, att, cur===status ? 'Absen dibatalkan' : 'Absen '+status+' tersimpan');
-      applyStatusUI(studentId, cur===status ? null : status);
+      App.focusStudentId = studentId;
+      setStatusFor(studentId, status);
+      highlightFocusRow();
     });
   });
   const markAll = document.getElementById('markAllPresent');
@@ -4397,7 +4776,37 @@ function statsForStudent(studentId, classId, from, to){
     const v = cRec[studentId];
     if(v){ counts[v]=(counts[v]||0)+1; total++; }
   });
-  return {counts, total};
+return {counts, total};
+}
+/* Ekspor rekap ke file CSV (bisa dibuka di Excel/LibreOffice/Google Sheets).
+   Separatis ';' + BOM agar terbaca rapi di Excel Indonesia. */
+function exportRecapCSV(){
+  const cls = classes();
+  const st = students();
+  const cfg = statusConfig();
+  const {from, to} = computeRange(App.recapPeriod, App.recapCustomFrom, App.recapCustomTo, App.recapWeeklyDate);
+  let rows;
+  if(App._recapRows && App._recapRows.length){
+    rows = App._recapRows;
+  } else {
+    rows = st.filter(s=>s.active!==false).map(s=>{
+      const {counts,total} = statsForStudent(s.id, s.classId, from, to);
+      const hadir = counts['H']||0;
+      const pct = total>0 ? Math.round(hadir/total*100) : 0;
+      return {name:s.name, nis:s.nis, classId:s.classId, counts, total, pct};
+    });
+  }
+  const classNames = {}; cls.forEach(c=>classNames[c.id]=c.name);
+  const esc = v => { const s = String(v==null?'':v); return '"'+s.replace(/"/g,'""')+'"'; };
+  const head = ['No','Nama','NIS','Kelas'].concat(cfg.map(c=>c.label), ['Total','% Hadir']);
+  const lines = [head.join(';')];
+  rows.forEach((r,i)=>{
+    const cols = [i+1, r.name, r.nis||'', classNames[r.classId]||''].concat(cfg.map(c=>r.counts[c.key]||0), [r.total, r.pct]);
+    lines.push(cols.map(esc).join(';'));
+  });
+  const blob = new Blob(['\uFEFF'+lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+  downloadFile(blob, 'Rekap-Absensi-'+from+'-s.d.-'+to+'.csv', 'text/csv');
+  showToast('File Excel (.csv) berhasil dibuat.', 'success');
 }
 function viewRecap(){
   const cls = classes();
@@ -4410,11 +4819,11 @@ function viewRecap(){
   let rows = [];
   if(App.recapFilterType==='class' && App.recapFilterId){
     const classStudents = st.filter(s=>s.classId===App.recapFilterId && s.active!==false);
-    rows = classStudents.map(s=>{
+rows = classStudents.map(s=>{
       const {counts,total} = statsForStudent(s.id, s.classId, from, to);
       const hadir = counts['H']||0;
       const pct = total>0 ? Math.round(hadir/total*100) : 0;
-      return {name:s.name, nis:s.nis, counts, total, pct};
+      return {name:s.name, nis:s.nis, classId:s.classId, counts, total, pct};
     });
   } else if(App.recapFilterType==='student' && App.recapFilterId){
     const s = st.find(x=>x.id===App.recapFilterId);
@@ -4422,7 +4831,7 @@ function viewRecap(){
       const {counts,total} = statsForStudent(s.id, s.classId, from, to);
       const hadir = counts['H']||0;
       const pct = total>0 ? Math.round(hadir/total*100) : 0;
-      rows = [{name:s.name, nis:s.nis, counts, total, pct}];
+      rows = [{name:s.name, nis:s.nis, classId:s.classId, counts, total, pct}];
     }
   }
 
@@ -5961,7 +6370,7 @@ function viewSettings(){
   <h1 class="page-title">Pengaturan</h1>
   <p class="page-sub">Profil madrasah &amp; konfigurasi aplikasi</p>
 
-  <div class="card">
+<div class="card" id="setProfile">
     <p class="card-title">${icon('settings')} Profil Madrasah</p>
     <div class="field"><label>Nama Madrasah</label><input type="text" id="pName" value="${escapeHtml(p.name)}" data-field="name"></div>
     <div class="field">
@@ -6136,7 +6545,7 @@ function viewSettings(){
     <p style="font-size:11.5px; color:var(--ink-soft); margin-top:10px;" id="scStatus">${scStatusText()}</p>
   </div>
 
-  <div class="card">
+<div class="card" id="setTeachers">
     <p class="card-title">${icon('users2')} Akses Guru</p>
     <p style="font-size:12.5px; color:var(--ink-soft); margin-top:-4px;">Buat akun agar guru lain bisa masuk untuk mengisi absensi. Guru dapat melihat <b>Beranda, Absensi, Rekap, dan Bagikan JPG</b> — data yang sama dengan admin (tersimpan sampai absensi terbaru). Guru tidak bisa mengubah data santri/kelas/pengaturan.</p>
     <div id="teacherList">
@@ -6158,7 +6567,7 @@ function viewSettings(){
     <button class="btn btn-primary" id="addTeacherBtn">${icon('plus')} Tambah Guru</button>
   </div>
 
-  <div class="card">
+<div class="card" id="setAccount">
     <p class="card-title">${icon('settings')} Akun</p>
     <button class="btn btn-outline btn-sm" id="changePassBtn">Ganti Kata Sandi</button>
   </div>
@@ -6170,6 +6579,11 @@ function viewSettings(){
   `;
 }
 function bindSettings(){
+  if(App.settingsFocus){
+    const el = document.getElementById(App.settingsFocus);
+    if(el){ try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){} }
+    App.settingsFocus = '';
+  }
   const save = debounce(()=>{
     const p = profile();
     document.querySelectorAll('[data-field]').forEach(el=>{
