@@ -7452,7 +7452,7 @@ function renderLogin(){
       <div class="login-crescent">${logoOrMoon(34,'50%')}</div>
       <div class="login-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 <div class="login-title">${escapeHtml(profile().name||DEFAULT_PROFILE.name)}</div>
-      ${isPublicSite() ? `<div class="alert" style="margin:10px 0 0;">${icon('alert')} <div><b>Situs ini versi publik — login Admin/Guru hanya dari server madrasah.</b> Buka di peramban HP/PC Anda (jaringan Wi-Fi yang sama): <b>http://192.168.1.8:3000</b> &nbsp;atau&nbsp; <b>http://192.168.1.6:3000</b> / <b>http://192.168.1.7:3000</b>. Lalu masuk dengan nama pengguna &amp; kata sandi Anda di sana. Situs ini hanya untuk melihat galeri &amp; informasi.</div></div>` : ''}
+      ${isPublicSite() ? `<div class="alert" style="margin:10px 0 0;">${icon('alert')} <div><b>Situs ini versi publik — login Admin/Guru hanya dari server madrasah.</b> Buka di peramban HP/PC Anda (jaringan Wi-Fi yang sama): <b>http://192.168.1.7:3000</b> &nbsp;atau&nbsp; <b>http://192.168.1.6:3000</b>. Lalu masuk dengan nama pengguna &amp; kata sandi Anda di sana. Situs ini hanya untuk melihat galeri &amp; informasi.</div></div>` : ''}
 <div class="login-sub">${mode==='guru' ? 'Masuk sebagai guru untuk mengisi absensi' : (mode==='kepala' ? 'Masuk sebagai kepala madrasah (baca laporan & data)' : 'Masuk sebagai admin untuk mengelola absensi')}</div>
       <div class="tab-row">
         <button class="tab-btn ${mode==='admin'?'active':''}" data-login-mode="admin">Admin</button>
