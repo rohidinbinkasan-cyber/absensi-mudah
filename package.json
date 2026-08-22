@@ -5,6 +5,8 @@
   "type": "module",
   "description": "Absensi Digital Madrasah — frontend statis + galeri bersama (Vercel Blob) via serverless functions",
   "dependencies": {
-    "@vercel/blob": "^2.8.0"
+    "@vercel/blob": "^2.8.0",
+    "bcryptjs": "^2.4.3",
+    "mongodb": "^6.9.0"
   }
 }
